@@ -18,7 +18,7 @@ export const createUser = async(req: Request, res: Response) => {
     }
 }
 
-// GET USERS TABLE
+// GET - GET USERS TABLE
 export const getUsers = async(req: Request, res: Response) => {
     try {
         const users = await User.find()
@@ -30,4 +30,16 @@ export const getUsers = async(req: Request, res: Response) => {
     }
 }
 
-// 
+// PUT - UPDATE USER
+export const updateUser = async(req: Request, res: Response) => {
+    const {firstname, lastname} = req.body;
+    const {id} = req.params;
+    const user = await User.findOneBy({id: parseInt(req.params.id)});
+
+    if (!user) return res.status(404).json({message: "User does not exists"});
+
+    await User.update({id: parseInt(id)}, req.body);
+    return res.sendStatus(204);
+}
+
+// DELETE USER

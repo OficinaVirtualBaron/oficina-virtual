@@ -57,7 +57,7 @@ export const deleteUser = async(req: Request, res: Response) => {
         const resultDelete = User.delete({id: parseInt(id)});
 
         if((await resultDelete).affected == 0){
-        return res.status(404).json({message: "User not found"});
+        return res.status(404).json({message: "User not found, check ID"});
         }
         return res.sendStatus(204);
     } catch (error) {

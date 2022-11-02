@@ -35,3 +35,5 @@ export const deleteTramite = async(req: Request, res: Response) => {
         }
     }
 }
+
+//Error en DELETE - DELETE TRAMITE ID (catchea el error)

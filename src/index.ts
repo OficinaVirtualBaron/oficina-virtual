@@ -5,7 +5,7 @@ import {AppDataSource} from "./db";
 async function main() {
     try {
         await AppDataSource.initialize();
-        console.log("Database connected (Look Dbeaver or MySQL)");
+        console.log("Database connected (Look DBeaver or MySQL)");
         app.listen(3000);
         console.log("Server is listening on port", 3000);
     } catch (error) {

@@ -74,8 +74,6 @@ export const getUserById = async (req: Request, res: Response) => {
         const user = await User.findOneBy({id: parseInt(id)});
         res.json(user);
     } catch (error) {
-        if (error instanceof Error){
-            res.status(500).json({message: error.message});
-        }
+        return res.status(500).json({message: error});
     }
 }

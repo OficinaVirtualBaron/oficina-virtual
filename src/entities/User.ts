@@ -23,7 +23,7 @@ export class User extends BaseEntity{
     @Column({
         unique: true
     })
-    cuil: number
+    cuil: number;
 
     @Column()
     lastname: string;

@@ -10,11 +10,11 @@ import {
 
 const router = Router()
 
+router.get("/", getUsers);
+
 router.post("/users", createUser);
 
 router.get("/users", getUsers);
-
-router.get("/", getUsers);
 
 router.put("/users/:id", updateUser);
 

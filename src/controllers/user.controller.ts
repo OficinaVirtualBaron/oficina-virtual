@@ -1,5 +1,4 @@
 import {Request, Response} from "express";
-import { PassThrough } from "stream";
 import {User} from "../entities/User";
 
 // POST - CREATE NEW USER

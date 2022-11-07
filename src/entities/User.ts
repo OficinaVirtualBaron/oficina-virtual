@@ -15,6 +15,9 @@ export class User extends BaseEntity{
     @Column()
     firstname: string;
 
+    @Column()
+    lastname: string;
+
     @Column({
         unique: true
     })
@@ -30,8 +33,6 @@ export class User extends BaseEntity{
     })
     cuil: number;
 
-    @Column()
-    lastname: string;
 
     @Column({
         default: true

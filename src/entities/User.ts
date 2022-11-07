@@ -21,7 +21,12 @@ export class User extends BaseEntity{
     email: string;
 
     @Column({
-        unique: true
+        default: "password123"
+    })
+    password: string
+
+    @Column({
+        unique: true    
     })
     cuil: number;
 

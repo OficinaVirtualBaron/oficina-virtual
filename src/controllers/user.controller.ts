@@ -1,15 +1,17 @@
 import {Request, Response} from "express";
+import { PassThrough } from "stream";
 import {User} from "../entities/User";
 
 // POST - CREATE NEW USER
 export const createUser = async(req: Request, res: Response) => {
     try {
-        const {firstname, lastname, email, cuil} = req.body;
+        const {firstname, lastname, email, cuil, password} = req.body;
         const user = new User();
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
         user.cuil = cuil;
+        user.password = password;
 
         await user.save();
         return res.json(user);

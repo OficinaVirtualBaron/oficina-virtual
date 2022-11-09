@@ -23,9 +23,7 @@ export class User extends BaseEntity{
     })
     email: string;
 
-    @Column({
-        default: "password123"
-    })
+    @Column()
     password: string
 
     @Column({

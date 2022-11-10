@@ -1,6 +1,5 @@
 import {Router} from "express";
-import app from "../app";
-const bcrypt = require('bcryptjs');
+import bcrypt from "bcrypt"
 import {
     createUser, 
     deleteUser, 
@@ -11,27 +10,14 @@ import {
 
 const router = Router()
 
-router.get("/", getUsers);
+//router.get("/", getUsers);
 
-// hash login (esto va en el post de crear user)
-router.post("/login", async(req, res) =>  {
-    const user = req.body.user;
-    const password = req.body.password;
-    if(user == "admin" && password == "12345"){
-        const passwordHash = await bcrypt.hash(password, 10);
-        res.json({
-            message: "Autenticación exitosa",
-            passwordHash: passwordHash
-        })
-    }
-    else{
-        res.json({
-            message: "Credenciales no coincidentes"
-        })
-    }
-})
+// hash login (esto va en el post de logear user)
+router.post("/login");
 
-router.post("/users", createUser);
+router.post("/createUser", [
+
+], createUser);
 
 router.get("/users", getUsers);
 

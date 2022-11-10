@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {User} from "../entities/User";
+import bcrypt from "bcrypt"
 
 // POST - CREATE NEW USER
 export const createUser = async(req: Request, res: Response) => {
@@ -12,11 +13,15 @@ export const createUser = async(req: Request, res: Response) => {
         user.cuil = cuil;
         user.password = password;
 
+        // Implementar joi para validaciones y bcrypt para hashear el password
+            
+        // Login con CIDI
+
         await user.save();
         return res.json(user);
     } catch (error) {
         if(error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({message: "Credenciales no válidas. Por favor, intente nuevamente"});
         }
     }
 }
@@ -58,7 +63,7 @@ export const deleteUser = async(req: Request, res: Response) => {
         const resultDelete = User.delete({id: parseInt(id)});
 
         if((await resultDelete).affected == 0){
-        return res.status(404).json({message: "User not found, check ID"});
+        return res.status(404).json({message: "No se encontró el ID. Por favor, intente nuevamente"});
         }
         return res.sendStatus(204);
     } catch (error) {

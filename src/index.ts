@@ -1,7 +1,9 @@
 import "reflect-metadata";
 import app from "./app";
 import {AppDataSource} from "./db";
+import bcrypt from "bcrypt";
 
+// Starting the server
 async function main() {
     try {
         await AppDataSource.initialize();

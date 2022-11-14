@@ -36,7 +36,6 @@ export class User extends BaseEntity{
     })
     cuil: number;
 
-
     @Column({
         default: true
     })

@@ -8,9 +8,6 @@ import {
     BaseEntity
 } from "typeorm";
 
-import Joi from "joi";
-
-
 
 @Entity()
 export class User extends BaseEntity{

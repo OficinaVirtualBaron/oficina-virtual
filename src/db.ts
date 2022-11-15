@@ -9,7 +9,7 @@ export const AppDataSource = new DataSource ({
     username: "root",
     password: process.env.MYSQL_PASSW,
     port: 3306,
-    database: "typeormdb",
+    database: "users-database",
     entities: [User],
     logging: true,
     synchronize: true

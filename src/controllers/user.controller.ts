@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import {User} from "../entities/User";
 import bcrypt from "bcrypt"
 import { cuilSchema, emailSchema, lastnameSchema, nameSchema, passwordSchema } from "../validators/validator";
-import { createPublicKey } from "crypto";
 
 // POST - CREATE NEW USER
 export const createUser = async(req: Request, res: Response) => {
@@ -14,39 +13,40 @@ export const createUser = async(req: Request, res: Response) => {
     console.log(cuil)
     console.log(password)
     try {
-        const validateFirstName = await nameSchema.validateAsync({firstname})
-        const validateLastName = await lastnameSchema.validateAsync({lastname})
-        const validateEmail = await emailSchema.validateAsync({email})
-        const validateCuil = await cuilSchema.validateAsync({cuil})
-        const validatePassword = await passwordSchema.validateAsync({password})
+        const validateFirstName = await nameSchema.validateAsync({firstname});
+        const validateLastName = await lastnameSchema.validateAsync({lastname});
+        const validateEmail = await emailSchema.validateAsync({email});
+        const validateCuil = await cuilSchema.validateAsync({cuil});
+        const validatePassword = await passwordSchema.validateAsync({password});    
 
-        if(validateFirstName == true){
+        if(validateFirstName){
             user.firstname = firstname;
+        } else{
             res.json({msg: "El nombre es requerido y debe tener mínimo 2 letras y máximo 30"});
         }
 
-        if(validateLastName == true){
+        if(validateLastName){
             user.lastname = lastname;
         } else{
-            res.json({msg: "El apellido es requerido y debe tener mínimo 2 letras y máximo 30"})
+            res.json({msg: "El apellido es requerido y debe tener mínimo 2 letras y máximo 30"});
         }
 
-        if(validateEmail == true){
+        if(validateEmail){
             user.email = email;
         } else{
             res.json({msg: "El email es requerido"})
         }
 
-        if(validateCuil == true){
+        if(validateCuil){
             user.cuil = cuil;
         } else{
-            res.json({msg: "El CUIL es requerido y debe tener un mínimo de 11 números y máximo de 12"})
+            res.json({msg: "El CUIL es requerido y debe tener un mínimo de 11 números y máximo de 12"});
         }
 
-        if(validatePassword == true){
+        if(validatePassword){
             user.password = password;
         } else{
-            res.json({msg: "La contraseña es requerida y debe tener mínimo 8 caracteres y máximo 20"})
+            res.json({msg: "La contraseña es requerida y debe tener mínimo 8 caracteres y máximo 20"});
         }
 
         //Hashear el password

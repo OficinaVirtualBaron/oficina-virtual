@@ -7,11 +7,6 @@ import { cuilSchema, emailSchema, lastnameSchema, nameSchema, passwordSchema } f
 export const createUser = async(req: Request, res: Response) => {
     const {firstname, lastname, email, cuil, password} = req.body;
     const user = new User();
-    console.log(firstname)
-    console.log(lastname)
-    console.log(email)
-    console.log(cuil)
-    console.log(password)
     try {
         const validateFirstName = await nameSchema.validateAsync({firstname});
         const validateLastName = await lastnameSchema.validateAsync({lastname});
@@ -22,31 +17,31 @@ export const createUser = async(req: Request, res: Response) => {
         if(validateFirstName){
             user.firstname = firstname;
         } else{
-            res.json({msg: "El nombre es requerido y debe tener mínimo 2 letras y máximo 30"});
+            res.json({message: "El nombre es obligatorio y debe tener mínimo 3 letras y máximo 30"});
         }
 
         if(validateLastName){
             user.lastname = lastname;
         } else{
-            res.json({msg: "El apellido es requerido y debe tener mínimo 2 letras y máximo 30"});
+            res.json({message: "El apellido es obligatorio y debe tener mínimo 3 letras y máximo 30"});
         }
 
         if(validateEmail){
             user.email = email;
         } else{
-            res.json({msg: "El email es requerido"})
+            res.json({message: "El email es obligatorio"})
         }
 
         if(validateCuil){
             user.cuil = cuil;
         } else{
-            res.json({msg: "El CUIL es requerido y debe tener un mínimo de 11 números y máximo de 12"});
+            res.json({message: "El CUIL es obligatorio y debe tener un mínimo de 11 números y máximo de 12"});
         }
 
         if(validatePassword){
             user.password = password;
         } else{
-            res.json({msg: "La contraseña es requerida y debe tener mínimo 8 caracteres y máximo 20"});
+            res.json({message: "La contraseña es obligatoria y debe tener mínimo 8 caracteres y máximo 20"});
         }
 
         //Hashear el password
@@ -57,7 +52,7 @@ export const createUser = async(req: Request, res: Response) => {
         return res.json(user);
     } catch (error) {
         if(error instanceof Error) {
-            return res.status(500).json({message: "Credenciales no válidas. Por favor, intente nuevamente"});
+            return res.status(500).json({message: "Datos ingresados no válidos. Por favor, revise e intente nuevamente"});
         }
     }
 }

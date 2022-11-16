@@ -1,11 +1,7 @@
 import {Router} from "express";
 import bcrypt from "bcrypt"
 import {
-    createUser, 
-    deleteUser, 
-    getUserById, 
-    getUsers, 
-    updateUser
+    createUser
 } from "../controllers/user.controller"
 
 const router = Router()
@@ -18,13 +14,5 @@ router.post("/login");
 router.post("/createUser", [
 
 ], createUser);
-
-router.get("/users", getUsers);
-
-router.put("/users/:id", updateUser);
-
-router.delete("/users/:id", deleteUser);
-
-router.get("/users/:id", getUserById);
 
 export default router;

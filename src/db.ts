@@ -1,5 +1,4 @@
 import { DataSource } from "typeorm";
-import {User} from "./entities/User";
 const dotenv = require('dotenv');
 dotenv.config()
 
@@ -10,7 +9,7 @@ export const AppDataSource = new DataSource ({
     password: process.env.MYSQL_PASSW,
     port: 3306,
     database: "users-database",
-    entities: [User],
+    entities: [],
     logging: true,
     synchronize: true
 }) 

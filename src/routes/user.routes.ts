@@ -2,13 +2,54 @@ import {Router} from "express";
 import bcrypt from "bcrypt"
 import { Request, Response } from "express";
 import {
-    
-} from "../controllers/user.controller"
+    getUsers,
+    getUser,
+    createUser,
+    updateUser,
+    deleteUser,
+  } from "../controllers/user.controller"
 
-const router = Router()
+const router = Router();
 
 // hash login (esto va en el post de logear user)
 //router.post("/createUser", createUser)
+
+// POST create user
+router.post("/createUser", createUser)
+
+
+router.get("/users", getUsers);
+
+router.get("/users/:id", getUser);
+
+router.post("/users", createUser);
+
+router.put("/users/:id", updateUser);
+
+router.delete("/users/:id", deleteUser);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // GET home
 router.get("/home", (req: Request, res: Response) => {

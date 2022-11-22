@@ -1,8 +1,22 @@
-import {Request, Response} from "express";
-//import {User} from "./entities/User";
-import bcrypt from "bcrypt"
-//import { cuilSchema, emailSchema, lastnameSchema, nameSchema, passwordSchema } from "./validators/validator";
+import { Request, Response } from "express";
+import { User } from "../entities/User";
 
-// CRUD
+export const getUsers = () => {
 
-// POST - CREATE NEW USER
+}
+
+export const getUser = () => {
+
+}
+
+export const createUser = () => {
+
+}
+
+export const updateUser = () => {
+
+}
+
+export const deleteUser = () => {
+  
+}

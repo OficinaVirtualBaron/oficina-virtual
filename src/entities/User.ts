@@ -1,25 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm"
-
-@Entity()
-export class User {
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    BaseEntity,
+    CreateDateColumn,
+    UpdateDateColumn,
+  } from "typeorm";
+  
+  @Entity()
+  export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
+  
+    @Column()
+    firstname: string;
+  
+    @Column()
+    lastname: string;
 
     @Column()
-    firstName: string
+    password: string;
 
     @Column()
-    lastName: string
-
-    @Column()
-    email: string
-
-    @Column()
-    password: string
-
-    @Column()
-    active: true
-
+    email: string;
+  
+    @Column({ default: true })
+    active: boolean;
+  
     @CreateDateColumn()
-    createdAt: Date
-}
+    createdAt: Date;
+  
+    @UpdateDateColumn()
+    updatedAt: Date;
+  }

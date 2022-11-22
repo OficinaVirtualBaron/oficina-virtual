@@ -1,13 +1,10 @@
 import "reflect-metadata";
 import {AppDataSource} from "./db";
 import bcrypt from "bcrypt";
-
 import express from "express"
-import { engine } from 'express-handlebars';
 import morgan from "morgan"
 import cors from "cors"
 import userRoutes from "./routes/user.routes";
-import path from "path";
 
 const app = express()
 

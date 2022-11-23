@@ -5,5 +5,5 @@ npm install for node modules
 
 # Proyecto Oficina Virtual
 ```
-Proximamente aquí documentación del mismo
+npm run dev para correr el servidor localmente (localhost:3000 + ruta especificada)
 ```

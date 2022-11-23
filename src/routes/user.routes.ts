@@ -10,43 +10,22 @@ import {
 
 const router = Router();
 
-// hash login (esto va en el post de logear user)
 
-
+// CRUD USERS
 // POST create user
 router.post("/createUser", createUser)
 
 // GET all users
 router.get("/users", getUsers);
 
+// GET find user by id
 router.get("/users/:id", getUser);
 
-router.post("/users", createUser);
+// UPDATE update user by id (firstname, lastname, password)
+router.put("/updateUser/:id", updateUser);
 
-router.put("/users/:id", updateUser);
-
-router.delete("/users/:id", deleteUser);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// DELETE delete user (only admins / admin_role)
+router.delete("/deleteUser/:id", deleteUser);
 
 
 

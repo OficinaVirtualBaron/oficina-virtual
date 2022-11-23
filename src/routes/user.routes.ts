@@ -11,7 +11,7 @@ import {
 const router = Router();
 
 
-// CRUD USERS
+// CRUD USERS FUNCIONAL
 // POST create user
 router.post("/createUser", createUser)
 
@@ -28,7 +28,7 @@ router.put("/updateUser/:id", updateUser);
 router.delete("/deleteUser/:id", deleteUser);
 
 
-
+// RUTAS DE TRAMITES
 // GET home
 router.get("/home", (req: Request, res: Response) => {
     res.json({msg: "Home Page"})

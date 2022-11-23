@@ -4,7 +4,7 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     CreateDateColumn,
-    UpdateDateColumn,
+    UpdateDateColumn
   } from "typeorm";
   
   @Entity()
@@ -23,6 +23,9 @@ import {
 
     @Column()
     email: string;
+
+    @Column()
+    cuil: number;
   
     @Column({ default: true })
     active: boolean;

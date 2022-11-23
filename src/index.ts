@@ -1,16 +1,16 @@
 import "reflect-metadata";
 import {AppDataSource} from "./db";
-import bcrypt from "bcrypt";
 import express from "express"
 import morgan from "morgan"
 import cors from "cors"
+
 import userRoutes from "./routes/user.routes";
 
 const app = express()
 
 // Middlewares
-app.use(morgan("dev"));
 app.use(cors());
+app.use(morgan("dev"));
 app.use(express.json());
 
 // Routes
@@ -26,6 +26,7 @@ async function main() {
         app.listen(3000);
         console.log("Server is listening on port", 3000);
     } catch (error) {
+        console.log("error aqui")
         console.log(error);
     }
 }

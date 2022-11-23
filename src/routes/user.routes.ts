@@ -1,23 +1,22 @@
 import {Router} from "express";
-import bcrypt from "bcrypt"
 import { Request, Response } from "express";
 import {
-    getUsers,
-    getUser,
     createUser,
+    getUser,
+    getUsers,
     updateUser,
     deleteUser,
-  } from "../controllers/user.controller"
+} from "../controllers/user.controller"
 
 const router = Router();
 
 // hash login (esto va en el post de logear user)
-//router.post("/createUser", createUser)
+
 
 // POST create user
 router.post("/createUser", createUser)
 
-
+// GET all users
 router.get("/users", getUsers);
 
 router.get("/users/:id", getUser);

@@ -1,6 +1,6 @@
 # oficina-virtual
 ```
-npm install for node modules
+npm install para modulos de node
 ```
 
 # Proyecto Oficina Virtual

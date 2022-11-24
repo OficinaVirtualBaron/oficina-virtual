@@ -5,6 +5,7 @@ import morgan from "morgan"
 import cors from "cors"
 
 import userRoutes from "./routes/user.routes";
+import categoriasRoutes from "./routes/categoriasTramites.routes";
 
 const app = express()
 
@@ -16,7 +17,8 @@ app.use(express.json());
 // Routes
 
 // User routes
-app.use(userRoutes)
+app.use(userRoutes);
+app.use(categoriasRoutes);
 
 // Starting the server
 async function main() {

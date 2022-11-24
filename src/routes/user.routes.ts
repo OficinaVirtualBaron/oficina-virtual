@@ -11,10 +11,10 @@ import {
 const router = Router();
 
 // CRUD USERS FUNCIONAL
-// POST create user
+// POST crear user
 router.post("/createUser", createUser)
 
-// GET all users
+// GET todos los users
 router.get("/users", getUsers);
 
 // GET find user by id

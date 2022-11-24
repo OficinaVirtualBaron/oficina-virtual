@@ -6,26 +6,17 @@ import {
     CreateDateColumn,
     UpdateDateColumn
 } from "typeorm";
-  
+
 @Entity()
-export class User extends BaseEntity {
+export class CategoriaTramite extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   
     @Column()
-    firstname: string;
+    title: string;
   
     @Column()
-    lastname: string;
-
-    @Column()
-    password: string;
-
-    @Column()
-    email: string;
-
-    @Column()
-    cuil: number;
+    description: string;
   
     @Column({ default: true })
     active: boolean;

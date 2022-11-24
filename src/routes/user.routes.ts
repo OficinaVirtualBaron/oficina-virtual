@@ -10,7 +10,6 @@ import {
 
 const router = Router();
 
-
 // CRUD USERS FUNCIONAL
 // POST create user
 router.post("/createUser", createUser)

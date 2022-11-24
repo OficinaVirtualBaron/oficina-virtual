@@ -3,6 +3,7 @@ import { User } from "../entities/User";
 import bcrypt from "bcrypt";
 const saltround = 10;
 
+// POST
 export const createUser =  async (req: Request, res: Response) => {
     try {
         const {firstname, lastname, email, password, cuil} = req.body;
@@ -23,6 +24,7 @@ export const createUser =  async (req: Request, res: Response) => {
     }
 }
 
+// GET
 export const getUsers = async(req: Request, res: Response) => {
     try {
         const users = await User.find()
@@ -34,6 +36,7 @@ export const getUsers = async(req: Request, res: Response) => {
     }
 }
 
+// GET 
 export const getUser = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -46,12 +49,20 @@ export const getUser = async(req: Request, res: Response) => {
     }
 }
 
+// PUT
 export const updateUser = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
+        const {firstname, lastname, email, password, cuil} = req.body;
+        const salt = bcrypt.genSaltSync();
         const user = await User.findOneBy({id: parseInt(req.params.id)});
         if (!user) return res.status(404).json({message: "El usuario no existe"});
-        await User.update({id: parseInt(id)}, req.body);
+        user.firstname = firstname;
+        user.lastname = lastname;
+        user.password = bcrypt.hashSync(password, salt); //Hashea el password
+        user.email = email;
+        user.cuil = cuil;
+        await user.save();
         return res.status(200).json("Datos actualizados correctamente");
     } catch (error) {
         if(error instanceof Error){
@@ -60,6 +71,7 @@ export const updateUser = async(req: Request, res: Response) => {
     }
 }
 
+// DELETE
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const {id} = req.params;

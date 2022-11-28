@@ -10,16 +10,14 @@ export const createUser =  async (req: Request, res: Response) => {
     try {
         const user = new User();
         const {firstname, lastname, email, password, cuil} = req.body;
-        const result = await createUserSchema.validateAsync(req.body);
+        const result = await createUserSchema.validateAsync(req.body);  // Valida los datos para crear el usuario
         user.firstname = firstname;
         user.lastname = lastname;
-        user.password = password;
+        user.password = bcrypt.hashSync(password, salt); //Hashea el password;
         user.email = email;
         user.cuil = cuil
-        console.log(result);
-
-        
         await user.save();
+        console.log(result);
         return res.json(user);
     } catch (error) {
         if (error instanceof Error){

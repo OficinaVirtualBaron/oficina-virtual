@@ -1,30 +1,34 @@
 import { Request, Response } from "express";
 import { User } from "../entities/User";
+import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 const saltround = 10;
 
-// POST
+// POST create user
 export const createUser =  async (req: Request, res: Response) => {
+    const salt = bcrypt.genSaltSync(); //Declara los saltos del hash
     try {
-        const {firstname, lastname, email, password, cuil} = req.body;
-        const salt = bcrypt.genSaltSync(); //Declara los saltos del hash
         const user = new User();
+        const {firstname, lastname, email, password, cuil} = req.body;
+        const result = await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
-        user.password = bcrypt.hashSync(password, salt); //Hashea el password
+        user.password = password;
         user.email = email;
-        user.cuil = cuil;
-    
+        user.cuil = cuil
+        console.log(result);
+
+        
         await user.save();
         return res.json(user);
     } catch (error) {
         if (error instanceof Error){
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({message: "Datos ingresados incorrectos. Por favor intente nuevamente"});
         }
     }
 }
 
-// GET
+// GET todos los users
 export const getUsers = async(req: Request, res: Response) => {
     try {
         const users = await User.find()
@@ -36,7 +40,7 @@ export const getUsers = async(req: Request, res: Response) => {
     }
 }
 
-// GET 
+// GET user por ID
 export const getUser = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -49,7 +53,7 @@ export const getUser = async(req: Request, res: Response) => {
     }
 }
 
-// PUT
+// PUT actualizar user
 export const updateUser = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -71,7 +75,7 @@ export const updateUser = async(req: Request, res: Response) => {
     }
 }
 
-// DELETE
+// DELETE borrar user por ID
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const {id} = req.params;

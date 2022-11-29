@@ -1,14 +1,17 @@
 import { Request, Response } from "express";
+import { SimpleConsoleLogger } from "typeorm";
 import { CategoriaTramite } from "../entities/CategoriaTramite";
+import { createCategoriaTramiteSchema } from "../validators/validators";
 
-// POST
+// POST - cuando se cree una se tiene que hacer todo en mayúsculas
 export const createCategoriaTramite = async (req: Request, res: Response) => {
     try {
         const {title, description} = req.body;
         const categoriaTramite = new CategoriaTramite();
+        const result = await createCategoriaTramiteSchema.validateAsync(req.body);
         categoriaTramite.title = title;
         categoriaTramite.description = description;
-
+        console.log(result);
         await categoriaTramite.save();
         return res.json(categoriaTramite);
     } catch (error) {
@@ -49,9 +52,10 @@ export const updateCategoria = async (req: Request, res: Response) => {
         const {title, description} = req.body;
         const categoriaTramite = await CategoriaTramite.findOneBy({id: parseInt(req.params.id)});
         if (!categoriaTramite) return res.status(404).json("Categoria no encontrada");
+        const result = await createCategoriaTramiteSchema.validateAsync(req.body);
         categoriaTramite.title = title;
         categoriaTramite.description = description;
-        console.log(title);
+        console.log(result);
         await categoriaTramite.save();
         return res.status(200).json("Datos de la categoria actualizados correctamente")
     } catch (error) {

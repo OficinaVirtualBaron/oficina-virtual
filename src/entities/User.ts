@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import {
     Entity,
     Column,
@@ -7,6 +8,14 @@ import {
     UpdateDateColumn
 } from "typeorm";
   
+export interface IUser extends Document {
+    firstname: string;
+    lastname: string;
+    password: string;
+    cuil: number;
+    validatePassword(password: string): Promise<boolean>;
+}
+
 @Entity()
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -24,7 +33,7 @@ export class User extends BaseEntity {
     @Column()
     email: string;
 
-    @Column()
+    @Column({unique: true})
     cuil: number;
   
     @Column({ default: true })
@@ -35,4 +44,4 @@ export class User extends BaseEntity {
   
     @UpdateDateColumn()
     updatedAt: Date;
-  }
+}

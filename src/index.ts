@@ -3,24 +3,20 @@ import {AppDataSource} from "./db";
 import express from "express"
 import morgan from "morgan"
 import cors from "cors"
-
 import userRoutes from "./routes/user.routes";
 import categoriasRoutes from "./routes/categoriasTramites.routes";
+const app = express();
 
-const app = express()
-
-// Middlewares
+// MIDDLEWARES
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
-// Routes
-
-// User routes
-app.use(userRoutes);
+// ROUTES
+app.use("/oficina", userRoutes);
 app.use(categoriasRoutes);
 
-// Starting the server
+// STARTING THE SERVER
 async function main() {
     try {
         await AppDataSource.initialize();

@@ -6,11 +6,15 @@ import {
     getUsers,
     updateUser,
     deleteUser,
+    signIn,
+    profile
 } from "../controllers/user.controller"
+import { getCategorias } from "../controllers/categoriaTramite.controllers";
+import { check } from "express-validator";
 
 const router = Router();
 
-// CRUD USERS FUNCIONAL
+// CRUD USERS
 // POST crear user
 router.post("/createUser", createUser)
 
@@ -26,19 +30,21 @@ router.put("/updateUser/:id", updateUser);
 // DELETE delete user (only admins / admin_role)
 router.delete("/deleteUser/:id", deleteUser);
 
+// POST login user
+router.post("/signin", signIn);
+
+// POST see my profile
+router.get("/profile", profile);
+
+
+
+
 
 // RUTAS DE TRAMITES
 // GET home
 router.get("/home", (req: Request, res: Response) => {
     res.json({msg: "Home Page"})
 });
-
-
-// POST
-router.get("/loginUser", (req: Request, res: Response) => {
-    res.json({msg: "Página de login o creación de usuario con CIDI"})
-});
-
 
 
 // GET inicio
@@ -49,9 +55,7 @@ router.get("/inicio", (req: Request, res: Response) => {
 
 
 // GET de todos los trámites donde el usuario selecciona el suyo
-router.get("/tramites", (req: Request, res: Response) => {
-    res.json({msg: "Todos los trámites se alojan aqui"})
-});
+router.get("/tramites", getCategorias);
 
 // POST categoria del trámite
 router.get("/tramites/transito", (req: Request, res: Response) => {

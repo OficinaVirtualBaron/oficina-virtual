@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import { User } from "./entities/User";
 import {CategoriaTramite} from "./entities/CategoriaTramite";
-const dotenv = require('dotenv');
+import dotenv from "dotenv";
 dotenv.config()
 
 export const AppDataSource = new DataSource ({

@@ -4,7 +4,6 @@ import { IUser } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt, { hash } from "bcrypt";
 import jwt from "jsonwebtoken";
-import { doesNotMatch } from "assert";
 const saltround = 10;
 
 // POST create user
@@ -100,13 +99,21 @@ export const signIn = async (req: Request, res: Response) => {
     const {cuil, password} = req.body;
     const salt = bcrypt.genSaltSync();
     const user = await User.findOne({where: {cuil: req.body.cuil}})
-    if (!user) return res.status(400).json("El usuario no existe");
+    if (!user) return res.status(400).json("El usuario es incorrecto. Intente nuevamente");
 
-    const validatePassword = await bcrypt.compare(password, req.body.password);
+    const validatePassword = await bcrypt.compare(password, user.password);
     if (!validatePassword) return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
-    res.send("login");
+
+    //create token
+    const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
+        expiresIn: 60 * 60 * 24
+    })
+
+    res.header("auth-token", token).json("Sesión iniciada");
 }
 
-export const profile = (req: Request, res: Response) => {
-    res.send("Profile");
+export const profile = async (req: Request, res: Response) => {
+    //const user = await User.findOneBy(req.userId); error aqui (descomentar)
+    //if (!user) return res.status(404).json("Usuario no encontrado");
+    //res.json(user);
 }

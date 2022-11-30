@@ -10,6 +10,7 @@ import {
     profile
 } from "../controllers/user.controller"
 import { getCategorias } from "../controllers/categoriaTramite.controllers";
+import { TokenValidator } from "../libs/validateToken";
 import { check } from "express-validator";
 
 const router = Router();
@@ -34,7 +35,7 @@ router.delete("/deleteUser/:id", deleteUser);
 router.post("/signin", signIn);
 
 // POST see my profile
-router.get("/profile", profile);
+router.get("/profile", TokenValidator, profile);
 
 
 

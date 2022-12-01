@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { number } from "joi";
 import {
     Entity,
     Column,
@@ -12,6 +13,7 @@ export interface IUser extends Document {
     firstname: string;
     lastname: string;
     password: string;
+    email: string;
     cuil: number;
     validatePassword(password: string): Promise<boolean>;
 }
@@ -30,14 +32,17 @@ export class User extends BaseEntity {
     @Column()
     password: string;
 
-    @Column()
+    @Column({unique: true})
     email: string;
 
-    @Column({unique: true})
+    @Column({type: "int", width: 200, unique: true})
     cuil: number;
   
-    @Column({ default: true })
+    @Column({default: true})
     active: boolean;
+
+    @Column({default: "USER_ROLE", enum: ["USER_ROLE", "MUNI_ROLE", "ADMIN_ROLE"]})
+    role: string;
   
     @CreateDateColumn()
     createdAt: Date;

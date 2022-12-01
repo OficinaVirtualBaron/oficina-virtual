@@ -6,94 +6,86 @@ import {
     getUsers,
     updateUser,
     deleteUser,
-    signIn,
-    profile
+    signIn
 } from "../controllers/user.controller"
 import { getCategorias } from "../controllers/categoriaTramite.controllers";
-import { TokenValidator } from "../libs/validateToken";
+import { TokenValidator } from "../middlewares/validateToken";
 import { check } from "express-validator";
+import { emailExist, cuilExist } from "../helpers/db.validator";
 
 const router = Router();
 
-// CRUD USERS
-// POST crear user
-router.post("/createUser", createUser)
 
-// GET todos los users
-router.get("/users", getUsers);
+// POST 
+router.post("/createUser",createUser);
 
-// GET find user by id
-router.get("/users/:id", getUser);
+// GET 
+router.get("/users", TokenValidator, getUsers);
 
-// UPDATE update user by id (firstname, lastname, password)
-router.put("/updateUser/:id", updateUser);
+// GET 
+router.get("/users/:id", TokenValidator, getUser);
 
-// DELETE delete user (only admins / admin_role)
-router.delete("/deleteUser/:id", deleteUser);
+// UPDATE 
+router.put("/updateUser/:id", TokenValidator, updateUser);
 
-// POST login user
+// DELETE 
+router.delete("/deleteUser/:id", TokenValidator, deleteUser);
+
+// POST 
 router.post("/signin", signIn);
-
-// POST see my profile
-router.get("/profile", TokenValidator, profile);
-
 
 
 
 
 // RUTAS DE TRAMITES
-// GET home
+// GET 
 router.get("/home", (req: Request, res: Response) => {
     res.json({msg: "Home Page"})
 });
 
 
-// GET inicio
+// GET 
 router.get("/inicio", (req: Request, res: Response) => {
     res.json({msg: "Página de inicio"})
 });
 
 
-
-// GET de todos los trámites donde el usuario selecciona el suyo
-router.get("/tramites", getCategorias);
-
-// POST categoria del trámite
+// POST 
 router.get("/tramites/transito", (req: Request, res: Response) => {
     res.json({msg: "Trámites del área de tránsito:"})
 });
-// POST entrar al trámite especificamente a hacerlo, con el id del tramite correspondiente
+// POST 
 router.get("/tramites/transito/:id", (req: Request, res: Response) => {
     res.json({msg: "Trámite para pago de multas"})
 });
 
-// POST categoria del tramite
+// POST 
 router.get("/tramites/rentas", (req: Request, res: Response) => {
     res.json({msg: "Trámites del área de rentas:"})
 });
-// POST entrar al trámite específicamente a hacerlo, con el id del tramite correspondiente
+// POST 
 router.get("/tramites/rentas/:id", (req: Request, res: Response) => {
     res.json({msg: "Trámite para consultar deudas"})
 });
 
 
 
-//GET mis trámites
+//GET 
 router.get("/misTramites", (req: Request, res: Response) => {
     res.json({msg: "Todos mis trámites:"})
 })
-//GET mi trámite por ID
+//GET 
 router.get("/misTramites/:id", (req: Request, res: Response) => {
     res.json({msg: "Trámite N° {id}: "})
 })
 
 
 
-//GET comunicaciones
+//GET 
 router.get("/misComunicaciones", (req: Request, res: Response) => {
     res.json({msg: "Mis comunicaciones:"})
 })
-//GET comunicación por ID
+//GET 
 router.get("/misComunicaciones/:id", (req: Request, res: Response) => {
     res.json({msg: "Comunicación N° {id}:"})
 })

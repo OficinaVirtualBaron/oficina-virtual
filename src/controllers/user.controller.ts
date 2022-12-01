@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "../entities/User";
 import { IUser } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
@@ -6,23 +6,20 @@ import bcrypt, { hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 const saltround = 10;
 
-// POST create user
+// POST 
 export const createUser =  async (req: Request, res: Response) => {
-    const salt = bcrypt.genSaltSync(); //Declara los saltos del hash
+    const salt = bcrypt.genSaltSync();
     try {
-        //crete user
         const {firstname, lastname, email, password, cuil} = req.body;
         const user = new User();
-        const result = await createUserSchema.validateAsync(req.body);  // Valida los datos requeridos para crear el usuario
+        const result = await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
-        user.password = bcrypt.hashSync(password, salt); //Hashea el password;
+        user.password = bcrypt.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
         //console.log(result);
-
         const savedUser = await user.save();
-        //token
         const token: string = jwt.sign({id: savedUser.id}, process.env.SECRET_TOKEN_KEY || "tokentest");
         res.header("auth-header", token).json(savedUser);
     } catch (error) {
@@ -32,7 +29,7 @@ export const createUser =  async (req: Request, res: Response) => {
     }
 }
 
-// GET todos los users
+// GET 
 export const getUsers = async(req: Request, res: Response) => {
     try {
         const users = await User.find()
@@ -44,7 +41,7 @@ export const getUsers = async(req: Request, res: Response) => {
     }
 }
 
-// GET user por ID
+// GET 
 export const getUser = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -57,7 +54,7 @@ export const getUser = async(req: Request, res: Response) => {
     }
 }
 
-// PUT actualizar user
+// PUT 
 export const updateUser = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -78,7 +75,7 @@ export const updateUser = async(req: Request, res: Response) => {
     }
 }
 
-// DELETE borrar user por ID
+// DELETE 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const {id} = req.params;
@@ -94,26 +91,21 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 }
 
-// POST login en la página
+// POST
 export const signIn = async (req: Request, res: Response) => {
-    const {cuil, password} = req.body;
+    const {cuil, password, role} = req.body;
     const salt = bcrypt.genSaltSync();
     const user = await User.findOne({where: {cuil: req.body.cuil}})
-    if (!user) return res.status(400).json("El usuario es incorrecto. Intente nuevamente");
-
+    if (!user) {
+        return res.status(400).json("El usuario es incorrecto. Intente nuevamente");
+    }
     const validatePassword = await bcrypt.compare(password, user.password);
-    if (!validatePassword) return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
-
-    //create token
+    if (!validatePassword) {
+        return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
+    }
     const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
         expiresIn: 60 * 60 * 24
     })
 
-    res.header("auth-token", token).json("Sesión iniciada");
-}
-
-export const profile = async (req: Request, res: Response) => {
-    //const user = await User.findOneBy(req.userId); error aqui (descomentar)
-    //if (!user) return res.status(404).json("Usuario no encontrado");
-    //res.json(user);
+    res.header("auth-header", token).json("Sesión iniciada");
 }

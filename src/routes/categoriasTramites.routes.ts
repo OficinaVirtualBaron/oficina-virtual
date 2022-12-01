@@ -7,23 +7,24 @@ import {
     updateCategoria,
     deleteCategoria,
 } from "../controllers/categoriaTramite.controllers"
+import { TokenValidator } from "../middlewares/validateToken";
 
 const router = Router();
 
 // CRUD CATEGORIAS DE TRAMITES
-// POST crear solamente la categoria de tramites (ej: transito, rentas, etc)
+// POST
 router.post("/createCategoriaTramite", createCategoriaTramite);
 
-// GET todas las categorias que hay en la DB
-router.get("/getCategorias", getCategorias);
+// GET
+router.get("/getCategorias", TokenValidator, getCategorias);
 
-// GET buscar la categoria por su ID
-router.get("/getCategoria/:id", getCategoria);
+// GET
+router.get("/getCategoria/:id", TokenValidator, getCategoria);
 
-// UPDATE actualizar titulo y/o descripcion de una categoria
+// UPDATE
 router.put("/updateCategoria/:id", updateCategoria);
 
-// DELETE borrar categoria por su ID
+// DELETE
 router.delete("/deleteCategoria/:id", deleteCategoria);
 
 export default router;

@@ -7,8 +7,7 @@ import {
     updateUser,
     deleteUser,
     signIn
-} from "../controllers/user.controller"
-import { getCategorias } from "../controllers/categoriaTramite.controllers";
+} from "../controllers/user.controller";
 import { TokenValidator } from "../middlewares/validateToken";
 import { check } from "express-validator";
 import { emailExist, cuilExist } from "../helpers/db.validator";

@@ -1,5 +1,3 @@
-import bcrypt from "bcrypt";
-import { number } from "joi";
 import {
     Entity,
     Column,
@@ -35,13 +33,13 @@ export class User extends BaseEntity {
     @Column({unique: true})
     email: string;
 
-    @Column({type: "int", width: 200, unique: true})
+    @Column({unique: true})
     cuil: number;
-  
+
     @Column({default: true})
     active: boolean;
 
-    @Column({default: "USER_ROLE", enum: ["USER_ROLE", "MUNI_ROLE", "ADMIN_ROLE"]})
+    @Column({default: "USER_ROLE"})
     role: string;
   
     @CreateDateColumn()

@@ -24,7 +24,7 @@ async function main() {
         app.listen(3000);
         console.log("Server is listening on port", 3000);
     } catch (error) {
-        console.log("error aqui")
+        console.log("ERROR AQUI");
         console.log(error);
     }
 }

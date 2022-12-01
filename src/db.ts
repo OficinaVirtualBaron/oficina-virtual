@@ -10,7 +10,7 @@ export const AppDataSource = new DataSource ({
     username: "root",
     password: process.env.MYSQL_PASSW,
     port: 3306,
-    database: "users-database",
+    database: "database-oficina",
     entities: [User, CategoriaTramite],
     logging: true,
     synchronize: true

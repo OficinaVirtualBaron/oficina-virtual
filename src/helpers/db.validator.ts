@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { FindOneOptions } from "typeorm";
 import { User } from "../entities/User";
 
+
 export const cuilExist = async(req: Request, res: Response, cuil: FindOneOptions<User>) => {
     const existeCuil = await User.findOne(cuil);
     if (existeCuil) {

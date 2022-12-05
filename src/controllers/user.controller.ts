@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 const saltround = 10;
 
 // POST 
-export const createUser =  async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
         const {firstname, lastname, email, password, cuil} = req.body;
@@ -44,7 +44,7 @@ export const getUsers = async(req: Request, res: Response) => {
 // GET 
 export const getUser = async(req: Request, res: Response) => {
     try {
-        const {id} = req.params;
+        const { id } = req.params;
         const user = await User.findBy({id: parseInt(req.params.id)})
         return res.json(user);
     } catch (error) {
@@ -81,7 +81,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         const {id} = req.params;
         const result = await User.delete({id: parseInt(id)});
         if(result.affected === 0){
-            return res.status(404).json({message: "Usuario no encontrado"});
+            return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
         }
         return res.status(200).json("Usuario borrado de la DB correctamente");
     } catch (error) {
@@ -93,19 +93,24 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 // POST
 export const signIn = async (req: Request, res: Response) => {
-    const {cuil, password, role} = req.body;
-    const salt = bcrypt.genSaltSync();
-    const user = await User.findOne({where: {cuil: req.body.cuil}})
-    if (!user) {
-        return res.status(400).json("El usuario es incorrecto. Intente nuevamente");
+    try {
+        const {cuil, password, role} = req.body;
+        const salt = bcrypt.genSaltSync();
+        const user = await User.findOne({where: {cuil: req.body.cuil}})
+        if (!user) {
+            return res.status(400).json("El usuario es incorrecto. Intente nuevamente");
+        }
+        const validatePassword = await bcrypt.compare(password, user.password);
+        if (!validatePassword) {
+            return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
+        }
+        const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
+            expiresIn: "2h"
+        })
+        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido ${user.firstname} ${user.lastname}`);
+    } catch (error) {
+        if (error instanceof Error){
+            return res.status(500).json({message: error.message})
+        }
     }
-    const validatePassword = await bcrypt.compare(password, user.password);
-    if (!validatePassword) {
-        return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
-    }
-    const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
-        expiresIn: 60 * 60 * 24
-    })
-
-    res.header("auth-header", token).json("Sesión iniciada");
 }

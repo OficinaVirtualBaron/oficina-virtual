@@ -5,6 +5,7 @@ import morgan from "morgan"
 import cors from "cors"
 import userRoutes from "./routes/user.routes";
 import categoriasRoutes from "./routes/categoriasTramites.routes";
+import muniRoutes from "./routes/muni.routes";
 const app = express();
 
 // MIDDLEWARES
@@ -15,6 +16,7 @@ app.use(express.json());
 // ROUTES
 app.use("/oficina", userRoutes);
 app.use(categoriasRoutes);
+app.use("/municipales", muniRoutes);
 
 // STARTING THE SERVER
 async function main() {

@@ -9,14 +9,12 @@ import {
     signIn
 } from "../controllers/user.controller";
 import { TokenValidator } from "../middlewares/validateToken";
-import { check } from "express-validator";
-import { emailExist, cuilExist } from "../helpers/db.validator";
+import { isAdminRole } from "../middlewares/validateAdminRole"
 
 const router = Router();
 
-
 // POST 
-router.post("/createUser",createUser);
+router.post("/createUser", createUser);
 
 // GET 
 router.get("/users", TokenValidator, getUsers);

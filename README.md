@@ -1,4 +1,4 @@
-# oficina-virtual
+# OFICINA VIRTUAL
 ```
 npm install para modulos de node
 ```

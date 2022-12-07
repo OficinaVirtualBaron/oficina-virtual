@@ -1,20 +1,15 @@
 import {Router} from "express";
 import { Request, Response } from "express";
 import {
-    createUser,
     getUser,
     getUsers,
     updateUser,
-    deleteUser,
-    signIn
+    deleteUser
 } from "../controllers/user.controller";
 import { TokenValidator } from "../middlewares/validateToken";
-import { isAdminRole } from "../middlewares/validateAdminRole"
+//import { isAdminRole } from "../middlewares/validateAdminRole"
 
 const router = Router();
-
-// POST 
-router.post("/createUser", createUser);
 
 // GET 
 router.get("/users", TokenValidator, getUsers);
@@ -28,8 +23,7 @@ router.put("/updateUser/:id", TokenValidator, updateUser);
 // DELETE 
 router.delete("/deleteUser/:id", TokenValidator, deleteUser);
 
-// POST 
-router.post("/signin", signIn);
+
 
 
 

@@ -104,7 +104,7 @@ export const signInMuni = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "24h"
         })
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido ${user.firstname} ${user.lastname}`)
+        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido municipal ${user.firstname} ${user.lastname}`)
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

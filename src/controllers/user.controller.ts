@@ -4,13 +4,14 @@ import { IUser } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt, { hash } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { tokenSign } from "../helpers/generateToken";
 const saltround = 10;
 
 // POST 
 export const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
-        const {firstname, lastname, email, password, cuil} = req.body;
+        const {firstname, lastname, email, password, cuil, role} = req.body;
         const user = new User();
         const result = await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -20,8 +21,9 @@ export const createUser = async (req: Request, res: Response) => {
         user.cuil = cuil;
         //console.log(result);
         const savedUser = await user.save();
-        const token: string = jwt.sign({id: savedUser.id}, process.env.SECRET_TOKEN_KEY || "tokentest");
-        res.header("auth-header", token).json(savedUser);
+        //const token: string = jwt.sign({id: savedUser.id, role: savedUser.role}, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const tokenSession = await tokenSign(savedUser);
+        res.header("auth-header", tokenSession).json(savedUser);
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message});
@@ -107,7 +109,7 @@ export const signIn = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "2h"
         })
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido ${user.firstname} ${user.lastname}`);
+        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido vecino ${user.firstname} ${user.lastname}`);
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message})

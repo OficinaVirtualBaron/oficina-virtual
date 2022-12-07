@@ -11,7 +11,7 @@ const saltround = 10;
 export const createMuni = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
-        const { firstname, lastname, email, password, cuil } = req.body;
+        const { firstname, lastname, email, password, cuil, area } = req.body;
         const user = new UserMuni();
         const result = await createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -19,6 +19,7 @@ export const createMuni = async (req: Request, res: Response) => {
         user.password = bcrypt.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
+        user.area = area;
         //console.log(result);
         const savedMuni = await user.save();
         const token: string = jwt.sign({id: savedMuni.id}, process.env.SECRET_TOKEN_KEY || "tokentest")

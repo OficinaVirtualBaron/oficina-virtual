@@ -5,8 +5,7 @@ import {
     getMuni,
     getMunis,
     updateMuni,
-    deleteMuni,
-    signInMuni
+    deleteMuni
 } from "../controllers/muni.controllers";
 import { TokenValidator } from "../middlewares/validateToken";
 
@@ -26,8 +25,5 @@ router.put("/updateMuni/:id", TokenValidator, updateMuni);
 
 // DELETE
 router.delete("/deleteMuni/:id", TokenValidator, deleteMuni);
-
-// POST
-router.post("/signinMunicipales", signInMuni);
 
 export default router;

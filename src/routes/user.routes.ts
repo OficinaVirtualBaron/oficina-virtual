@@ -8,11 +8,12 @@ import {
 } from "../controllers/user.controller";
 import { TokenValidator } from "../middlewares/validateToken";
 //import { isAdminRole } from "../middlewares/validateAdminRole"
+import { validateRole } from "../middlewares/validateRole";
 
 const router = Router();
 
 // GET 
-router.get("/users", TokenValidator, getUsers);
+router.get("/users", TokenValidator, validateRole, getUsers);
 
 // GET 
 router.get("/users/:id", TokenValidator, getUser);

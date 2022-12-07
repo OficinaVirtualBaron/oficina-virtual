@@ -31,6 +31,7 @@ export const createMuniSchema = Joi.object({
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     email: Joi.string().email().required(),
     cuil: Joi.number().integer().required(),
+    area: Joi.string().required(),
 })
 
 export const updateMuniSchema = Joi.object({
@@ -38,4 +39,5 @@ export const updateMuniSchema = Joi.object({
     lastname: Joi.string().min(3).max(30),
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).max(30),
     email: Joi.string(),
+    area: Joi.string().required(),
 })

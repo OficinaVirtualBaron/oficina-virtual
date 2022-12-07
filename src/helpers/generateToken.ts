@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
+import { validateRole } from "../middlewares/validateRole";
 
 export const tokenSign = async (user: { id: any; role: any; }) => {
     return jwt.sign(
@@ -14,12 +14,12 @@ export const tokenSign = async (user: { id: any; role: any; }) => {
     );
 }
 
-export const verifyToken = async (req: Request, res: Response, token: any) => {
+export const verifyToken = async (token: any) => {
     try {
         return jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest")
     } catch (error) {
         if (error instanceof Error) {
-            return res.json("Token no válido")
+            return null;
         }
     }
 }

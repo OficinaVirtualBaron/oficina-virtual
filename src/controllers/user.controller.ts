@@ -20,8 +20,8 @@ export const createUser = async (req: Request, res: Response) => {
         user.email = email;
         user.cuil = cuil;
         //console.log(result);
-        const savedUser = await user.save();
         //const token: string = jwt.sign({id: savedUser.id, role: savedUser.role}, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const savedUser = await user.save();
         const tokenSession = await tokenSign(savedUser);
         res.header("auth-header", tokenSession).json(savedUser);
     } catch (error) {

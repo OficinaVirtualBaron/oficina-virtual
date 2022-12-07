@@ -1,4 +1,4 @@
 import * as validateToken from "./validateToken";
-import * as validateAdminRole from "./validateAdminRole";
+import * as validateRole from "./validateRole";
 
-export {validateToken, validateAdminRole};
+export {validateToken, validateRole};

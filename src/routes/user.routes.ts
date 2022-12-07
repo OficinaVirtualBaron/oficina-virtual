@@ -13,7 +13,7 @@ import { validateRole } from "../middlewares/validateRole";
 const router = Router();
 
 // GET 
-router.get("/users", TokenValidator, validateRole, getUsers);
+router.get("/users", TokenValidator, getUsers);
 
 // GET 
 router.get("/users/:id", TokenValidator, getUser);

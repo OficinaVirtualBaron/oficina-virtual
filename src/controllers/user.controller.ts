@@ -11,7 +11,7 @@ const saltround = 10;
 export const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
-        const {firstname, lastname, email, password, cuil, role} = req.body;
+        const {firstname, lastname, email, password, cuil, adress} = req.body;
         const user = new User();
         const result = await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -19,6 +19,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.password = bcrypt.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
+        user.adress = adress;
         //console.log(result);
         //const token: string = jwt.sign({id: savedUser.id, role: savedUser.role}, process.env.SECRET_TOKEN_KEY || "tokentest");
         const savedUser = await user.save();

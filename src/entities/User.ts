@@ -36,6 +36,9 @@ export class User extends BaseEntity {
     @Column({unique: true})
     cuil: number;
 
+    @Column()
+    adress: string;
+
     @Column({default: true})
     active: boolean;
 

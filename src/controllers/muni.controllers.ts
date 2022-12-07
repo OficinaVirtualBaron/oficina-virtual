@@ -5,6 +5,7 @@ import { createMuniSchema, updateMuniSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserMuni } from "../entities/Muni";
+import { tokenSign } from "../helpers/generateToken";
 const saltround = 10;
 
 // POST
@@ -22,8 +23,8 @@ export const createMuni = async (req: Request, res: Response) => {
         user.area = area;
         //console.log(result);
         const savedMuni = await user.save();
-        const token: string = jwt.sign({id: savedMuni.id}, process.env.SECRET_TOKEN_KEY || "tokentest")
-        res.header("auth-header", token).json(savedMuni);
+        const tokenSession = await tokenSign(savedMuni);
+        res.header("auth-header", tokenSession).json(savedMuni);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -102,7 +103,7 @@ export const signInMuni = async (req: Request, res: Response) => {
         if (!validatePassword) {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
-        const token = jwt.sign({id: user.id}, process.env.SECRET_TOKEN_KEY || "tokentest", {
+        const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "24h"
         })
         res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido municipal ${user.firstname} ${user.lastname}`)

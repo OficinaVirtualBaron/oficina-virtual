@@ -20,8 +20,6 @@ export const createUser = async (req: Request, res: Response) => {
         user.email = email;
         user.cuil = cuil;
         user.adress = adress;
-        //console.log(result);
-        //const token: string = jwt.sign({id: savedUser.id, role: savedUser.role}, process.env.SECRET_TOKEN_KEY || "tokentest");
         const savedUser = await user.save();
         const tokenSession = await tokenSign(savedUser);
         res.header("auth-header", tokenSession).json(savedUser);
@@ -68,7 +66,7 @@ export const updateUser = async(req: Request, res: Response) => {
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
-        //console.log(result);
+
         await user.save();
         return res.status(200).json("Datos del usuario actualizados correctamente");
     } catch (error) {

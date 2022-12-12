@@ -10,7 +10,6 @@ import { TokenValidator } from "../middlewares/validateToken";
 
 const router = Router();
 
-// CRUD CATEGORIAS DE TRAMITES
 // POST
 router.post("/createCategoriaTramite", createCategoriaTramite);
 

@@ -81,7 +81,7 @@ export const deleteMuni = async (req: Request, res: Response) => {
         const { id } = req.params;
         const result = await UserMuni.delete({id: parseInt(id)});
         if (result.affected === 0){
-            return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
+            return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
         return res.status(200).json("Usuario borrado de la DB correctamente")
     } catch (error) {
@@ -97,7 +97,7 @@ export const signInMuni = async (req: Request, res: Response) => {
         const salt = bcrypt.genSaltSync();
         const user = await UserMuni.findOne({where: {cuil: req.body.cuil}});
         if (!user) {
-            return res.status(400).json("El usuario es incorrecto o no existe. Intente nuevamente");
+            return res.status(400).json("El usuario municipal es incorrecto o no existe. Intente nuevamente");
         }
         const validatePassword = await bcrypt.compare(password, user.password);
         if (!validatePassword) {

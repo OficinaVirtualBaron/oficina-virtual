@@ -34,7 +34,7 @@ export class User extends BaseEntity {
     email: string;
 
     @Column({unique: true})
-    cuil: number;
+    cuil: string;
 
     @Column()
     adress: string;

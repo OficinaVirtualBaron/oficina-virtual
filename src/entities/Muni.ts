@@ -24,8 +24,8 @@ export class UserMuni extends BaseEntity {
     @Column({unique: true})
     email: string;
 
-    @Column({unique: true})
-    cuil: number;
+    @Column({unique: true, length: 20})
+    cuil: string;
 
     @Column({default: true})
     active: boolean;

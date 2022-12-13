@@ -109,6 +109,7 @@ export const signIn = async (req: Request, res: Response) => {
             expiresIn: "2h"
         })
         res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido vecino ${user.firstname} ${user.lastname}`);
+        console.log(user);
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message})

@@ -6,7 +6,7 @@ import {
     updateCategoria,
     deleteCategoria,
 } from "../controllers/categoriaTramite.controllers"
-import { TokenValidator } from "../middlewares/validateToken";
+import { TokenAndRoleValidatorMuni } from "../middlewares/TokenAndRoleValidatorMuni";
 
 const router = Router();
 
@@ -14,13 +14,13 @@ const router = Router();
 router.post("/createCategoriaTramite", createCategoriaTramite);
 
 // GET
-router.get("/getCategorias", TokenValidator, getCategorias);
+router.get("/getCategorias", TokenAndRoleValidatorMuni, getCategorias);
 
 // GET
-router.get("/getCategoria/:id", TokenValidator, getCategoria);
+router.get("/getCategoria/:id", TokenAndRoleValidatorMuni, getCategoria);
 
 // UPDATE
-router.put("/updateCategoria/:id", updateCategoria);
+router.put("/updateCategoria/:id", TokenAndRoleValidatorMuni, updateCategoria);
 
 // DELETE
 router.delete("/deleteCategoria/:id", deleteCategoria);

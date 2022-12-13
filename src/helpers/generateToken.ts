@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { validateRole } from "../middlewares/validateRole";
 
 export const tokenSign = async (user: { id: any; role: any; }) => {
     return jwt.sign(

@@ -3,3 +3,9 @@ declare namespace Express {
         userId: string;
     }
 }
+
+declare namespace Express {
+    export interface Request {
+        userRole: string;
+    }
+}

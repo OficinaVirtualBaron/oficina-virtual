@@ -6,23 +6,22 @@ import {
     updateUser,
     deleteUser
 } from "../controllers/user.controller";
-import { TokenValidator } from "../middlewares/validateToken";
+import { TokenAndRoleValidator } from "../middlewares/validateTokenAndRole";
 //import { isAdminRole } from "../middlewares/validateAdminRole"
-import { validateRole } from "../middlewares/validateRole";
 
 const router = Router();
 
 // GET 
-router.get("/users", TokenValidator, getUsers);
+router.get("/users", TokenAndRoleValidator, getUsers);
 
 // GET 
-router.get("/users/:id", TokenValidator, getUser);
+router.get("/users/:id", TokenAndRoleValidator, getUser);
 
 // UPDATE 
-router.put("/updateUser/:id", TokenValidator, updateUser);
+router.put("/updateUser/:id", TokenAndRoleValidator, updateUser);
 
 // DELETE 
-router.delete("/deleteUser/:id", TokenValidator, deleteUser);
+router.delete("/deleteUser/:id", TokenAndRoleValidator, deleteUser);
 
 
 

@@ -7,7 +7,7 @@ import {
     updateMuni,
     deleteMuni
 } from "../controllers/muni.controllers";
-import { TokenValidator } from "../middlewares/validateToken";
+import { TokenAndRoleValidatorMuni } from "../middlewares/TokenAndRoleValidatorMuni";
 
 const router = Router();
 
@@ -15,15 +15,15 @@ const router = Router();
 router.post("/createMuniUser", createMuni);
 
 // GET
-router.get("/munis", TokenValidator, getMunis);
+router.get("/munis", TokenAndRoleValidatorMuni, getMunis);
 
 // GET
-router.get("/munis/:id", TokenValidator, getMuni);
+router.get("/munis/:id", TokenAndRoleValidatorMuni, getMuni);
 
 // UPDATE
-router.put("/updateMuni/:id", TokenValidator, updateMuni);
+router.put("/updateMuni/:id", TokenAndRoleValidatorMuni, updateMuni);
 
 // DELETE
-router.delete("/deleteMuni/:id", TokenValidator, deleteMuni);
+router.delete("/deleteMuni/:id", TokenAndRoleValidatorMuni, deleteMuni);
 
 export default router;

@@ -4,8 +4,11 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    JoinColumn,
+    ManyToOne
 } from "typeorm";
+import { User } from "./User";
 
 @Entity()
 export class Tramite extends BaseEntity {

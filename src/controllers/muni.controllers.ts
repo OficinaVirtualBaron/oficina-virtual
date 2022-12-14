@@ -1,6 +1,4 @@
-import { NextFunction, Request, Response } from "express";
-import { User } from "../entities/User";
-import { IUser } from "../entities/User";
+import { Request, Response } from "express";
 import { createMuniSchema, updateMuniSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

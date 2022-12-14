@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { SimpleConsoleLogger } from "typeorm";
 import { CategoriaTramite } from "../entities/CategoriaTramite";
 import { createCategoriaTramiteSchema } from "../validators/validators";
 

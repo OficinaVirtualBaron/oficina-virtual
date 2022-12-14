@@ -1,8 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { User } from "../entities/User";
-import { IUser } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { tokenSign } from "../helpers/generateToken";
 const saltround = 10;

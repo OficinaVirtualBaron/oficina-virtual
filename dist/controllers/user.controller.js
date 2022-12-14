@@ -32,8 +32,6 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.email = email;
         user.cuil = cuil;
         user.adress = adress;
-        //console.log(result);
-        //const token: string = jwt.sign({id: savedUser.id, role: savedUser.role}, process.env.SECRET_TOKEN_KEY || "tokentest");
         const savedUser = yield user.save();
         const tokenSession = yield (0, generateToken_1.tokenSign)(savedUser);
         res.header("auth-header", tokenSession).json(savedUser);
@@ -84,7 +82,6 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
-        //console.log(result);
         yield user.save();
         return res.status(200).json("Datos del usuario actualizados correctamente");
     }
@@ -129,6 +126,7 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             expiresIn: "2h"
         });
         res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido vecino ${user.firstname} ${user.lastname}`);
+        console.log(user);
     }
     catch (error) {
         if (error instanceof Error) {

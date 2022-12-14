@@ -25,6 +25,6 @@ router.get("/munis/:id", isMuniRole, getMuni);
 router.put("/updateMuni/:id", isMuniRole, updateMuni);
 
 // DELETE
-router.delete("/deleteMuni/:id", isMuniRole, deleteMuni);
+router.delete("/deleteMuni/:id", isAdminRole, deleteMuni);
 
 export default router;

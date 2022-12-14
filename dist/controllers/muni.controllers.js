@@ -97,7 +97,7 @@ const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.params;
         const result = yield Muni_1.UserMuni.delete({ id: parseInt(id) });
         if (result.affected === 0) {
-            return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
+            return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
         return res.status(200).json("Usuario borrado de la DB correctamente");
     }
@@ -114,7 +114,7 @@ const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const salt = bcrypt_1.default.genSaltSync();
         const user = yield Muni_1.UserMuni.findOne({ where: { cuil: req.body.cuil } });
         if (!user) {
-            return res.status(400).json("El usuario es incorrecto o no existe. Intente nuevamente");
+            return res.status(400).json("El usuario municipal es incorrecto o no existe. Intente nuevamente");
         }
         const validatePassword = yield bcrypt_1.default.compare(password, user.password);
         if (!validatePassword) {

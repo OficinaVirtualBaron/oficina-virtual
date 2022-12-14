@@ -6,6 +6,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn
 } from "typeorm";
+import { Tramite } from "./Tramite";
   
 export interface IUser extends Document {
     firstname: string;
@@ -44,7 +45,7 @@ export class User extends BaseEntity {
 
     @Column({default: "USER_ROLE"})
     role: string;
-  
+
     @CreateDateColumn()
     createdAt: Date;
   

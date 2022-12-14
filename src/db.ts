@@ -3,7 +3,8 @@ import { User } from "./entities/User";
 import {CategoriaTramite} from "./entities/CategoriaTramite";
 import dotenv from "dotenv";
 import { UserMuni } from "./entities/Muni";
-dotenv.config()
+import { Tramite } from "./entities/Tramite";
+dotenv.config();
 
 export const AppDataSource = new DataSource ({
     type: "mysql",
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource ({
     password: process.env.MYSQL_PASSW,
     port: 3306,
     database: "database-oficina",
-    entities: [User, CategoriaTramite, UserMuni],
+    entities: [User, CategoriaTramite, UserMuni, Tramite],
     logging: true,
     synchronize: true
 }) 

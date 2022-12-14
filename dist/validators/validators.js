@@ -10,8 +10,8 @@ exports.createUserSchema = joi_1.default.object({
     lastname: joi_1.default.string().min(3).max(30).required(),
     password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     email: joi_1.default.string().email().required(),
-    cuil: joi_1.default.number().integer().required(),
-    adress: joi_1.default.string().min(3).max(30).required()
+    cuil: joi_1.default.string().min(10).max(12).required(),
+    adress: joi_1.default.string().min(3).max(30).required(),
 });
 exports.updateUserSchema = joi_1.default.object({
     firstname: joi_1.default.string().min(3).max(30),
@@ -32,7 +32,7 @@ exports.createMuniSchema = joi_1.default.object({
     lastname: joi_1.default.string().min(3).max(30).required(),
     password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     email: joi_1.default.string().email().required(),
-    cuil: joi_1.default.number().integer().required(),
+    cuil: joi_1.default.string().min(10).max(12).required(),
     area: joi_1.default.string().required(),
 });
 exports.updateMuniSchema = joi_1.default.object({

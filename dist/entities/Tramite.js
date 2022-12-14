@@ -9,55 +9,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserMuni = void 0;
+exports.Tramite = void 0;
 const typeorm_1 = require("typeorm");
-let UserMuni = class UserMuni extends typeorm_1.BaseEntity {
+const User_1 = require("./User");
+let Tramite = class Tramite extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], UserMuni.prototype, "id", void 0);
+], Tramite.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ length: 30, default: "Título trámite" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "firstname", void 0);
+], Tramite.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ length: 250, default: "Descripción trámite" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "lastname", void 0);
+], Tramite.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: "Primer pregunta aquí" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "password", void 0);
+], Tramite.prototype, "firstQuestion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, typeorm_1.Column)({ default: "Segunda pregunta aquí" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "email", void 0);
+], Tramite.prototype, "secondQuestion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true, length: 20 }),
+    (0, typeorm_1.Column)({ default: "Tercera pregunta aquí" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "cuil", void 0);
+], Tramite.prototype, "thirdQuestion", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: true }),
-    __metadata("design:type", Boolean)
-], UserMuni.prototype, "active", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ default: "MUNI_ROLE" }),
+    (0, typeorm_1.Column)({ default: "Cuarta pregunta aquí" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "role", void 0);
+], Tramite.prototype, "quarterQuestion", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: "Quinta pregunta aquí" }),
     __metadata("design:type", String)
-], UserMuni.prototype, "area", void 0);
+], Tramite.prototype, "fifthQuestion", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], UserMuni.prototype, "createdAt", void 0);
+], Tramite.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], UserMuni.prototype, "updateAt", void 0);
-UserMuni = __decorate([
+], Tramite.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.tramites),
+    __metadata("design:type", User_1.User)
+], Tramite.prototype, "user", void 0);
+Tramite = __decorate([
     (0, typeorm_1.Entity)()
-], UserMuni);
-exports.UserMuni = UserMuni;
+], Tramite);
+exports.Tramite = Tramite;

@@ -1,4 +1,5 @@
-import * as validateToken from "./validateTokenAndRole";
-import * as validateRole from "./validateRole";
+import * as isUserRole from "./validateUser";
+import * as isMuniRole from "./validateMuni";
+import * as isAdminRole from "./validateAdmin"
 
-export {validateToken, validateRole};
+export {isUserRole, isMuniRole, isAdminRole};

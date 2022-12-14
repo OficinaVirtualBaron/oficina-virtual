@@ -7,23 +7,24 @@ import {
     updateMuni,
     deleteMuni
 } from "../controllers/muni.controllers";
-import { TokenAndRoleValidatorMuni } from "../middlewares/TokenAndRoleValidatorMuni";
+import { isAdminRole } from "../middlewares/validateAdmin";
+import { isMuniRole } from "../middlewares/validateMuni";
 
 const router = Router();
 
 // POST 
-router.post("/createMuniUser", createMuni);
+router.post("/createMuniUser", isAdminRole, createMuni);
 
 // GET
-router.get("/munis", TokenAndRoleValidatorMuni, getMunis);
+router.get("/munis", isMuniRole, getMunis);
 
 // GET
-router.get("/munis/:id", TokenAndRoleValidatorMuni, getMuni);
+router.get("/munis/:id", isMuniRole, getMuni);
 
 // UPDATE
-router.put("/updateMuni/:id", TokenAndRoleValidatorMuni, updateMuni);
+router.put("/updateMuni/:id", isMuniRole, updateMuni);
 
 // DELETE
-router.delete("/deleteMuni/:id", TokenAndRoleValidatorMuni, deleteMuni);
+router.delete("/deleteMuni/:id", isMuniRole, deleteMuni);
 
 export default router;

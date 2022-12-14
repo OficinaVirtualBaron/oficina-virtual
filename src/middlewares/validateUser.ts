@@ -8,7 +8,7 @@ export interface IPayload {
     exp: number;
 }
 
-export const TokenAndRoleValidator = (req: Request, res: Response, next: NextFunction) => {
+export const isUserRole = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header("auth-header");
     try {
         if (!token) return res.status(401).json("No hay token en la petición. Acceso denegado");
@@ -18,7 +18,7 @@ export const TokenAndRoleValidator = (req: Request, res: Response, next: NextFun
         if (req.userRole == "USER_ROLE"){
             next();
         } else {
-            res.status(401).json("Rol no válido")
+            res.status(401).json("Usted no es vecino, no puede entrar aquí")
         }
     } catch (error) {
         res.status(401).json("Token no válido")

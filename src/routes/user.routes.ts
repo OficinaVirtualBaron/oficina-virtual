@@ -6,79 +6,22 @@ import {
     updateUser,
     deleteUser
 } from "../controllers/user.controller";
-import { TokenAndRoleValidator } from "../middlewares/validateTokenAndRole";
-//import { isAdminRole } from "../middlewares/validateAdminRole"
+import { isUserRole } from "../middlewares/validateUser";
+import { isMuniRole } from "../middlewares/validateMuni";
+import { isAdminRole } from "../middlewares/validateAdmin";
 
 const router = Router();
 
 // GET 
-router.get("/users", TokenAndRoleValidator, getUsers);
+router.get("/users", isMuniRole, getUsers);
 
 // GET 
-router.get("/users/:id", TokenAndRoleValidator, getUser);
+router.get("/users/:id", isMuniRole, getUser);
 
 // UPDATE 
-router.put("/updateUser/:id", TokenAndRoleValidator, updateUser);
+router.put("/updateUser/:id", isUserRole, updateUser);
 
 // DELETE 
-router.delete("/deleteUser/:id", TokenAndRoleValidator, deleteUser);
-
-
-
-
-
-
-// RUTAS DE TRAMITES
-// GET 
-router.get("/home", (req: Request, res: Response) => {
-    res.json({msg: "Home Page"})
-});
-
-
-// GET 
-router.get("/inicio", (req: Request, res: Response) => {
-    res.json({msg: "Página de inicio"})
-});
-
-
-// POST 
-router.get("/tramites/transito", (req: Request, res: Response) => {
-    res.json({msg: "Trámites del área de tránsito:"})
-});
-// POST 
-router.get("/tramites/transito/:id", (req: Request, res: Response) => {
-    res.json({msg: "Trámite para pago de multas"})
-});
-
-// POST 
-router.get("/tramites/rentas", (req: Request, res: Response) => {
-    res.json({msg: "Trámites del área de rentas:"})
-});
-// POST 
-router.get("/tramites/rentas/:id", (req: Request, res: Response) => {
-    res.json({msg: "Trámite para consultar deudas"})
-});
-
-
-
-//GET 
-router.get("/misTramites", (req: Request, res: Response) => {
-    res.json({msg: "Todos mis trámites:"})
-})
-//GET 
-router.get("/misTramites/:id", (req: Request, res: Response) => {
-    res.json({msg: "Trámite N° {id}: "})
-})
-
-
-
-//GET 
-router.get("/misComunicaciones", (req: Request, res: Response) => {
-    res.json({msg: "Mis comunicaciones:"})
-})
-//GET 
-router.get("/misComunicaciones/:id", (req: Request, res: Response) => {
-    res.json({msg: "Comunicación N° {id}:"})
-})
+router.delete("/deleteUser/:id", isAdminRole, deleteUser);
 
 export default router;

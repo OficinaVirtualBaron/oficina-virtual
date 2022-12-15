@@ -5,9 +5,9 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToMany
+    OneToOne
 } from "typeorm";
-import { Tramite } from "./Tramite";
+import { Customer } from "./Customer";
   
 export interface IUser extends Document {
     firstname: string;
@@ -41,9 +41,6 @@ export class User extends BaseEntity {
     @Column()
     adress: string;
 
-    @Column({default: true})
-    active: boolean;
-
     @Column({default: "USER_ROLE"})
     role: string;
 
@@ -52,4 +49,7 @@ export class User extends BaseEntity {
   
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToOne(() => Customer, (customer) => customer.user)
+    customer: Customer
 }

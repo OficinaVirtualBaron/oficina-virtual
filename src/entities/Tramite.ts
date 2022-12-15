@@ -6,11 +6,13 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     JoinColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany
 } from "typeorm";
-import { User } from "./User";
+import { Category } from "./Category";
+import { MakerTramite } from "./MakersTramites";
 
-@Entity()
+@Entity({ name: "tramite" })
 export class Tramite extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -21,24 +23,31 @@ export class Tramite extends BaseEntity {
     @Column({length: 250, default: "Descripción trámite"})
     description: string;
 
-    @Column({default: "Primer pregunta aquí"})
-    firstQuestion: string;
+    @Column()
+    questionone: string;
 
-    @Column({default: "Segunda pregunta aquí"})
-    secondQuestion: string;
+    @Column()
+    questiontwo: string;
 
-    @Column({default: "Tercera pregunta aquí"})
-    thirdQuestion: string;
+    @Column()
+    questionthree: string;
 
-    @Column({default: "Cuarta pregunta aquí"})
-    quarterQuestion: string;
+    @Column()
+    questionfour: string;
 
-    @Column({default: "Quinta pregunta aquí"})
-    fifthQuestion: string;
-  
+    @Column()
+    price: number;
+
     @CreateDateColumn()
     createdAt: Date;
   
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @ManyToOne(() => Category, (category) => category.tramites)
+    @JoinColumn({name: "category_id"})
+    category: Category
+
+    @OneToMany(() => MakerTramite, (makerTramite) => makerTramite.tramite)
+    makerTramite: MakerTramite[]
 }

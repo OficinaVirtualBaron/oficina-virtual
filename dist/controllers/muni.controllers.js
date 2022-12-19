@@ -81,9 +81,8 @@ const updateMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
-        //console.log(result);
         yield user.save();
-        return res.status(200).json("Datos del usuario actualizados correctamente");
+        return res.status(200).json("Datos del usuario municipal actualizados correctamente");
     }
     catch (error) {
         if (error instanceof Error) {
@@ -99,7 +98,7 @@ const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (result.affected === 0) {
             return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
-        return res.status(200).json("Usuario borrado de la DB correctamente");
+        return res.status(200).json("Usuario municipal borrado de la DB correctamente");
     }
     catch (error) {
         if (error instanceof Error) {
@@ -123,7 +122,7 @@ const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "24h"
         });
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido municipal ${user.firstname} ${user.lastname}`);
+        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, municipal ${user.firstname} ${user.lastname}`);
     }
     catch (error) {
         if (error instanceof Error) {

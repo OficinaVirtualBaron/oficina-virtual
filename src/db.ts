@@ -7,6 +7,7 @@ import { Customer } from "./entities/Customer";
 import { Maker } from "./entities/Maker";
 import { MakerTramite } from "./entities/MakersTramites";
 import dotenv from "dotenv";
+import { MiTramite } from "./entities/MisTramites";
 dotenv.config();
 
 export const AppDataSource = new DataSource ({
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource ({
     password: process.env.MYSQL_PASSW,
     port: 3306,
     database: "database-oficina",
-    entities: [User, UserMuni, Tramite, Category, Customer, Maker, MakerTramite],
+    entities: [User, UserMuni, Tramite, Category, Customer, Maker, MakerTramite, MiTramite],
     logging: true,
     synchronize: true
 }) 

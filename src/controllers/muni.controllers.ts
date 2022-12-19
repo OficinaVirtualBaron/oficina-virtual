@@ -64,7 +64,6 @@ export const updateMuni = async (req: Request, res: Response) => {
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
-        //console.log(result);
         await user.save();
         return res.status(200).json("Datos del usuario municipal actualizados correctamente");
     } catch (error) {

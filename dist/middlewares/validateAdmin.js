@@ -17,11 +17,11 @@ const isAdminRole = (req, res, next) => {
             next();
         }
         else {
-            res.status(401).json("Usted no es administrador, no puede acceder aquí");
+            res.status(401).json("Usted no es administrador. Acceso denegado");
         }
     }
     catch (error) {
-        res.status(401).json("Token no válido");
+        res.status(401).json("Token no válido. Acceso denegado");
     }
 };
 exports.isAdminRole = isAdminRole;

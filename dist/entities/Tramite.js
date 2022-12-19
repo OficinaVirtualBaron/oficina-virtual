@@ -11,6 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tramite = void 0;
 const typeorm_1 = require("typeorm");
+const Category_1 = require("./Category");
+const MakersTramites_1 = require("./MakersTramites");
 let Tramite = class Tramite extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -26,25 +28,25 @@ __decorate([
     __metadata("design:type", String)
 ], Tramite.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "Primer pregunta aquí" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Tramite.prototype, "firstQuestion", void 0);
+], Tramite.prototype, "questionone", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "Segunda pregunta aquí" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Tramite.prototype, "secondQuestion", void 0);
+], Tramite.prototype, "questiontwo", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "Tercera pregunta aquí" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Tramite.prototype, "thirdQuestion", void 0);
+], Tramite.prototype, "questionthree", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "Cuarta pregunta aquí" }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Tramite.prototype, "quarterQuestion", void 0);
+], Tramite.prototype, "questionfour", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "Quinta pregunta aquí" }),
-    __metadata("design:type", String)
-], Tramite.prototype, "fifthQuestion", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Tramite.prototype, "price", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
@@ -53,7 +55,16 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Tramite.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.tramites),
+    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
+    __metadata("design:type", Category_1.Category)
+], Tramite.prototype, "category", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => MakersTramites_1.MakerTramite, (makerTramite) => makerTramite.tramite),
+    __metadata("design:type", Array)
+], Tramite.prototype, "makerTramite", void 0);
 Tramite = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)({ name: "tramite" })
 ], Tramite);
 exports.Tramite = Tramite;

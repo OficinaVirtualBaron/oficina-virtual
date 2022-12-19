@@ -17,11 +17,11 @@ const isUserRole = (req, res, next) => {
             next();
         }
         else {
-            res.status(401).json("Usted no es vecino, no puede entrar aquí");
+            res.status(401).json("Usted no es vecino. Acceso denegado");
         }
     }
     catch (error) {
-        res.status(401).json("Token no válido");
+        res.status(401).json("Token no válido. Acceso denegado");
     }
 };
 exports.isUserRole = isUserRole;

@@ -5,9 +5,11 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToOne
+    OneToOne,
+    OneToMany
 } from "typeorm";
 import { Customer } from "./Customer";
+import { MiTramite } from "./MisTramites";
   
 export interface IUser extends Document {
     firstname: string;
@@ -52,4 +54,8 @@ export class User extends BaseEntity {
 
     @OneToOne(() => Customer, (customer) => customer.user)
     customer: Customer
+
+    @OneToMany(() => MiTramite, (mitramite) => mitramite.user)
+    mitramite: MiTramite[]
+
 }

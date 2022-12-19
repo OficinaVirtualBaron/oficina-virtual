@@ -9,61 +9,57 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.MiTramite = void 0;
 const typeorm_1 = require("typeorm");
-const Customer_1 = require("./Customer");
-const MisTramites_1 = require("./MisTramites");
-let User = class User extends typeorm_1.BaseEntity {
+const User_1 = require("./User");
+let MiTramite = class MiTramite extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], User.prototype, "id", void 0);
+], MiTramite.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 30, default: "Título trámite" }),
+    __metadata("design:type", String)
+], MiTramite.prototype, "title", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ length: 250, default: "Descripción trámite" }),
+    __metadata("design:type", String)
+], MiTramite.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "firstname", void 0);
+], MiTramite.prototype, "questionone", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "lastname", void 0);
+], MiTramite.prototype, "questiontwo", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], User.prototype, "cuil", void 0);
+], MiTramite.prototype, "questionthree", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "adress", void 0);
+], MiTramite.prototype, "questionfour", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: "USER_ROLE" }),
-    __metadata("design:type", String)
-], User.prototype, "role", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], MiTramite.prototype, "price", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], User.prototype, "createdAt", void 0);
+], MiTramite.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], User.prototype, "updatedAt", void 0);
+], MiTramite.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => Customer_1.Customer, (customer) => customer.user),
-    __metadata("design:type", Customer_1.Customer)
-], User.prototype, "customer", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => MisTramites_1.MiTramite, (mitramite) => mitramite.user),
-    __metadata("design:type", Array)
-], User.prototype, "mitramite", void 0);
-User = __decorate([
-    (0, typeorm_1.Entity)()
-], User);
-exports.User = User;
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.mitramite),
+    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
+    __metadata("design:type", User_1.User)
+], MiTramite.prototype, "user", void 0);
+MiTramite = __decorate([
+    (0, typeorm_1.Entity)({ name: "mi_tramite" })
+], MiTramite);
+exports.MiTramite = MiTramite;

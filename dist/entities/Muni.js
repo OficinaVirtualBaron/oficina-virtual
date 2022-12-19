@@ -38,10 +38,6 @@ __decorate([
     __metadata("design:type", String)
 ], UserMuni.prototype, "cuil", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: true }),
-    __metadata("design:type", Boolean)
-], UserMuni.prototype, "active", void 0);
-__decorate([
     (0, typeorm_1.Column)({ default: "MUNI_ROLE" }),
     __metadata("design:type", String)
 ], UserMuni.prototype, "role", void 0);

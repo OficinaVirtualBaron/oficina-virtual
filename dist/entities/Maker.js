@@ -9,35 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoriaTramite = void 0;
+exports.Maker = void 0;
 const typeorm_1 = require("typeorm");
-let CategoriaTramite = class CategoriaTramite extends typeorm_1.BaseEntity {
+const Customer_1 = require("./Customer");
+const MakersTramites_1 = require("./MakersTramites");
+let Maker = class Maker extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
-], CategoriaTramite.prototype, "id", void 0);
+    (0, typeorm_1.PrimaryColumn)(),
+    __metadata("design:type", String)
+], Maker.prototype, "status", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], CategoriaTramite.prototype, "title", void 0);
+], Maker.prototype, "paymentMethod", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], CategoriaTramite.prototype, "description", void 0);
+    (0, typeorm_1.ManyToOne)(() => Customer_1.Customer, (customer) => customer.makers),
+    (0, typeorm_1.JoinColumn)({ name: "customer_id" }),
+    __metadata("design:type", Customer_1.Customer)
+], Maker.prototype, "customer", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ default: true }),
-    __metadata("design:type", Boolean)
-], CategoriaTramite.prototype, "active", void 0);
-__decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], CategoriaTramite.prototype, "createdAt", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], CategoriaTramite.prototype, "updatedAt", void 0);
-CategoriaTramite = __decorate([
-    (0, typeorm_1.Entity)()
-], CategoriaTramite);
-exports.CategoriaTramite = CategoriaTramite;
+    (0, typeorm_1.OneToMany)(() => MakersTramites_1.MakerTramite, (makerTramite) => makerTramite.maker),
+    __metadata("design:type", Array)
+], Maker.prototype, "makerTramite", void 0);
+Maker = __decorate([
+    (0, typeorm_1.Entity)({ name: "maker" })
+], Maker);
+exports.Maker = Maker;

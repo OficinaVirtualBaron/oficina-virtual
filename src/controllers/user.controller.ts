@@ -107,7 +107,7 @@ export const signIn = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "2h"
         })
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido vecino ${user.firstname} ${user.lastname}`);
+        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, vecino ${user.firstname} ${user.lastname}`);
         console.log(user);
     } catch (error) {
         if (error instanceof Error){

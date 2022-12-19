@@ -4,7 +4,6 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import userRoutes from "./routes/user.routes";
-import categoriasRoutes from "./routes/categoriasTramites.routes";
 import muniRoutes from "./routes/muni.routes";
 import authRoutes from "./routes/auth.routes";
 const app = express();
@@ -17,18 +16,19 @@ app.use(express.json());
 // ROUTES
 app.use("/auth", authRoutes)
 app.use("/oficina", userRoutes);
-app.use("/categorias", categoriasRoutes);
 app.use("/municipales", muniRoutes);
 
 // STARTING THE SERVER
 async function main() {
     try {
         await AppDataSource.initialize();
-        console.log("Database connected (Look MySQL)");
+        console.log("---------------------------------")
+        console.log("Database connected - MySQL");
         app.listen(3000);
         console.log("Server is listening on port", 3000);
+        console.log("---------------------------------");
     } catch (error) {
-        console.log("ERROR AQUI");
+        console.log("Error. Connection to database lost");
         console.log(error);
     }
 }

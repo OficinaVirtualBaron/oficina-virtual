@@ -66,7 +66,7 @@ export const updateMuni = async (req: Request, res: Response) => {
         user.email = email;
         //console.log(result);
         await user.save();
-        return res.status(200).json("Datos del usuario actualizados correctamente");
+        return res.status(200).json("Datos del usuario municipal actualizados correctamente");
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -81,7 +81,7 @@ export const deleteMuni = async (req: Request, res: Response) => {
         if (result.affected === 0){
             return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
-        return res.status(200).json("Usuario borrado de la DB correctamente")
+        return res.status(200).json("Usuario municipal borrado de la DB correctamente")
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -104,7 +104,7 @@ export const signInMuni = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "24h"
         })
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido municipal ${user.firstname} ${user.lastname}`)
+        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, municipal ${user.firstname} ${user.lastname}`)
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

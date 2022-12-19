@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Tramite = void 0;
 const typeorm_1 = require("typeorm");
-const User_1 = require("./User");
 let Tramite = class Tramite extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -54,11 +53,6 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Tramite.prototype, "updatedAt", void 0);
-__decorate([
-    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.tramites),
-    __metadata("design:type", User_1.User)
-], Tramite.prototype, "user", void 0);
 Tramite = __decorate([
     (0, typeorm_1.Entity)()
 ], Tramite);

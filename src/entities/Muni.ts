@@ -27,9 +27,6 @@ export class UserMuni extends BaseEntity {
     @Column({unique: true, length: 20})
     cuil: string;
 
-    @Column({default: true})
-    active: boolean;
-
     @Column({default: "MUNI_ROLE"})
     role: string;
 

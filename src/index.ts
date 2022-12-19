@@ -22,11 +22,13 @@ app.use("/municipales", muniRoutes);
 async function main() {
     try {
         await AppDataSource.initialize();
-        console.log("Database connected (Look MySQL)");
+        console.log("---------------------------------")
+        console.log("Database connected - MySQL");
         app.listen(3000);
         console.log("Server is listening on port", 3000);
+        console.log("---------------------------------");
     } catch (error) {
-        console.log("ERROR AQUI");
+        console.log("Error. Connection to database lost");
         console.log(error);
     }
 }

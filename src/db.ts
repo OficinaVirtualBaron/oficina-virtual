@@ -1,12 +1,12 @@
 import { DataSource } from "typeorm";
 import { User } from "./entities/User";
-import dotenv from "dotenv";
 import { UserMuni } from "./entities/Muni";
 import { Tramite } from "./entities/Tramite";
 import { Category } from "./entities/Category";
 import { Customer } from "./entities/Customer";
 import { Maker } from "./entities/Maker";
 import { MakerTramite } from "./entities/MakersTramites";
+import dotenv from "dotenv";
 dotenv.config();
 
 export const AppDataSource = new DataSource ({

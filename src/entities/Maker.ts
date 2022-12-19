@@ -24,4 +24,5 @@ export class Maker extends BaseEntity {
 
     @OneToMany(() => MakerTramite, (makerTramite) => makerTramite.maker)
     makerTramite: MakerTramite[]
+    static customer: any;
 }

@@ -18,9 +18,9 @@ export const isMuniRole = (req: Request, res: Response, next: NextFunction) => {
         if (req.userRole == "MUNI_ROLE"){
             next();
         } else {
-            res.status(401).json("Usted no es municipal, no puede entrar aquí")
+            res.status(401).json("Usted no es municipal. Acceso denegado")
         }
     } catch (error) {
-        res.status(401).json("Token no válido")
+        res.status(401).json("Token no válido. Acceso denegado")
     }
 }

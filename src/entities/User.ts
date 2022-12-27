@@ -5,12 +5,10 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToOne,
-    OneToMany
+    ManyToOne
 } from "typeorm";
-import { Customer } from "./Customer";
-import { MiTramite } from "./MisTramites";
-  
+import { Procedure } from "./Procedure";
+
 export interface IUser extends Document {
     firstname: string;
     lastname: string;
@@ -52,10 +50,6 @@ export class User extends BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToOne(() => Customer, (customer) => customer.user)
-    customer: Customer
-
-    @OneToMany(() => MiTramite, (mitramite) => mitramite.user)
-    mitramite: MiTramite[]
-
+    @ManyToOne(() => Procedure, (procedure) => procedure.user)
+    procedures: Procedure[]
 }

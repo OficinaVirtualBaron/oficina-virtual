@@ -10,6 +10,7 @@ import {
 import { Document } from "./Document";
 import { Question } from "./Question";
 import { User } from "./User";
+import { Category } from "./Category";
 
 @Entity({ name: "procedure" })
 export class Procedure extends BaseEntity {
@@ -42,4 +43,17 @@ export class Procedure extends BaseEntity {
     @ManyToOne(() => Document, (document) => document.procedure)
     documents: Document[]
 
+    @ManyToOne(() => Category, (category) => category.procedure)
+    @JoinTable({
+        name: "procedure_has_category",
+        joinColumn: {
+            name: "category_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "procedure_id",
+            referencedColumnName: "id"
+        }
+    })
+    categories: Category[];
 }

@@ -32,7 +32,7 @@ export const createUser = async (req: Request, res: Response) => {
 // GET 
 export const getUsers = async(req: Request, res: Response) => {
     try {
-        const users = await User.find()
+        const users = await User.find();
         return res.json(users);
     } catch (error) {
         if(error instanceof Error){
@@ -57,17 +57,17 @@ export const getUser = async(req: Request, res: Response) => {
 // PUT 
 export const updateUser = async(req: Request, res: Response) => {
     try {
-        const {id} = req.params;
-        const {firstname, lastname, email, password} = req.body;
+        const { id } = req.params;
+        const { firstname, lastname, email, password } = req.body;
         const user = await User.findOneBy({id: parseInt(req.params.id)});
-        if (!user) return res.status(404).json({message: "El usuario no existe"});
+        if (!user) return res.status(404).send({message: "El usuario no existe"});
         const result = await updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
-
+        user.password = password;
         await user.save();
-        return res.status(200).json("Datos del usuario actualizados correctamente");
+        return res.status(200).send({message: "Datos del usuario actualizados correctamente"});
     } catch (error) {
         if(error instanceof Error){
             return res.status(500).json({message: error.message});
@@ -83,7 +83,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         if(result.affected === 0){
             return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
         }
-        return res.status(200).json("Usuario borrado de la DB correctamente");
+        return res.status(200).send({message: "Usuario borrado de la DB correctamente"});
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message});

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { Question_Option } from "./entities/Question_Option";
 import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
+import { Category } from "./entities/Category";
 dotenv.config();
 
 export const AppDataSource = new DataSource ({
@@ -15,7 +16,7 @@ export const AppDataSource = new DataSource ({
     password: process.env.MYSQL_PASSW,
     port: 3306,
     database: "database-oficina",
-    entities: [User, UserMuni, Procedure, Question, Question_Option, Document],
+    entities: [User, UserMuni, Procedure, Question, Question_Option, Document, Category],
     logging: true,
     synchronize: true
 }) 

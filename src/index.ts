@@ -6,6 +6,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes";
 import muniRoutes from "./routes/muni.routes";
 import authRoutes from "./routes/auth.routes";
+import categoryRoutes from "./routes/categories.routes"
 const app = express();
 
 // MIDDLEWARES
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/auth", authRoutes)
 app.use("/oficina", userRoutes);
 app.use("/municipales", muniRoutes);
+app.use("/oficina/categories", categoryRoutes)
 
 // STARTING THE SERVER
 async function main() {

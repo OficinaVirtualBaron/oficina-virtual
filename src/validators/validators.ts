@@ -16,12 +16,12 @@ export const updateUserSchema = Joi.object({
     email: Joi.string(),
 })
 
-export const createCategoriaTramiteSchema = Joi.object({
+export const createCategorySchema = Joi.object({
     title: Joi.string().min(5).max(30),
     description: Joi.string().min(10).max(100),
 })
 
-export const updateCategoriaTramiteSchema = Joi.object({
+export const updateCategorySchema = Joi.object({
     title: Joi.string().min(5).max(30),
     description: Joi.string().min(10).max(100),
 })

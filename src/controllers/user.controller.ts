@@ -10,7 +10,7 @@ const saltround = 10;
 export const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
-        const {firstname, lastname, email, password, cuil, adress} = req.body;
+        const { firstname, lastname, email, password, cuil, adress } = req.body;
         const user = new User();
         const result = await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -106,7 +106,7 @@ export const signIn = async (req: Request, res: Response) => {
         }
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "2h"
-        })
+        });
         res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, vecino ${user.firstname} ${user.lastname}`);
     } catch (error) {
         if (error instanceof Error){

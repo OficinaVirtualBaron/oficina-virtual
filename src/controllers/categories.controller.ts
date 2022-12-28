@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { userInfo } from "os";
 import { Category } from "../entities/Category";
 import { updateCategorySchema } from "../validators/validators";
 

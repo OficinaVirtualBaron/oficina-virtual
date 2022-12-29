@@ -9,32 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Category = void 0;
+exports.Question_Option = void 0;
 const typeorm_1 = require("typeorm");
-const Procedure_1 = require("./Procedure");
-let Category = class Category extends typeorm_1.BaseEntity {
+const Question_1 = require("./Question");
+let Question_Option = class Question_Option extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Category.prototype, "id", void 0);
+], Question_Option.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Category.prototype, "title", void 0);
+], Question_Option.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Category.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], Question_Option.prototype, "enabled", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], Category.prototype, "updatedAt", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => Procedure_1.Procedure, (procedure) => procedure.categories),
-    __metadata("design:type", Procedure_1.Procedure)
-], Category.prototype, "procedure", void 0);
-Category = __decorate([
-    (0, typeorm_1.Entity)({ name: "category" })
-], Category);
-exports.Category = Category;
+    (0, typeorm_1.OneToMany)(() => Question_1.Question, (question) => question.question_options),
+    __metadata("design:type", Question_1.Question)
+], Question_Option.prototype, "question", void 0);
+Question_Option = __decorate([
+    (0, typeorm_1.Entity)({ name: "question_option" })
+], Question_Option);
+exports.Question_Option = Question_Option;

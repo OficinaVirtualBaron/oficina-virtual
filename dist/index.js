@@ -20,6 +20,7 @@ const cors_1 = __importDefault(require("cors"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const muni_routes_1 = __importDefault(require("./routes/muni.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const categories_routes_1 = __importDefault(require("./routes/categories.routes"));
 const app = (0, express_1.default)();
 // MIDDLEWARES
 app.use((0, cors_1.default)());
@@ -29,16 +30,15 @@ app.use(express_1.default.json());
 app.use("/auth", auth_routes_1.default);
 app.use("/oficina", user_routes_1.default);
 app.use("/municipales", muni_routes_1.default);
+app.use("/oficina/categories", categories_routes_1.default);
 // STARTING THE SERVER
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             yield db_1.AppDataSource.initialize();
-            console.log("---------------------------------");
             console.log("Database connected - MySQL");
             app.listen(3000);
-            console.log("Server is listening on port", 3000);
-            console.log("---------------------------------");
+            console.log("Server on port", 3000);
         }
         catch (error) {
             console.log("Error. Connection to database lost");

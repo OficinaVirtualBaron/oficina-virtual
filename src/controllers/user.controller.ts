@@ -3,7 +3,6 @@ import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { tokenSign } from "../helpers/generateToken";
 const saltround = 10;
 
 // POST 
@@ -20,8 +19,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.cuil = cuil;
         user.adress = adress;
         const savedUser = await user.save();
-        const tokenSession = await tokenSign(savedUser);
-        res.header("auth-header", tokenSession).json(savedUser);
+        res.send("Usuario creado correctamente. Inicie sesión a continuación");
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message});

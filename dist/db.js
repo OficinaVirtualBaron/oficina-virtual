@@ -7,13 +7,12 @@ exports.AppDataSource = void 0;
 const typeorm_1 = require("typeorm");
 const User_1 = require("./entities/User");
 const Muni_1 = require("./entities/Muni");
-const Tramite_1 = require("./entities/Tramite");
-const Category_1 = require("./entities/Category");
-const Customer_1 = require("./entities/Customer");
-const Maker_1 = require("./entities/Maker");
-const MakersTramites_1 = require("./entities/MakersTramites");
+const Procedure_1 = require("./entities/Procedure");
 const dotenv_1 = __importDefault(require("dotenv"));
-const MisTramites_1 = require("./entities/MisTramites");
+const Question_Option_1 = require("./entities/Question_Option");
+const Question_1 = require("./entities/Question");
+const Document_1 = require("./entities/Document");
+const Category_1 = require("./entities/Category");
 dotenv_1.default.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
@@ -22,7 +21,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     password: process.env.MYSQL_PASSW,
     port: 3306,
     database: "database-oficina",
-    entities: [User_1.User, Muni_1.UserMuni, Tramite_1.Tramite, Category_1.Category, Customer_1.Customer, Maker_1.Maker, MakersTramites_1.MakerTramite, MisTramites_1.MiTramite],
+    entities: [User_1.User, Muni_1.UserMuni, Procedure_1.Procedure, Question_1.Question, Question_Option_1.Question_Option, Document_1.Document, Category_1.Category],
     logging: true,
     synchronize: true
 });

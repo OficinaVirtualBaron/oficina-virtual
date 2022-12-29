@@ -24,11 +24,9 @@ app.use("/oficina/categories", categoryRoutes)
 async function main() {
     try {
         await AppDataSource.initialize();
-        console.log("---------------------------------")
         console.log("Database connected - MySQL");
         app.listen(3000);
-        console.log("Server is listening on port", 3000);
-        console.log("---------------------------------");
+        console.log("Server on port", 3000);
     } catch (error) {
         console.log("Error. Connection to database lost");
         console.log(error);

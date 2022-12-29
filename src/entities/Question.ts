@@ -3,7 +3,8 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    ManyToOne
+    ManyToOne,
+    ManyToMany
 } from "typeorm";
 import { Procedure } from "./Procedure";
 import { Question_Option } from "./Question_Option";
@@ -21,6 +22,6 @@ export class Question extends BaseEntity {
     question_options: Question_Option[]
 
     
-    @ManyToOne(() => Procedure, (procedure) => procedure.question)
+    @ManyToMany(() => Procedure, (procedure) => procedure.question)
     procedures: Procedure[]
 }

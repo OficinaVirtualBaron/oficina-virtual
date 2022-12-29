@@ -5,7 +5,8 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToMany
+    OneToMany,
+    ManyToMany
 } from "typeorm";
 import { Procedure } from "./Procedure";
 
@@ -23,7 +24,7 @@ export class Category extends BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date
 
-    @OneToMany(() => Procedure, (procedure) => procedure.categories)
+    @ManyToMany(() => Procedure, (procedure) => procedure.categories)
     procedure: Procedure;
 
 }

@@ -5,7 +5,8 @@ import {
     BaseEntity,
     OneToMany,
     JoinTable,
-    ManyToOne
+    ManyToOne,
+    ManyToMany
 } from "typeorm";
 import { Document } from "./Document";
 import { Question } from "./Question";
@@ -26,7 +27,7 @@ export class Procedure extends BaseEntity {
     @OneToMany(() => User, (user) => user.procedures)
     user: User 
 
-    @OneToMany(() => Question, (question) => question.procedures)
+    @ManyToMany(() => Question, (question) => question.procedures)
     @JoinTable({
         name: "procedure_has_question",
         joinColumn: {
@@ -43,7 +44,7 @@ export class Procedure extends BaseEntity {
     @ManyToOne(() => Document, (document) => document.procedure)
     documents: Document[]
 
-    @ManyToOne(() => Category, (category) => category.procedure)
+    @ManyToMany(() => Category, (category) => category.procedure)
     @JoinTable({
         name: "procedure_has_category",
         joinColumn: {

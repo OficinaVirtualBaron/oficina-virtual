@@ -9,32 +9,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Category = void 0;
+exports.Document = void 0;
 const typeorm_1 = require("typeorm");
 const Procedure_1 = require("./Procedure");
-let Category = class Category extends typeorm_1.BaseEntity {
+let Document = class Document extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], Category.prototype, "id", void 0);
+], Document.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Category.prototype, "title", void 0);
+], Document.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], Category.prototype, "createdAt", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Document.prototype, "path", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], Category.prototype, "updatedAt", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => Procedure_1.Procedure, (procedure) => procedure.categories),
+    (0, typeorm_1.OneToMany)(() => Procedure_1.Procedure, (procedure) => procedure.documents),
     __metadata("design:type", Procedure_1.Procedure)
-], Category.prototype, "procedure", void 0);
-Category = __decorate([
-    (0, typeorm_1.Entity)({ name: "category" })
-], Category);
-exports.Category = Category;
+], Document.prototype, "procedure", void 0);
+Document = __decorate([
+    (0, typeorm_1.Entity)({ name: "document" })
+], Document);
+exports.Document = Document;

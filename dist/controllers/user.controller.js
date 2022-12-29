@@ -17,7 +17,6 @@ const User_1 = require("../entities/User");
 const validators_1 = require("../validators/validators");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const generateToken_1 = require("../helpers/generateToken");
 const saltround = 10;
 // POST 
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,8 +32,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.cuil = cuil;
         user.adress = adress;
         const savedUser = yield user.save();
-        const tokenSession = yield (0, generateToken_1.tokenSign)(savedUser);
-        res.header("auth-header", tokenSession).json(savedUser);
+        res.send("Usuario creado correctamente. Inicie sesión a continuación");
     }
     catch (error) {
         if (error instanceof Error) {
@@ -77,13 +75,14 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { firstname, lastname, email, password } = req.body;
         const user = yield User_1.User.findOneBy({ id: parseInt(req.params.id) });
         if (!user)
-            return res.status(404).json({ message: "El usuario no existe" });
+            return res.status(404).send({ message: "El usuario no existe" });
         const result = yield validators_1.updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
+        user.password = password;
         yield user.save();
-        return res.status(200).json("Datos del usuario actualizados correctamente");
+        return res.status(200).send({ message: "Datos del usuario actualizados correctamente" });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -100,7 +99,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (result.affected === 0) {
             return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
         }
-        return res.status(200).json("Usuario borrado de la DB correctamente");
+        return res.status(200).send({ message: "Usuario borrado de la DB correctamente" });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -126,7 +125,6 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             expiresIn: "2h"
         });
         res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, vecino ${user.firstname} ${user.lastname}`);
-        console.log(user);
     }
     catch (error) {
         if (error instanceof Error) {

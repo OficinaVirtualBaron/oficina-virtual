@@ -8,6 +8,7 @@ export const createProcedure = async (req: Request, res: Response) => {
         const procedure = new Procedure();
         procedure.title = title;
         procedure.status = status;
+        procedure.user_id = user_id;
         const savedProcedure = await procedure.save();
         res.json(savedProcedure);
     } catch (error) {

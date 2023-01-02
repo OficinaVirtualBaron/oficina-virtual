@@ -3,10 +3,10 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    OneToMany,
     JoinTable,
     ManyToOne,
-    ManyToMany
+    ManyToMany,
+    JoinColumn
 } from "typeorm";
 import { Document } from "./Document";
 import { Question } from "./Question";
@@ -18,13 +18,17 @@ export class Procedure extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({length: 30, default: "Procedure title"})
+    @Column({length: 30, default: "Procedure title", unique: true})
     title: string;
+
+    @Column({nullable: true})
+    user_id: number;
 
     @Column({default: "SOLICITADO"})
     status: string;
 
-    @OneToMany(() => User, (user) => user.procedures)
+    @ManyToOne(() => User, (user) => user.procedures)
+    @JoinColumn({name: "user_id"})
     user: User 
 
     @ManyToMany(() => Question, (question) => question.procedures)
@@ -48,11 +52,11 @@ export class Procedure extends BaseEntity {
     @JoinTable({
         name: "procedure_has_category",
         joinColumn: {
-            name: "category_id",
+            name: "procedure_id",
             referencedColumnName: "id"
         },
         inverseJoinColumn: {
-            name: "procedure_id",
+            name: "category_id",
             referencedColumnName: "id"
         }
     })

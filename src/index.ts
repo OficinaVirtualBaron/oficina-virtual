@@ -6,6 +6,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes";
 import muniRoutes from "./routes/muni.routes";
 import authRoutes from "./routes/auth.routes";
+import proceduresRoutes from "./routes/procedures.routes";
 import categoryRoutes from "./routes/categories.routes"
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/auth", authRoutes)
 app.use("/oficina", userRoutes);
 app.use("/municipales", muniRoutes);
 app.use("/oficina/categories", categoryRoutes)
+app.use("/oficina/procedures", proceduresRoutes);
 
 // STARTING THE SERVER
 async function main() {

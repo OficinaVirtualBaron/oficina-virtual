@@ -19,10 +19,10 @@ export class Category extends BaseEntity {
     title: string;
 
     @CreateDateColumn()
-    createdAt: Date;
+    created_at: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updated_at: Date
 
     @ManyToMany(() => Procedure, (procedure) => procedure.categories)
     procedure: Procedure;

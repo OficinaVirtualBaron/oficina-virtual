@@ -5,10 +5,10 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn
-} from "typeorm"
+} from "typeorm";
 
 @Entity()
-export class UserMuni extends BaseEntity {
+export class Profile extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -18,24 +18,18 @@ export class UserMuni extends BaseEntity {
     @Column()
     lastname: string;
 
-    @Column()
-    password: string;
-
     @Column({unique: true})
     email: string;
 
-    @Column({unique: true, length: 20})
+    @Column({unique: true})
     cuil: string;
 
-    @Column({default: "MUNI_ROLE"})
-    role: string;
-
     @Column()
-    area: string;
+    adress: string;
 
     @CreateDateColumn()
     created_at: Date;
 
     @UpdateDateColumn()
-    update_at: Date;
+    updated_at: Date;
 }

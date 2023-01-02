@@ -5,9 +5,12 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    ManyToOne
+    OneToMany,
+    JoinColumn,
+    OneToOne
 } from "typeorm";
 import { Procedure } from "./Procedure";
+import { Profile } from "./Profile";
 
 export interface IUser extends Document {
     firstname: string;
@@ -45,11 +48,16 @@ export class User extends BaseEntity {
     role: string;
 
     @CreateDateColumn()
-    createdAt: Date;
+    created_at: Date;
   
     @UpdateDateColumn()
-    updatedAt: Date;
+    updated_at: Date;
 
-    @ManyToOne(() => Procedure, (procedure) => procedure.user)
+    @OneToMany(() => Procedure, (procedure) => procedure.user)
+    @JoinColumn({name: "procedures_id"})
     procedures: Procedure[]
+
+    @OneToOne(() => Profile)
+    @JoinColumn({name: "profile_id"})
+    profile: Profile;
 }

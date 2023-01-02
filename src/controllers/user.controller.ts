@@ -65,7 +65,7 @@ export const updateUser = async(req: Request, res: Response) => {
         user.email = email;
         user.password = password;
         await user.save();
-        return res.status(200).send({message: "Datos del usuario actualizados correctamente"});
+        return res.status(200).send("Datos del usuario actualizados correctamente");
     } catch (error) {
         if(error instanceof Error){
             return res.status(500).json({message: error.message});
@@ -79,7 +79,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         const {id} = req.params;
         const result = await User.delete({id: parseInt(id)});
         if(result.affected === 0){
-            return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
+            return res.status(404).json({message: "Usuario no encontrado o incorrecto. Intente nuevamente"});
         }
         return res.status(200).send({message: "Usuario borrado de la DB correctamente"});
     } catch (error) {
@@ -92,7 +92,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 // POST
 export const signIn = async (req: Request, res: Response) => {
     try {
-        const {cuil, password, role} = req.body;
+        const { password } = req.body;
         const salt = bcrypt.genSaltSync();
         const user = await User.findOne({where: {cuil: req.body.cuil}})
         if (!user) {
@@ -105,7 +105,7 @@ export const signIn = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "2h"
         });
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, vecino ${user.firstname} ${user.lastname}`);
+        res.json({user, token});
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message})

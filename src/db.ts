@@ -12,11 +12,11 @@ dotenv.config();
 
 export const AppDataSource = new DataSource ({
     type: "mysql",
-    host: "localhost",
-    username: "root",
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
     password: process.env.MYSQL_PASSW,
     port: 3306,
-    database: "database-oficina",
+    database: process.env.DB_NAME,
     entities: [User, UserMuni, Procedure, Question, Question_Option, Document, Category, Profile],
     logging: true,
     synchronize: true

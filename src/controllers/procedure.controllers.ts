@@ -4,12 +4,10 @@ import { Procedure} from "../entities/Procedure";
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
     try {
-        const { userId } = req.params;
         const { title, status, user_id } = req.body;
         const procedure = new Procedure();
         procedure.title = title;
         procedure.status = status;
-        procedure.user_id = user_id;
         const savedProcedure = await procedure.save();
         res.json(savedProcedure);
     } catch (error) {

@@ -103,7 +103,7 @@ export const signIn = async (req: Request, res: Response) => {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
         }
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
-            expiresIn: "2h"
+            expiresIn: "24h"
         });
         res.status(200).json({user, token});
     } catch (error) {

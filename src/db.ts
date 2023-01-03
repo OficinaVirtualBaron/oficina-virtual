@@ -17,7 +17,16 @@ export const AppDataSource = new DataSource ({
     password: process.env.MYSQL_PASSW,
     port: 3306,
     database: process.env.DB_NAME,
-    entities: [User, UserMuni, Procedure, Question, Question_Option, Document, Category, Profile],
+    entities: [
+        User, 
+        UserMuni, 
+        Procedure, 
+        Question, 
+        Question_Option, 
+        Document, 
+        Category, 
+        Profile
+    ],
     logging: true,
     synchronize: true
 }) 

@@ -20,7 +20,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.cuil = cuil;
         user.adress = adress;
         const savedUser = await user.save();
-        res.status(201).send("Usuario creado correctamente. Inicie sesión a continuación");
+        res.status(201).send({message: "Usuario creado correctamente. Inicie sesión a continuación"});
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message});

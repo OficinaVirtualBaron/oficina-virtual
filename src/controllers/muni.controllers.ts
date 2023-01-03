@@ -12,7 +12,7 @@ export const createMuni = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password, cuil, area } = req.body;
         const user = new UserMuni();
-        const result = await createMuniSchema.validateAsync(req.body);
+        const validateMuni = await createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt.hashSync(password, salt);
@@ -88,7 +88,7 @@ export const deleteMuni = async (req: Request, res: Response) => {
 
 export const signInMuni = async (req: Request, res: Response) => {
     try {
-        const { cuil, password, role } = req.body;
+        const { password } = req.body;
         const salt = bcrypt.genSaltSync();
         const user = await UserMuni.findOne({where: {cuil: req.body.cuil}});
         if (!user) {

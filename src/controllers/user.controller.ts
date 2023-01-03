@@ -3,7 +3,6 @@ import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Procedure } from "../entities/Procedure";
 const saltround = 10;
 
 // POST 
@@ -12,7 +11,7 @@ export const createUser = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password, cuil, adress } = req.body;
         const user = new User();
-        const result = await createUserSchema.validateAsync(req.body);
+        const validateUser = await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt.hashSync(password, salt);
@@ -60,13 +59,13 @@ export const updateUser = async(req: Request, res: Response) => {
         const { firstname, lastname, email, password } = req.body;
         const user = await User.findOneBy({id: parseInt(req.params.id)});
         if (!user) return res.status(404).send({message: "El usuario no existe"});
-        const result = await updateUserSchema.validateAsync(req.body);
+        const validateUpdate = await updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
         user.password = password;
         await user.save();
-        return res.status(200).send("Datos del usuario actualizados correctamente");
+        return res.status(200).send({message: "Datos del usuario actualizados correctamente"});
     } catch (error) {
         if(error instanceof Error){
             return res.status(500).json({message: error.message});

@@ -49,7 +49,7 @@ export const updateCategory = async (req: Request, res: Response) => {
         const { title } = req.body;
         const category = await Category.findOneBy({id: parseInt(req.params.id)});
         if (!category) return res.status(404).send({message: "La categoría no existe"});
-        const result = await updateCategorySchema.validateAsync(req.body);
+        const updateValidation = await updateCategorySchema.validateAsync(req.body);
         category.title = title;
         await category.save();
         return res.status(200).send({message: "Datos de la categoría actualizados correctamente"});

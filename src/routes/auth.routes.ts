@@ -1,9 +1,10 @@
 import { Router } from "express";
 import { signIn, createUser } from "../controllers/user.controller";
 import { signInMuni } from "../controllers/muni.controllers";
+import { isMuniRole } from "../middlewares/validateMuni";
 const router = Router();
 
-router.post("/signUp", createUser); // agregar validaciond de muni role al final
+router.post("/signUp", isMuniRole, createUser);
 router.post("/signIn", signIn);
 router.post("/signinMunicipales", signInMuni);
 

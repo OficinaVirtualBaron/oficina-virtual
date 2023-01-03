@@ -19,10 +19,8 @@ export const createMuni = async (req: Request, res: Response) => {
         user.email = email;
         user.cuil = cuil;
         user.area = area;
-        //console.log(result);
         const savedMuni = await user.save();
-        const tokenSession = await tokenSign(savedMuni);
-        res.header("auth-header", tokenSession).json(savedMuni);
+        res.status(201).send({message: `¡Usuario ${firstname} ${lastname} creado exitosamente!`});
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -45,7 +43,7 @@ export const getMunis = async (req: Request, res: Response) => {
 export const getMuni = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const user = await UserMuni.findBy({id: parseInt(req.params.id)});
+        const user = await UserMuni.findOneByOrFail({id: parseInt(req.params.id)});
         return res.json(user);
     } catch (error) {
         if (error instanceof Error) {
@@ -103,7 +101,7 @@ export const signInMuni = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "24h"
         })
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, municipal ${user.firstname} ${user.lastname}`)
+        return res.status(200).json({user, token});
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

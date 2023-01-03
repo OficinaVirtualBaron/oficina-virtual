@@ -3,6 +3,7 @@ import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Procedure } from "../entities/Procedure";
 const saltround = 10;
 
 // POST 
@@ -19,7 +20,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.cuil = cuil;
         user.adress = adress;
         const savedUser = await user.save();
-        res.send("Usuario creado correctamente. Inicie sesión a continuación");
+        res.status(201).send("Usuario creado correctamente. Inicie sesión a continuación");
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message});
@@ -43,7 +44,7 @@ export const getUsers = async(req: Request, res: Response) => {
 export const getUser = async(req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const user = await User.findBy({id: parseInt(req.params.id)})
+        const user = await User.findOneByOrFail({id: parseInt(req.params.id)})
         return res.json(user);
     } catch (error) {
         if (error instanceof Error){
@@ -105,7 +106,7 @@ export const signIn = async (req: Request, res: Response) => {
         const token = jwt.sign({id: user.id, role: user.role}, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "2h"
         });
-        res.json({user, token});
+        res.status(200).json({user, token});
     } catch (error) {
         if (error instanceof Error){
             return res.status(500).json({message: error.message})

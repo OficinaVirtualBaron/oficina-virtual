@@ -33,7 +33,7 @@ export const getCategories = async (req: Request, res: Response) => {
 export const getCategory = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const category = await Category.findBy({id: parseInt(req.params.id)});
+        const category = await Category.findOneByOrFail({id: parseInt(req.params.id)});
         return res.json(category);
     } catch (error) {
         if (error instanceof Error) {

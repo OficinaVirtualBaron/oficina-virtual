@@ -34,7 +34,7 @@ export const getProcedures = async (req: Request, res: Response) => {
 export const getProcedure = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const procedure = await Procedure.findBy({id: parseInt(req.params.id)});
+        const procedure = await Procedure.findOneByOrFail({id: parseInt(req.params.id)});
         return res.json(procedure);
     } catch (error) {
         if (error instanceof Error) {

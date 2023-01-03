@@ -8,7 +8,7 @@ export const tokenSign = async (user: { id: any; role: any; }) => {
         },
         process.env.SECRET_TOKEN_KEY || "tokentest",
         {
-            expiresIn: "2h",
+            expiresIn: "24h",
         }
     );
 }

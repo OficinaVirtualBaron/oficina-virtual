@@ -7,7 +7,8 @@ import userRoutes from "./routes/user.routes";
 import muniRoutes from "./routes/muni.routes";
 import authRoutes from "./routes/auth.routes";
 import proceduresRoutes from "./routes/procedures.routes";
-import categoryRoutes from "./routes/categories.routes"
+import categoryRoutes from "./routes/categories.routes";
+import questionsRoutes from "./routes/question.routes";
 const app = express();
 
 // MIDDLEWARES
@@ -16,11 +17,15 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // ROUTES
-app.use("/auth", authRoutes)
+app.use("/auth", authRoutes);
 app.use("/oficina", userRoutes);
 app.use("/municipales", muniRoutes);
-app.use("/oficina/categories", categoryRoutes)
+app.use("/oficina/categories", categoryRoutes);
 app.use("/oficina/procedures", proceduresRoutes);
+app.use("/oficina/questions", questionsRoutes);
+app.use("/", (req, res) => {
+    res.send({message: "404 - Page Not found"});
+});
 
 // STARTING THE SERVER
 async function main() {

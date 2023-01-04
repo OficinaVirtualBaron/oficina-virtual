@@ -3,7 +3,9 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    OneToMany
+    OneToMany,
+    JoinColumn,
+    ManyToOne
 } from "typeorm";
 import { Procedure } from "./Procedure";
 
@@ -18,6 +20,7 @@ export class Document extends BaseEntity {
     @Column()
     path: string;
 
-    @OneToMany(() => Procedure, (procedure) => procedure.documents)
+    @ManyToOne(() => Procedure, (procedure) => procedure.documents)
+    @JoinColumn({name: "procedure_id"})
     procedure: Procedure;
 }

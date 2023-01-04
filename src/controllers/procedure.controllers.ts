@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
 import { Procedure} from "../entities/Procedure";
+import { createQuestion } from "./question.controllers";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
     try {
-        const { title, status, user_id } = req.body;
+        const { title, user_id, question_options, document } = req.body;
         const procedure = new Procedure();
         procedure.title = title;
-        procedure.status = status;
         procedure.user_id = user_id;
+        for (var question in req.body.question_options) {
+            procedure.question = [question_options];
+            procedure.documents = [document];
+        }
         const savedProcedure = await procedure.save();
         res.json(savedProcedure);
+        console.log(savedProcedure);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -53,7 +58,7 @@ export const updateProcedure = async (req: Request, res: Response) => {
         procedure.title = title;
         procedure.status = status;
         await procedure.save();
-        return res.status(200).send("Datos del trámite actualizados correctamente");
+        return res.status(200).send({message: "Datos del trámite actualizados correctamente"});
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});
@@ -67,7 +72,7 @@ export const deleteProcedure = async (req: Request, res: Response) => {
         const { id } = req.params;
         const deleteProcedure = await Procedure.delete({id: parseInt(id)});
         if (deleteProcedure.affected === 0) {
-            return res.status(404).json({message: "Trámite no encontrado o incorrecto. Intente nuevamente"})
+            return res.status(404).send({message: "Trámite no encontrado o incorrecto. Intente nuevamente"})
         }
         return res.status(200).send({message: "Trámite borrado de la DB correctamente"});
     } catch (error) {

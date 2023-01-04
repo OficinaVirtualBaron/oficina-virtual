@@ -23,5 +23,5 @@ export class Question extends BaseEntity {
     question_options: Question_Option[]
 
     @ManyToMany(() => Procedure, (procedure) => procedure.question)
-    procedures: Procedure[]
+    procedures: Procedure
 }

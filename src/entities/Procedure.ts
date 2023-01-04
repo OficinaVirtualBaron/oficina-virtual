@@ -6,7 +6,8 @@ import {
     JoinTable,
     ManyToOne,
     ManyToMany,
-    JoinColumn
+    JoinColumn,
+    OneToMany
 } from "typeorm";
 import { Document } from "./Document";
 import { Question } from "./Question";
@@ -18,7 +19,7 @@ export class Procedure extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({length: 30, default: "Procedure title", unique: true})
+    @Column({length: 30, default: "Procedure title"})
     title: string;
 
     @Column({nullable: true})
@@ -43,9 +44,10 @@ export class Procedure extends BaseEntity {
             referencedColumnName: "id"
         }
     })
-    question: Question
+    question: Question[]
 
-    @ManyToOne(() => Document, (document) => document.procedure)
+    @OneToMany(() => Document, (document) => document.procedure)
+    @JoinColumn({name: "document_id"})
     documents: Document[]
 
     @ManyToMany(() => Category, (category) => category.procedure)

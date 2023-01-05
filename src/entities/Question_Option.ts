@@ -15,7 +15,7 @@ export class Question_Option extends BaseEntity{
     @Column()
     title: string;
 
-    @Column()
+    @Column({nullable: true})
     enabled: boolean;
 
     @OneToMany(() => Question, (question) => question.question_options)

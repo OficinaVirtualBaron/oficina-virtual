@@ -1,18 +1,13 @@
 import { Request, Response } from "express";
 import { Procedure} from "../entities/Procedure";
-import { createQuestion } from "./question.controllers";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
     try {
-        const { title, user_id, question_options, document } = req.body;
+        const { title, user_id } = req.body;
         const procedure = new Procedure();
         procedure.title = title;
         procedure.user_id = user_id;
-        for (var question in req.body.question_options) {
-            procedure.question = [question_options];
-            procedure.documents = [document];
-        }
         const savedProcedure = await procedure.save();
         res.json(savedProcedure);
         console.log(savedProcedure);
@@ -27,6 +22,7 @@ export const createProcedure = async (req: Request, res: Response) => {
 export const getProcedures = async (req: Request, res: Response) => {
     try {
         const procedures = await Procedure.find();
+        if (procedures.length === 0) return res.status(404).send({message: "No se encontraron trámites"});
         return res.json(procedures);
     } catch (error) {
         if (error instanceof Error) {

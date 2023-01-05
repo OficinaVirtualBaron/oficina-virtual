@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const question_controllers_1 = require("../controllers/question.controllers");
+const validateAdmin_1 = require("../middlewares/validateAdmin");
+const router = (0, express_1.Router)();
+router.post("/createQuestion", validateAdmin_1.isAdminRole, question_controllers_1.createQuestion);
+router.get("/getQuestions", validateAdmin_1.isAdminRole, question_controllers_1.getQuestions);
+router.get("/getQuestion/:id", validateAdmin_1.isAdminRole, question_controllers_1.getQuestion);
+router.put("/updateQuestion/:id", validateAdmin_1.isAdminRole, question_controllers_1.updateQuestion);
+router.delete("/deleteQuestion/:id", validateAdmin_1.isAdminRole, question_controllers_1.deleteQuestion);
+exports.default = router;

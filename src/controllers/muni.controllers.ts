@@ -32,6 +32,7 @@ export const createMuni = async (req: Request, res: Response) => {
 export const getMunis = async (req: Request, res: Response) => {
     try {
         const munis = await UserMuni.find();
+        if (munis.length === 0) return res.status(404).send({message: "No se encontraron usuarios municipales"});
         return res.json(munis);
     } catch (error) {
         if (error instanceof Error) {

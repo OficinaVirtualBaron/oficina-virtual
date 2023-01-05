@@ -21,6 +21,7 @@ export const createCategory = async (req: Request, res: Response) => {
 export const getCategories = async (req: Request, res: Response) => {
     try {
         const categories = await Category.find();
+        if (categories.length === 0) return res.status(404).send({message: "No se encontraron categorías"});
         return res.json(categories);
     } catch (error) {
         if (error instanceof Error) {

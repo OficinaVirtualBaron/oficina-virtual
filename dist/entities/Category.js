@@ -25,11 +25,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], Category.prototype, "createdAt", void 0);
+], Category.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], Category.prototype, "updatedAt", void 0);
+], Category.prototype, "updated_at", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => Procedure_1.Procedure, (procedure) => procedure.categories),
     __metadata("design:type", Procedure_1.Procedure)

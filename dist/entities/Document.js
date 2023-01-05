@@ -27,7 +27,8 @@ __decorate([
     __metadata("design:type", String)
 ], Document.prototype, "path", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Procedure_1.Procedure, (procedure) => procedure.documents),
+    (0, typeorm_1.ManyToOne)(() => Procedure_1.Procedure, (procedure) => procedure.documents),
+    (0, typeorm_1.JoinColumn)({ name: "procedure_id" }),
     __metadata("design:type", Procedure_1.Procedure)
 ], Document.prototype, "procedure", void 0);
 Document = __decorate([

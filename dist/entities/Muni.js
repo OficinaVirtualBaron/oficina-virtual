@@ -48,11 +48,11 @@ __decorate([
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], UserMuni.prototype, "createdAt", void 0);
+], UserMuni.prototype, "created_at", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], UserMuni.prototype, "updateAt", void 0);
+], UserMuni.prototype, "update_at", void 0);
 UserMuni = __decorate([
     (0, typeorm_1.Entity)()
 ], UserMuni);

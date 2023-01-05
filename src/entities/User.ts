@@ -10,7 +10,7 @@ import {
     OneToOne
 } from "typeorm";
 import { Procedure } from "./Procedure";
-import { Profile } from "./Profile";
+import { Profile } from "../entities/Profile";
 
 export interface IUser extends Document {
     firstname: string;

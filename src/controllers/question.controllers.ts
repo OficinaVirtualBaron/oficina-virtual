@@ -21,6 +21,7 @@ export const createQuestion = async (req: Request, res: Response) => {
 export const getQuestions = async (req: Request, res: Response) => {
     try {
         const questions = await Question.find();
+        if (questions.length === 0) return res.status(404).send({message: "No se encontraron preguntas"});
         return res.json(questions);
     } catch (error) {
         if (error instanceof Error) {
@@ -65,9 +66,9 @@ export const deleteQuestion = async (req: Request, res: Response) => {
         const { id } = req.params;
         const deleteQuestion = await Question.delete({id: parseInt(id)});
         if (deleteQuestion.affected === 0) {
-            return res.status(404).send({message: "Trámite no encontrado o incorrecto"});
+            return res.status(404).send({message: "Pregunta no encontrada o incorrecta"});
         }
-        return res.status(200).send({message: "Trámite borrado de la DB correctamente"});
+        return res.status(200).send({message: "Pregunta borrada de la DB correctamente"});
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

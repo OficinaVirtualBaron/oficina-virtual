@@ -26,11 +26,16 @@ __decorate([
     __metadata("design:type", String)
 ], Procedure.prototype, "title", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", Number)
+], Procedure.prototype, "user_id", void 0);
+__decorate([
     (0, typeorm_1.Column)({ default: "SOLICITADO" }),
     __metadata("design:type", String)
 ], Procedure.prototype, "status", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => User_1.User, (user) => user.procedures),
+    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.procedures),
+    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
     __metadata("design:type", User_1.User)
 ], Procedure.prototype, "user", void 0);
 __decorate([
@@ -46,10 +51,11 @@ __decorate([
             referencedColumnName: "id"
         }
     }),
-    __metadata("design:type", Question_1.Question)
+    __metadata("design:type", Array)
 ], Procedure.prototype, "question", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Document_1.Document, (document) => document.procedure),
+    (0, typeorm_1.OneToMany)(() => Document_1.Document, (document) => document.procedure),
+    (0, typeorm_1.JoinColumn)({ name: "document_id" }),
     __metadata("design:type", Array)
 ], Procedure.prototype, "documents", void 0);
 __decorate([
@@ -57,11 +63,11 @@ __decorate([
     (0, typeorm_1.JoinTable)({
         name: "procedure_has_category",
         joinColumn: {
-            name: "category_id",
+            name: "procedure_id",
             referencedColumnName: "id"
         },
         inverseJoinColumn: {
-            name: "procedure_id",
+            name: "category_id",
             referencedColumnName: "id"
         }
     }),

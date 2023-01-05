@@ -32,6 +32,8 @@ exports.createCategory = createCategory;
 const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const categories = yield Category_1.Category.find();
+        if (categories.length === 0)
+            return res.status(404).send({ message: "No se encontraron categorías" });
         return res.json(categories);
     }
     catch (error) {
@@ -45,7 +47,7 @@ exports.getCategories = getCategories;
 const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const category = yield Category_1.Category.findBy({ id: parseInt(req.params.id) });
+        const category = yield Category_1.Category.findOneByOrFail({ id: parseInt(req.params.id) });
         return res.json(category);
     }
     catch (error) {
@@ -63,7 +65,7 @@ const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const category = yield Category_1.Category.findOneBy({ id: parseInt(req.params.id) });
         if (!category)
             return res.status(404).send({ message: "La categoría no existe" });
-        const result = yield validators_1.updateCategorySchema.validateAsync(req.body);
+        const updateValidation = yield validators_1.updateCategorySchema.validateAsync(req.body);
         category.title = title;
         yield category.save();
         return res.status(200).send({ message: "Datos de la categoría actualizados correctamente" });

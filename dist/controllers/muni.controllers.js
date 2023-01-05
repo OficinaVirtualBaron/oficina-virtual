@@ -17,7 +17,6 @@ const validators_1 = require("../validators/validators");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Muni_1 = require("../entities/Muni");
-const generateToken_1 = require("../helpers/generateToken");
 const saltround = 10;
 // POST
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,17 +24,15 @@ const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { firstname, lastname, email, password, cuil, area } = req.body;
         const user = new Muni_1.UserMuni();
-        const result = yield validators_1.createMuniSchema.validateAsync(req.body);
+        const validateMuni = yield validators_1.createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt_1.default.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
         user.area = area;
-        //console.log(result);
         const savedMuni = yield user.save();
-        const tokenSession = yield (0, generateToken_1.tokenSign)(savedMuni);
-        res.header("auth-header", tokenSession).json(savedMuni);
+        res.status(201).send({ message: `¡Usuario ${firstname} ${lastname} creado exitosamente!` });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -48,6 +45,8 @@ exports.createMuni = createMuni;
 const getMunis = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const munis = yield Muni_1.UserMuni.find();
+        if (munis.length === 0)
+            return res.status(404).send({ message: "No se encontraron usuarios municipales" });
         return res.json(munis);
     }
     catch (error) {
@@ -60,7 +59,7 @@ exports.getMunis = getMunis;
 const getMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const user = yield Muni_1.UserMuni.findBy({ id: parseInt(req.params.id) });
+        const user = yield Muni_1.UserMuni.findOneByOrFail({ id: parseInt(req.params.id) });
         return res.json(user);
     }
     catch (error) {
@@ -109,7 +108,7 @@ const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteMuni = deleteMuni;
 const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { cuil, password, role } = req.body;
+        const { password } = req.body;
         const salt = bcrypt_1.default.genSaltSync();
         const user = yield Muni_1.UserMuni.findOne({ where: { cuil: req.body.cuil } });
         if (!user) {
@@ -122,7 +121,7 @@ const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.SECRET_TOKEN_KEY || "tokentest", {
             expiresIn: "24h"
         });
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, municipal ${user.firstname} ${user.lastname}`);
+        return res.status(200).json({ user, token });
     }
     catch (error) {
         if (error instanceof Error) {

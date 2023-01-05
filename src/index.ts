@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes";
 import proceduresRoutes from "./routes/procedures.routes";
 import categoryRoutes from "./routes/categories.routes";
 import questionsRoutes from "./routes/question.routes";
+import optionsRoutes from "./routes/questionOption.routes";
 const app = express();
 
 // MIDDLEWARES
@@ -23,11 +24,12 @@ app.use("/municipales", muniRoutes);
 app.use("/oficina/categories", categoryRoutes);
 app.use("/oficina/procedures", proceduresRoutes);
 app.use("/oficina/questions", questionsRoutes);
+app.use("/oficina/questions/options", optionsRoutes);
 app.use("/", (req, res) => {
     res.send({message: "404 - Page Not found"});
 });
 
-// STARTING THE SERVER
+// SERVER
 async function main() {
     try {
         await AppDataSource.initialize();

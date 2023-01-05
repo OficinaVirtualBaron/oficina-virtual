@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const procedure_controllers_1 = require("../controllers/procedure.controllers");
+const validateAdmin_1 = require("../middlewares/validateAdmin");
+const validateMuniAndUser_1 = require("../middlewares/validateMuniAndUser");
+const router = (0, express_1.Router)();
+router.post("/createProcedure", validateAdmin_1.isAdminRole, procedure_controllers_1.createProcedure);
+router.get("/getProcedure", validateMuniAndUser_1.isUserOrMuni, procedure_controllers_1.getProcedures);
+router.get("/getProcedure/:id", validateMuniAndUser_1.isUserOrMuni, procedure_controllers_1.getProcedure);
+router.put("/updateProcedure/:id", validateAdmin_1.isAdminRole, procedure_controllers_1.updateProcedure);
+router.delete("/deleteProcedure", validateAdmin_1.isAdminRole, procedure_controllers_1.deleteProcedure);
+exports.default = router;

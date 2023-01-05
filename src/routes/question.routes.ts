@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from "express";
 import {
     createQuestion,
     getQuestions,
@@ -11,8 +11,8 @@ const router = Router();
 
 router.post("/createQuestion", isAdminRole, createQuestion);
 router.get("/getQuestions", isAdminRole, getQuestions);
-router.get("/getQuestion", isAdminRole, getQuestion);
-router.put("/updateQuestion", isAdminRole, updateQuestion);
-router.delete("/deleteQuestion", isAdminRole, deleteQuestion);
+router.get("/getQuestion/:id", isAdminRole, getQuestion);
+router.put("/updateQuestion/:id", isAdminRole, updateQuestion);
+router.delete("/deleteQuestion/:id", isAdminRole, deleteQuestion);
 
 export default router;

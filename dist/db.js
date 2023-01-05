@@ -13,15 +13,25 @@ const Question_Option_1 = require("./entities/Question_Option");
 const Question_1 = require("./entities/Question");
 const Document_1 = require("./entities/Document");
 const Category_1 = require("./entities/Category");
+const Profile_1 = require("./entities/Profile");
 dotenv_1.default.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
-    host: "localhost",
-    username: "root",
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
     password: process.env.MYSQL_PASSW,
     port: 3306,
-    database: "database-oficina",
-    entities: [User_1.User, Muni_1.UserMuni, Procedure_1.Procedure, Question_1.Question, Question_Option_1.Question_Option, Document_1.Document, Category_1.Category],
+    database: process.env.DB_NAME,
+    entities: [
+        User_1.User,
+        Muni_1.UserMuni,
+        Procedure_1.Procedure,
+        Question_1.Question,
+        Question_Option_1.Question_Option,
+        Document_1.Document,
+        Category_1.Category,
+        Profile_1.Profile
+    ],
     logging: true,
     synchronize: true
 });

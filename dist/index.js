@@ -20,7 +20,10 @@ const cors_1 = __importDefault(require("cors"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const muni_routes_1 = __importDefault(require("./routes/muni.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const procedures_routes_1 = __importDefault(require("./routes/procedures.routes"));
 const categories_routes_1 = __importDefault(require("./routes/categories.routes"));
+const question_routes_1 = __importDefault(require("./routes/question.routes"));
+const questionOption_routes_1 = __importDefault(require("./routes/questionOption.routes"));
 const app = (0, express_1.default)();
 // MIDDLEWARES
 app.use((0, cors_1.default)());
@@ -31,7 +34,13 @@ app.use("/auth", auth_routes_1.default);
 app.use("/oficina", user_routes_1.default);
 app.use("/municipales", muni_routes_1.default);
 app.use("/oficina/categories", categories_routes_1.default);
-// STARTING THE SERVER
+app.use("/oficina/procedures", procedures_routes_1.default);
+app.use("/oficina/questions", question_routes_1.default);
+app.use("/oficina/questions/options", questionOption_routes_1.default);
+app.use("/", (req, res) => {
+    res.send({ message: "404 - Page Not found" });
+});
+// SERVER
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {

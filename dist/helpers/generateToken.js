@@ -19,7 +19,7 @@ const tokenSign = (user) => __awaiter(void 0, void 0, void 0, function* () {
         id: user.id,
         role: user.role
     }, process.env.SECRET_TOKEN_KEY || "tokentest", {
-        expiresIn: "2h",
+        expiresIn: "24h",
     });
 });
 exports.tokenSign = tokenSign;

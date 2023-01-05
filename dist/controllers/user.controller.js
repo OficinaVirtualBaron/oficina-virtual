@@ -24,7 +24,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { firstname, lastname, email, password, cuil, adress } = req.body;
         const user = new User_1.User();
-        const result = yield validators_1.createUserSchema.validateAsync(req.body);
+        const validateUser = yield validators_1.createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt_1.default.hashSync(password, salt);
@@ -32,7 +32,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.cuil = cuil;
         user.adress = adress;
         const savedUser = yield user.save();
-        res.send("Usuario creado correctamente. Inicie sesión a continuación");
+        res.status(201).send({ message: "Usuario creado correctamente. Inicie sesión a continuación" });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -45,6 +45,8 @@ exports.createUser = createUser;
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield User_1.User.find();
+        if (users.length === 0)
+            return res.status(404).send({ message: "No se encontraron usuarios" });
         return res.json(users);
     }
     catch (error) {
@@ -58,7 +60,7 @@ exports.getUsers = getUsers;
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const user = yield User_1.User.findBy({ id: parseInt(req.params.id) });
+        const user = yield User_1.User.findOneByOrFail({ id: parseInt(req.params.id) });
         return res.json(user);
     }
     catch (error) {
@@ -76,7 +78,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const user = yield User_1.User.findOneBy({ id: parseInt(req.params.id) });
         if (!user)
             return res.status(404).send({ message: "El usuario no existe" });
-        const result = yield validators_1.updateUserSchema.validateAsync(req.body);
+        const validateUpdate = yield validators_1.updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
@@ -97,7 +99,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.params;
         const result = yield User_1.User.delete({ id: parseInt(id) });
         if (result.affected === 0) {
-            return res.status(404).json("Usuario no encontrado o incorrecto. Intente nuevamente");
+            return res.status(404).json({ message: "Usuario no encontrado o incorrecto. Intente nuevamente" });
         }
         return res.status(200).send({ message: "Usuario borrado de la DB correctamente" });
     }
@@ -111,7 +113,7 @@ exports.deleteUser = deleteUser;
 // POST
 const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { cuil, password, role } = req.body;
+        const { password } = req.body;
         const salt = bcrypt_1.default.genSaltSync();
         const user = yield User_1.User.findOne({ where: { cuil: req.body.cuil } });
         if (!user) {
@@ -122,9 +124,9 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
         const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.SECRET_TOKEN_KEY || "tokentest", {
-            expiresIn: "2h"
+            expiresIn: "24h"
         });
-        res.header("auth-header", token).json(`¡Sesión iniciada! Bienvenido a su oficina virtual, vecino ${user.firstname} ${user.lastname}`);
+        res.status(200).json({ user, token });
     }
     catch (error) {
         if (error instanceof Error) {

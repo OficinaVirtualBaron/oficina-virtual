@@ -8,16 +8,14 @@ const joi_1 = __importDefault(require("joi"));
 exports.createUserSchema = joi_1.default.object({
     firstname: joi_1.default.string().min(3).max(30).required(),
     lastname: joi_1.default.string().min(3).max(30).required(),
-    password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+    password: joi_1.default.string().min(8).max(30).pattern(new RegExp('^[a-zA-Z0-9]{8,30}$')).required(),
     email: joi_1.default.string().email().required(),
-    cuil: joi_1.default.string().min(10).max(12).required(),
+    cuil: joi_1.default.string().min(11).max(11).alphanum().required(),
     adress: joi_1.default.string().min(3).max(30).required(),
 });
 exports.updateUserSchema = joi_1.default.object({
-    firstname: joi_1.default.string().min(3).max(30),
-    lastname: joi_1.default.string().min(3).max(30),
-    password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).max(30),
-    email: joi_1.default.string(),
+    password: joi_1.default.string().min(8).max(30).pattern(new RegExp('^[a-zA-Z0-9]{8,30}$')),
+    email: joi_1.default.string().email(),
 });
 exports.createCategorySchema = joi_1.default.object({
     title: joi_1.default.string().min(5).max(30),
@@ -32,7 +30,7 @@ exports.createMuniSchema = joi_1.default.object({
     lastname: joi_1.default.string().min(3).max(30).required(),
     password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
     email: joi_1.default.string().email().required(),
-    cuil: joi_1.default.string().min(10).max(12).required(),
+    cuil: joi_1.default.string().min(11).max(11).required(),
     area: joi_1.default.string().required(),
 });
 exports.updateMuniSchema = joi_1.default.object({

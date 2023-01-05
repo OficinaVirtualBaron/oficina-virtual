@@ -9,38 +9,43 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Customer = void 0;
+exports.Profile = void 0;
 const typeorm_1 = require("typeorm");
-const Maker_1 = require("./Maker");
-const User_1 = require("./User");
-let Customer = class Customer extends typeorm_1.BaseEntity {
+let Profile = class Profile extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryColumn)(),
-    __metadata("design:type", String)
-], Customer.prototype, "cuil", void 0);
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], Profile.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Customer.prototype, "firstname", void 0);
+], Profile.prototype, "firstname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Customer.prototype, "lastname", void 0);
+], Profile.prototype, "lastname", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], Profile.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], Profile.prototype, "cuil", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Customer.prototype, "email", void 0);
+], Profile.prototype, "adress", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => User_1.User, (user) => user.customer),
-    (0, typeorm_1.JoinColumn)({ name: "user_id" }),
-    __metadata("design:type", User_1.User)
-], Customer.prototype, "user", void 0);
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], Profile.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Maker_1.Maker, (maker) => maker.customer),
-    __metadata("design:type", Array)
-], Customer.prototype, "makers", void 0);
-Customer = __decorate([
-    (0, typeorm_1.Entity)({ name: "customer" })
-], Customer);
-exports.Customer = Customer;
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], Profile.prototype, "updated_at", void 0);
+Profile = __decorate([
+    (0, typeorm_1.Entity)()
+], Profile);
+exports.Profile = Profile;

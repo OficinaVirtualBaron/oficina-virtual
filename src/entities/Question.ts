@@ -5,7 +5,8 @@ import {
     BaseEntity,
     ManyToOne,
     ManyToMany,
-    JoinColumn
+    JoinColumn,
+    OneToMany
 } from "typeorm";
 import { Procedure } from "./Procedure";
 import { Question_Option } from "./Question_Option";
@@ -18,8 +19,7 @@ export class Question extends BaseEntity {
     @Column()
     title: string;
 
-    @ManyToOne(() => Question_Option, (question_option) => question_option.question)
-    @JoinColumn({name: "question_option_id"})
+    @OneToMany(() => Question_Option, (question_option) => question_option.question)
     question_options: Question_Option[]
 
     @ManyToMany(() => Procedure, (procedure) => procedure.question)

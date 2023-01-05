@@ -18,6 +18,9 @@ export class Category extends BaseEntity {
     @Column()
     title: string;
 
+    @Column()
+    description: string;
+
     @CreateDateColumn()
     created_at: Date;
 
@@ -26,5 +29,4 @@ export class Category extends BaseEntity {
 
     @ManyToMany(() => Procedure, (procedure) => procedure.categories)
     procedure: Procedure;
-
 }

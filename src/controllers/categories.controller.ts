@@ -5,9 +5,10 @@ import { updateCategorySchema } from "../validators/validators";
 // POST
 export const createCategory = async (req: Request, res: Response) => {
     try {
-        const { title } = req.body;
+        const { title, description } = req.body;
         const category = new Category();
         category.title = title;
+        category.description = description;
         const categorySaved = await category.save();
         res.status(200).send({message: "Categoría creada exitosamente"});
     } catch (error) {

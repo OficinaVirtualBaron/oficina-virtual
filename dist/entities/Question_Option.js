@@ -27,7 +27,8 @@ __decorate([
     __metadata("design:type", Boolean)
 ], Question_Option.prototype, "enabled", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Question_1.Question, (question) => question.question_options),
+    (0, typeorm_1.ManyToOne)(() => Question_1.Question, (question) => question.question_options),
+    (0, typeorm_1.JoinColumn)({ name: "question_option_id" }),
     __metadata("design:type", Question_1.Question)
 ], Question_Option.prototype, "question", void 0);
 Question_Option = __decorate([

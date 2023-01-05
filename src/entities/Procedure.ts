@@ -4,15 +4,12 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     JoinTable,
-    ManyToOne,
     ManyToMany,
-    JoinColumn,
     OneToMany
 } from "typeorm";
-import { Document } from "./Document";
 import { Question } from "./Question";
-import { User } from "./User";
 import { Category } from "./Category";
+import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({ name: "procedure" })
 export class Procedure extends BaseEntity {
@@ -21,16 +18,6 @@ export class Procedure extends BaseEntity {
   
     @Column({length: 30, default: "Procedure title"})
     title: string;
-
-    @Column({nullable: true})
-    user_id: number;
-
-    @Column({default: "SOLICITADO"})
-    status: string;
-
-    @ManyToOne(() => User, (user) => user.procedures)
-    @JoinColumn({name: "user_id"})
-    user: User 
 
     @ManyToMany(() => Question, (question) => question.procedures)
     @JoinTable({
@@ -46,10 +33,6 @@ export class Procedure extends BaseEntity {
     })
     question: Question[]
 
-    @OneToMany(() => Document, (document) => document.procedure)
-    @JoinColumn({name: "document_id"})
-    documents: Document[]
-
     @ManyToMany(() => Category, (category) => category.procedure)
     @JoinTable({
         name: "procedure_has_category",
@@ -63,4 +46,8 @@ export class Procedure extends BaseEntity {
         }
     })
     categories: Category[];
+
+    @OneToMany(() => ProcedureHistory, (procedure_history) => procedure_history.procedure)
+    procedure_history: ProcedureHistory
+
 }

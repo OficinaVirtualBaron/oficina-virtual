@@ -3,7 +3,8 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    OneToMany
+    JoinColumn,
+    ManyToOne
 } from "typeorm";
 import { Question } from "./Question";
 
@@ -18,6 +19,7 @@ export class Question_Option extends BaseEntity{
     @Column({nullable: true})
     enabled: boolean;
 
-    @OneToMany(() => Question, (question) => question.question_options)
+    @ManyToOne(() => Question, (question) => question.question_options)
+    @JoinColumn({name: "question_option_id"})
     question: Question
 }

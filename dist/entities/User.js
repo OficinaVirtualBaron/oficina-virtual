@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
-const Procedure_1 = require("./Procedure");
 const Profile_1 = require("../entities/Profile");
+const ProcedureHistory_1 = require("./ProcedureHistory");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -56,10 +56,10 @@ __decorate([
     __metadata("design:type", Date)
 ], User.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Procedure_1.Procedure, (procedure) => procedure.user),
+    (0, typeorm_1.OneToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedure_history) => procedure_history.user),
     (0, typeorm_1.JoinColumn)({ name: "procedures_id" }),
     __metadata("design:type", Array)
-], User.prototype, "procedures", void 0);
+], User.prototype, "procedures_history", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => Profile_1.Profile),
     (0, typeorm_1.JoinColumn)({ name: "profile_id" }),

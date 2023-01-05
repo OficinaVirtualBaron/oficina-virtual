@@ -8,6 +8,9 @@ import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
 import { Category } from "./entities/Category";
 import { Profile } from "./entities/Profile";
+import { ProcedureHistory } from "./entities/ProcedureHistory";
+import { QuestionHistory } from "./entities/QuestionHistory";
+import { QuestionOptionsHistory } from "./entities/QuestionOptionsHistory";
 dotenv.config();
 
 export const AppDataSource = new DataSource ({
@@ -25,7 +28,10 @@ export const AppDataSource = new DataSource ({
         Question_Option, 
         Document, 
         Category, 
-        Profile
+        Profile,
+        ProcedureHistory,
+        QuestionHistory,
+        QuestionOptionsHistory
     ],
     logging: true,
     synchronize: true

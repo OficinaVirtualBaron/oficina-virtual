@@ -15,9 +15,10 @@ const validators_1 = require("../validators/validators");
 // POST
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title } = req.body;
+        const { title, description } = req.body;
         const category = new Category_1.Category();
         category.title = title;
+        category.description = description;
         const categorySaved = yield category.save();
         res.status(200).send({ message: "Categoría creada exitosamente" });
     }

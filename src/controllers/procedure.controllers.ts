@@ -4,10 +4,9 @@ import { Procedure} from "../entities/Procedure";
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
     try {
-        const { title, user_id } = req.body;
+        const { title } = req.body;
         const procedure = new Procedure();
         procedure.title = title;
-        procedure.user_id = user_id;
         const savedProcedure = await procedure.save();
         res.json(savedProcedure);
         console.log(savedProcedure);
@@ -48,11 +47,10 @@ export const getProcedure = async (req: Request, res: Response) => {
 export const updateProcedure = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const { title, status } = req.body;
+        const { title } = req.body;
         const procedure = await Procedure.findOneBy({id: parseInt(req.params.id)});
         if (!procedure) return res.status(404).send({message: "El trámite no existe"});
         procedure.title = title;
-        procedure.status = status;
         await procedure.save();
         return res.status(200).send({message: "Datos del trámite actualizados correctamente"});
     } catch (error) {

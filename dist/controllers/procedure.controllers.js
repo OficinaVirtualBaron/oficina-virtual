@@ -14,10 +14,9 @@ const Procedure_1 = require("../entities/Procedure");
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, user_id } = req.body;
+        const { title } = req.body;
         const procedure = new Procedure_1.Procedure();
         procedure.title = title;
-        procedure.user_id = user_id;
         const savedProcedure = yield procedure.save();
         res.json(savedProcedure);
         console.log(savedProcedure);
@@ -62,12 +61,11 @@ exports.getProcedure = getProcedure;
 const updateProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { title, status } = req.body;
+        const { title } = req.body;
         const procedure = yield Procedure_1.Procedure.findOneBy({ id: parseInt(req.params.id) });
         if (!procedure)
             return res.status(404).send({ message: "El trámite no existe" });
         procedure.title = title;
-        procedure.status = status;
         yield procedure.save();
         return res.status(200).send({ message: "Datos del trámite actualizados correctamente" });
     }

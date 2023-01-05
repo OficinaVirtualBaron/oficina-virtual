@@ -3,11 +3,10 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    OneToMany,
     JoinColumn,
     ManyToOne
 } from "typeorm";
-import { Procedure } from "./Procedure";
+import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({name: "document"})
 export class Document extends BaseEntity {
@@ -20,7 +19,7 @@ export class Document extends BaseEntity {
     @Column()
     path: string;
 
-    @ManyToOne(() => Procedure, (procedure) => procedure.documents)
-    @JoinColumn({name: "procedure_id"})
-    procedure: Procedure;
+    @ManyToOne(() => ProcedureHistory, (procedure_history) => procedure_history.documents)
+    @JoinColumn({name: "procedure_history_id"})
+    procedure_history: ProcedureHistory;
 }

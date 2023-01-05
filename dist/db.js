@@ -14,6 +14,9 @@ const Question_1 = require("./entities/Question");
 const Document_1 = require("./entities/Document");
 const Category_1 = require("./entities/Category");
 const Profile_1 = require("./entities/Profile");
+const ProcedureHistory_1 = require("./entities/ProcedureHistory");
+const QuestionHistory_1 = require("./entities/QuestionHistory");
+const QuestionOptionsHistory_1 = require("./entities/QuestionOptionsHistory");
 dotenv_1.default.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
@@ -30,7 +33,10 @@ exports.AppDataSource = new typeorm_1.DataSource({
         Question_Option_1.Question_Option,
         Document_1.Document,
         Category_1.Category,
-        Profile_1.Profile
+        Profile_1.Profile,
+        ProcedureHistory_1.ProcedureHistory,
+        QuestionHistory_1.QuestionHistory,
+        QuestionOptionsHistory_1.QuestionOptionsHistory
     ],
     logging: true,
     synchronize: true

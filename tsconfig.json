@@ -109,6 +109,6 @@
     "src/apiServices/questions/question.controllers.ts",
     "src/apiServices/users/user.controller.ts"
   ],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist"],
   "files": ["types.d.ts"]
 }

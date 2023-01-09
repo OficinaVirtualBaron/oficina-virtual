@@ -3,9 +3,9 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    JoinTable,
-    ManyToMany,
-    OneToMany
+    OneToMany,
+    ManyToOne,
+    JoinColumn
 } from "typeorm";
 import { Question } from "./Question";
 import { Category } from "./Category";
@@ -16,7 +16,7 @@ export class Procedure extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
   
-    @Column({length: 30, default: "Procedure title"})
+    @Column({length: 30, unique: true})
     title: string;
 
     @Column()
@@ -25,37 +25,13 @@ export class Procedure extends BaseEntity {
     @Column()
     description: string;
 
-    @ManyToMany(() => Question, (question) => question.procedures)
-    @JoinTable({
-        name: "procedure_has_question",
-        joinColumn: {
-            name: "procedure_idquestion",
-            referencedColumnName: "id"
-        },
-        inverseJoinColumn: {
-            name: "question_idprocedure",
-            referencedColumnName: "id"
-        }
-    })
+    @OneToMany(() => Question, (question) => question.procedures)
     question: Question[]
 
-    @ManyToMany(() => Category, (category) => category.procedure)
-    @JoinTable({
-        name: "procedure_has_category",
-        joinColumn: {
-            name: "procedure_id",
-            referencedColumnName: "id"
-        },
-        inverseJoinColumn: {
-            name: "category_id",
-            referencedColumnName: "id"
-        }
-    })
-    categories: Category[];
-
-    
+    @ManyToOne(() => Category, (category) => category.procedure)
+    @JoinColumn({name: "category_id"})
+    categories: Category;
 
     @OneToMany(() => ProcedureHistory, (procedure_history) => procedure_history.procedure)
     procedure_history: ProcedureHistory
-
 }

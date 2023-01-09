@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AppDataSource } from "../db";
 import { Procedure} from "../entities/Procedure";
 import { createCategorySchema } from "../validators/validators";
 
@@ -25,6 +26,20 @@ export const getProcedures = async (req: Request, res: Response) => {
     try {
         const procedures = await Procedure.find();
         if (procedures.length === 0) return res.status(404).send({message: "No se encontraron trámites"});
+        return res.json(procedures);
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({message: error.message});
+        }
+    }
+}
+
+// GET
+export const getProcedureByCategory = async (req: Request, res: Response) => {
+    try {
+        const { category_id } = req.params;
+        const procedures = await Procedure.findBy({category_id: parseInt(req.params.category_id)});
+        if (procedures.length === 0) return res.send({message: "No hay trámites para esta categoría por el momento"});
         return res.json(procedures);
     } catch (error) {
         if (error instanceof Error) {

@@ -22,6 +22,7 @@ export class Question extends BaseEntity {
     @OneToMany(() => Question_Option, (question_option) => question_option.question)
     question_options: Question_Option[]
 
-    @ManyToMany(() => Procedure, (procedure) => procedure.question)
+    @ManyToOne(() => Procedure, (procedure) => procedure.question)
+    @JoinColumn({name: "procedure_id"})
     procedures: Procedure
 }

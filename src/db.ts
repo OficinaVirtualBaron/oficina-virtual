@@ -13,6 +13,7 @@ import { QuestionHistory } from "./entities/QuestionHistory";
 import { QuestionOptionsHistory } from "./entities/QuestionOptionsHistory";
 dotenv.config();
 
+// DATABASE
 export const AppDataSource = new DataSource ({
     type: "mysql",
     host: process.env.DB_HOST,

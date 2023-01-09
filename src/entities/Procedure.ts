@@ -19,6 +19,12 @@ export class Procedure extends BaseEntity {
     @Column({length: 30, default: "Procedure title"})
     title: string;
 
+    @Column()
+    category_id: number;
+
+    @Column()
+    description: string;
+
     @ManyToMany(() => Question, (question) => question.procedures)
     @JoinTable({
         name: "procedure_has_question",
@@ -46,6 +52,8 @@ export class Procedure extends BaseEntity {
         }
     })
     categories: Category[];
+
+    
 
     @OneToMany(() => ProcedureHistory, (procedure_history) => procedure_history.procedure)
     procedure_history: ProcedureHistory

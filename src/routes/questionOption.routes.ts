@@ -5,14 +5,14 @@ import {
     getQuestionOptions,
     updateQuestionOption,
     deleteQuestionOption
-} from "../controllers/question_option.controllers";
+} from "../controllers/questionOption.controllers";
 import { isAdminRole } from "../middlewares/validateAdmin";
 const router = Router();
 
-router.post("/createOption", isAdminRole, createQuestionOption);
-router.get("/getOptions", isAdminRole, getQuestionOptions);
-router.get("/getOption/:id", isAdminRole, getQuestionOption);
-router.put("/updateOption/:id", isAdminRole, updateQuestionOption);
-router.delete("/deleteOption", isAdminRole, deleteQuestionOption);
+router.post("/question_option", isAdminRole, createQuestionOption);
+router.get("/question_option", isAdminRole, getQuestionOptions);
+router.get("/question_option/:id", isAdminRole, getQuestionOption);
+router.put("/question_option/:id", isAdminRole, updateQuestionOption);
+router.delete("/question_option", isAdminRole, deleteQuestionOption);
 
 export default router;

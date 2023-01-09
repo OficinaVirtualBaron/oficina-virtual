@@ -10,10 +10,10 @@ import { isAdminRole } from "../middlewares/validateAdmin";
 import { isUserOrMuni } from "../middlewares/validateMuniAndUser";
 const router = Router();
 
-router.post("/createCategory", isAdminRole, createCategory);
-router.get("/getCategory/:id", isUserOrMuni, getCategory);
-router.get("/getCategories", isUserOrMuni, getCategories);
-router.put("/updateCategory/:id", isAdminRole, updateCategory);
-router.delete("/deleteCategory/:id", isAdminRole, deleteCategory);
+router.post("/category", isAdminRole, createCategory);
+router.get("/category/:id", isUserOrMuni, getCategory);
+router.get("/categories", isUserOrMuni, getCategories);
+router.put("/category/:id", isAdminRole, updateCategory);
+router.delete("/category/:id", isAdminRole, deleteCategory);
 
 export default router;

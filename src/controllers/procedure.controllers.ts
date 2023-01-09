@@ -1,15 +1,18 @@
 import { Request, Response } from "express";
 import { Procedure} from "../entities/Procedure";
+import { createCategorySchema } from "../validators/validators";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
     try {
-        const { title } = req.body;
+        const { title, category_id, description } = req.body;
         const procedure = new Procedure();
+        await createCategorySchema.validateAsync(req.body);
         procedure.title = title;
+        procedure.description = description;
+        procedure.category_id = category_id;
         const savedProcedure = await procedure.save();
         res.json(savedProcedure);
-        console.log(savedProcedure);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

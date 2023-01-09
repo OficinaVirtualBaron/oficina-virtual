@@ -12,7 +12,7 @@ const router = Router();
 
 router.get("/users", isMuniRole, getUsers);
 router.get("/users/:id", isMuniRole, getUser);
-router.put("/updateUser/:id", isUserRole, updateUser);
-router.delete("/deleteUser/:id", isAdminRole, deleteUser);
+router.put("/user/:id", isUserRole, updateUser);
+router.delete("/user/:id", isAdminRole, deleteUser);
 
 export default router;

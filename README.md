@@ -66,6 +66,10 @@ npm run dev para correr el servidor localmente
 - Obtener una categoría por Id:
 ![imagen](https://user-images.githubusercontent.com/116845688/211367607-6f1b089c-b59f-4a0c-bb19-a96ff7270e68.png)
 
+- Obtener trámites por category_id (Query): 
+![imagen](https://user-images.githubusercontent.com/116845688/211396262-bdbe4552-c091-493b-829b-3e3ac3443ed0.png)
+
+
 
 
 

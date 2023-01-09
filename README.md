@@ -1,10 +1,14 @@
 # OFICNA VIRTUAL
 
+# Primero instalar los node_modules
 ```
 npm install para modulos de node
 ```
 
-# Run the local server
+# Conectar a una DB
+![imagen](https://user-images.githubusercontent.com/116845688/211369820-88c1d80b-9937-4ae4-b018-1b3c8da1ef16.png)
+
+# Correr el server localmente
 
 ```
 npm run dev para correr el servidor localmente

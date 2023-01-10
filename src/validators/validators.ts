@@ -44,9 +44,9 @@ export const updateMuniSchema = Joi.object({
 })
 
 export const createStatusValidator = Joi.object({
-    status: Joi.string().min(3).max(15).required()
+    status: Joi.string().min(3).max(9).required()
 })
 
 export const changeStatusValidator = Joi.object({
-    status: Joi.number().max(15).required()
+    status: Joi.number().max(19).required()
 })

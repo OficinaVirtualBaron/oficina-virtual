@@ -4,8 +4,11 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     CreateDateColumn,
-    UpdateDateColumn
+    UpdateDateColumn,
+    JoinColumn,
+    ManyToMany
 } from "typeorm"
+import { Category } from "./Category";
 
 @Entity()
 export class UserMuni extends BaseEntity {
@@ -30,12 +33,13 @@ export class UserMuni extends BaseEntity {
     @Column({default: "MUNI_ROLE"})
     role: string;
 
-    @Column()
-    area: string;
-
     @CreateDateColumn()
     created_at: Date;
 
     @UpdateDateColumn()
     update_at: Date;
+
+    @ManyToMany(() => Category, (categories) => categories.munis)
+    @JoinColumn({name: "category_id"})
+    categories: Category[]
 }

@@ -37,7 +37,7 @@ export class ProcedureHistory extends BaseEntity {
     procedure: Procedure
 
     @OneToMany(() => QuestionHistory, (question_history) => question_history.procedure_history)
-    question_history: QuestionHistory[]
+    question_history: QuestionHistory
 
     @OneToOne(() => Status, (status) => status.procedure_history)
     @JoinColumn({name: "status_id"})

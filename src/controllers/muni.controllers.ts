@@ -18,7 +18,7 @@ export const createMuni = async (req: Request, res: Response) => {
         user.password = bcrypt.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
-        user.area = area;
+        user.categories = area;
         const savedMuni = await user.save();
         res.status(201).send({message: `¡Usuario ${firstname} ${lastname} creado exitosamente!`});
     } catch (error) {

@@ -5,26 +5,24 @@ import {
     BaseEntity,
     ManyToOne,
     JoinColumn,
-    OneToMany
+    OneToMany,
+    CreateDateColumn,
+    UpdateDateColumn,
+    OneToOne
 } from "typeorm";
 import { User } from "./User";
 import { Document } from "./Document";
 import { Procedure } from "./Procedure";
 import { QuestionHistory } from "./QuestionHistory";
+import { Status } from "./Status";
 
 @Entity({ name: "procedure_history" })
 export class ProcedureHistory extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
-  
-    @Column({length: 30, default: "Procedure title"})
-    title: string;
 
     @Column({nullable: true})
     user_id: number;
-
-    @Column({default: "SOLICITADO"})
-    status: string;
 
     @ManyToOne(() => User, (user) => user.procedures_history)
     @JoinColumn({name: "user_id"})
@@ -40,4 +38,14 @@ export class ProcedureHistory extends BaseEntity {
 
     @OneToMany(() => QuestionHistory, (question_history) => question_history.procedure_history)
     question_history: QuestionHistory[]
+
+    @OneToOne(() => Status, (status) => status.procedure_history)
+    @JoinColumn({name: "status_id"})
+    status: Status
+
+    @CreateDateColumn()
+    created_at: Date
+
+    @UpdateDateColumn()
+    updated_at: Date
 }

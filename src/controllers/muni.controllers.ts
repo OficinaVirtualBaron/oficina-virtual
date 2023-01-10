@@ -3,7 +3,7 @@ import { createMuniSchema, updateMuniSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UserMuni } from "../entities/Muni";
-import { tokenSign } from "../helpers/helperToken";
+import { tokenSign } from "../helpers/token";
 const saltround = 10;
 
 // POST

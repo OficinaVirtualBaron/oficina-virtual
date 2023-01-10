@@ -13,7 +13,6 @@ const router = Router();
 
 router.post("/category", isAdminRole, createCategory);
 router.get("/category/:id", isUserOrMuni, getCategory);
-//get tramites por category
 router.get("/category/procedure/:category_id", isUserOrMuni, getProcedureByCategory);
 router.get("/categories", isUserOrMuni, getCategories);
 router.put("/category/:id", isAdminRole, updateCategory);

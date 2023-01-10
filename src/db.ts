@@ -11,6 +11,7 @@ import { Profile } from "./entities/Profile";
 import { ProcedureHistory } from "./entities/ProcedureHistory";
 import { QuestionHistory } from "./entities/QuestionHistory";
 import { QuestionOptionsHistory } from "./entities/QuestionOptionsHistory";
+import { Status } from "./entities/Status";
 dotenv.config();
 
 // DATABASE
@@ -32,7 +33,8 @@ export const AppDataSource = new DataSource ({
         Profile,
         ProcedureHistory,
         QuestionHistory,
-        QuestionOptionsHistory
+        QuestionOptionsHistory,
+        Status
     ],
     logging: true,
     synchronize: true

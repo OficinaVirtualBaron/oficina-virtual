@@ -4,10 +4,10 @@ import { Question } from "../entities/Question";
 // POST
 export const createQuestion = async (req: Request, res: Response) => {
     try {
-        const { title, question_idprocedure } = req.body;
+        const { title, procedure } = req.body;
         const question = new Question();
         question.title = title;
-        question.question_options = question_idprocedure;
+        question.procedure = procedure;
         const savedQuestion = await question.save();
         res.json(savedQuestion);
     } catch (error) {

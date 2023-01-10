@@ -10,7 +10,7 @@ const saltround = 10;
 export const createMuni = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
-        const { firstname, lastname, email, password, cuil, area } = req.body;
+        const { firstname, lastname, email, password, cuil, categories } = req.body;
         const user = new UserMuni();
         const validateMuni = await createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -18,8 +18,8 @@ export const createMuni = async (req: Request, res: Response) => {
         user.password = bcrypt.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
-        user.categories = area;
-        const savedMuni = await user.save();
+        user.categories = categories;
+        await user.save();
         res.status(201).send({message: `¡Usuario ${firstname} ${lastname} creado exitosamente!`});
     } catch (error) {
         if (error instanceof Error) {
@@ -41,6 +41,7 @@ export const getMunis = async (req: Request, res: Response) => {
     }
 }
 
+// GET
 export const getMuni = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -53,6 +54,7 @@ export const getMuni = async (req: Request, res: Response) => {
     }
 }
 
+// PUT
 export const updateMuni = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -72,6 +74,7 @@ export const updateMuni = async (req: Request, res: Response) => {
     }
 }
 
+// DELETE
 export const deleteMuni = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -87,6 +90,7 @@ export const deleteMuni = async (req: Request, res: Response) => {
     }
 }
 
+// POST
 export const signInMuni = async (req: Request, res: Response) => {
     try {
         const { password } = req.body;

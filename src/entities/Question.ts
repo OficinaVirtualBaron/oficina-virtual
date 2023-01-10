@@ -24,5 +24,5 @@ export class Question extends BaseEntity {
 
     @ManyToOne(() => Procedure, (procedure) => procedure.question)
     @JoinColumn({name: "procedure_id"})
-    procedures: Procedure
+    procedure: Procedure
 }

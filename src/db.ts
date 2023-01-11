@@ -8,9 +8,6 @@ import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
 import { Category } from "./entities/Category";
 import { Profile } from "./entities/Profile";
-import { ProcedureHistory } from "./entities/ProcedureHistory";
-import { QuestionHistory } from "./entities/QuestionHistory";
-import { QuestionOptionsHistory } from "./entities/QuestionOptionsHistory";
 import { Status } from "./entities/Status";
 dotenv.config();
 
@@ -31,9 +28,6 @@ export const AppDataSource = new DataSource ({
         Document, 
         Category, 
         Profile,
-        ProcedureHistory,
-        QuestionHistory,
-        QuestionOptionsHistory,
         Status
     ],
     logging: true,

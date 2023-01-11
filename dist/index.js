@@ -24,6 +24,8 @@ const procedures_routes_1 = __importDefault(require("./routes/procedures.routes"
 const categories_routes_1 = __importDefault(require("./routes/categories.routes"));
 const question_routes_1 = __importDefault(require("./routes/question.routes"));
 const questionOption_routes_1 = __importDefault(require("./routes/questionOption.routes"));
+const procedureHistory_routes_1 = __importDefault(require("./routes/procedureHistory.routes"));
+const status_routes_1 = __importDefault(require("./routes/status.routes"));
 const app = (0, express_1.default)();
 // MIDDLEWARES
 app.use((0, cors_1.default)());
@@ -31,8 +33,10 @@ app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 // ROUTES
 app.use("/auth", auth_routes_1.default);
+app.use("/api/status", status_routes_1.default); // solo admin
 app.use("/oficina", user_routes_1.default);
 app.use("/municipales", muni_routes_1.default);
+app.use("/municipales/history", procedureHistory_routes_1.default);
 app.use("/oficina/categories", categories_routes_1.default);
 app.use("/oficina/procedures", procedures_routes_1.default);
 app.use("/oficina/questions", question_routes_1.default);

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Category = void 0;
 const typeorm_1 = require("typeorm");
+const Muni_1 = require("./Muni");
 const Procedure_1 = require("./Procedure");
 let Category = class Category extends typeorm_1.BaseEntity {
 };
@@ -19,7 +20,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Category.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], Category.prototype, "title", void 0);
 __decorate([
@@ -35,9 +36,24 @@ __decorate([
     __metadata("design:type", Date)
 ], Category.prototype, "updated_at", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => Procedure_1.Procedure, (procedure) => procedure.categories),
-    __metadata("design:type", Procedure_1.Procedure)
+    (0, typeorm_1.OneToMany)(() => Procedure_1.Procedure, (procedure) => procedure.categories),
+    __metadata("design:type", Array)
 ], Category.prototype, "procedure", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Muni_1.UserMuni, (munis) => munis.categories),
+    (0, typeorm_1.JoinTable)({
+        name: "category_has_muni",
+        joinColumn: {
+            name: "category_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "muni_id",
+            referencedColumnName: "id"
+        }
+    }),
+    __metadata("design:type", Array)
+], Category.prototype, "munis", void 0);
 Category = __decorate([
     (0, typeorm_1.Entity)({ name: "category" })
 ], Category);

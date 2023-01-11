@@ -11,7 +11,6 @@ import {
 } from "typeorm";
 import { Procedure } from "./Procedure";
 import { Profile } from "../entities/Profile";
-import { ProcedureHistory } from "./ProcedureHistory";
 
 export interface IUser extends Document {
     firstname: string;
@@ -54,9 +53,8 @@ export class User extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProcedureHistory, (procedure_history) => procedure_history.user)
-    @JoinColumn({name: "procedures_id"})
-    procedures_history: ProcedureHistory[]
+    @OneToMany(() => Procedure, (procedures) => procedures.user)
+    procedures: Procedure[]
 
     @OneToOne(() => Profile)
     @JoinColumn({name: "profile_id"})

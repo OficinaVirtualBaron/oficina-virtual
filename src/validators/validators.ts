@@ -42,11 +42,3 @@ export const updateMuniSchema = Joi.object({
     email: Joi.string(),
     area: Joi.string().required(),
 })
-
-export const createStatusValidator = Joi.object({
-    status: Joi.string().min(3).max(9).required()
-})
-
-export const changeStatusValidator = Joi.object({
-    status: Joi.number().max(19).required()
-})

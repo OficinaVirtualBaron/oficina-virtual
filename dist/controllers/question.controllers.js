@@ -14,10 +14,10 @@ const Question_1 = require("../entities/Question");
 // POST
 const createQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, question_idprocedure } = req.body;
+        const { title, procedure } = req.body;
         const question = new Question_1.Question();
         question.title = title;
-        question.question_options = question_idprocedure;
+        question.procedure = procedure;
         const savedQuestion = yield question.save();
         res.json(savedQuestion);
     }

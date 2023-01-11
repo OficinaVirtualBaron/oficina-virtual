@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
 import { Procedure} from "../entities/Procedure";
+import { Question } from "../entities/Question";
 import { createCategorySchema } from "../validators/validators";
 
 // POST

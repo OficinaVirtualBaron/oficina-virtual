@@ -5,7 +5,7 @@ import {
     BaseEntity,
     OneToOne
 } from "typeorm";
-import { ProcedureHistory } from "./ProcedureHistory";
+import { Procedure } from "./Procedure";
 
 @Entity({name: "status"})
 export class Status extends BaseEntity {
@@ -15,6 +15,6 @@ export class Status extends BaseEntity {
     @Column({unique: true})
     status: string;
 
-    @OneToOne(() => ProcedureHistory, (procedure_history) => procedure_history.status)
-    procedure_history: ProcedureHistory
+    @OneToOne(() => Procedure, (procedure) => procedure.status)
+    procedure: Procedure
 }

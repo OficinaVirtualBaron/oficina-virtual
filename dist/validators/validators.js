@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateMuniSchema = exports.createMuniSchema = exports.updateCategorySchema = exports.createCategorySchema = exports.updateUserSchema = exports.createUserSchema = void 0;
+exports.changeStatusValidator = exports.createStatusValidator = exports.updateMuniSchema = exports.createMuniSchema = exports.updateCategorySchema = exports.createCategorySchema = exports.updateUserSchema = exports.createUserSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.createUserSchema = joi_1.default.object({
     firstname: joi_1.default.string().min(3).max(30).required(),
@@ -18,7 +18,9 @@ exports.updateUserSchema = joi_1.default.object({
     email: joi_1.default.string().email(),
 });
 exports.createCategorySchema = joi_1.default.object({
+    user_id: joi_1.default.number().max(30),
     title: joi_1.default.string().min(5).max(30),
+    category_id: joi_1.default.number().max(30),
     description: joi_1.default.string().min(10).max(100),
 });
 exports.updateCategorySchema = joi_1.default.object({
@@ -39,4 +41,10 @@ exports.updateMuniSchema = joi_1.default.object({
     password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).max(30),
     email: joi_1.default.string(),
     area: joi_1.default.string().required(),
+});
+exports.createStatusValidator = joi_1.default.object({
+    status: joi_1.default.string().min(3).max(9).required()
+});
+exports.changeStatusValidator = joi_1.default.object({
+    status: joi_1.default.number().max(19).required()
 });

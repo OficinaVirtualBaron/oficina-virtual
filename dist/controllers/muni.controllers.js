@@ -22,7 +22,7 @@ const saltround = 10;
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const salt = bcrypt_1.default.genSaltSync();
     try {
-        const { firstname, lastname, email, password, cuil, area } = req.body;
+        const { firstname, lastname, email, password, cuil, categories } = req.body;
         const user = new Muni_1.UserMuni();
         const validateMuni = yield validators_1.createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -30,8 +30,8 @@ const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.password = bcrypt_1.default.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
-        user.area = area;
-        const savedMuni = yield user.save();
+        user.categories = categories;
+        yield user.save();
         res.status(201).send({ message: `¡Usuario ${firstname} ${lastname} creado exitosamente!` });
     }
     catch (error) {
@@ -56,6 +56,7 @@ const getMunis = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getMunis = getMunis;
+// GET
 const getMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -69,6 +70,7 @@ const getMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getMuni = getMuni;
+// PUT
 const updateMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -90,6 +92,7 @@ const updateMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateMuni = updateMuni;
+// DELETE
 const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -106,6 +109,7 @@ const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteMuni = deleteMuni;
+// POST
 const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { password } = req.body;

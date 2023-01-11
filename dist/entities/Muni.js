@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserMuni = void 0;
 const typeorm_1 = require("typeorm");
+const Category_1 = require("./Category");
 let UserMuni = class UserMuni extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -42,10 +43,6 @@ __decorate([
     __metadata("design:type", String)
 ], UserMuni.prototype, "role", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], UserMuni.prototype, "area", void 0);
-__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserMuni.prototype, "created_at", void 0);
@@ -53,6 +50,11 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], UserMuni.prototype, "update_at", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => Category_1.Category, (categories) => categories.munis),
+    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
+    __metadata("design:type", Array)
+], UserMuni.prototype, "categories", void 0);
 UserMuni = __decorate([
     (0, typeorm_1.Entity)()
 ], UserMuni);

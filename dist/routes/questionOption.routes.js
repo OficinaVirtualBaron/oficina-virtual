@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const question_option_controllers_1 = require("../controllers/question_option.controllers");
+const questionOption_controllers_1 = require("../controllers/questionOption.controllers");
 const validateAdmin_1 = require("../middlewares/validateAdmin");
 const router = (0, express_1.Router)();
-router.post("/createOption", validateAdmin_1.isAdminRole, question_option_controllers_1.createQuestionOption);
-router.get("/getOptions", validateAdmin_1.isAdminRole, question_option_controllers_1.getQuestionOptions);
-router.get("/getOption/:id", validateAdmin_1.isAdminRole, question_option_controllers_1.getQuestionOption);
-router.put("/updateOption/:id", validateAdmin_1.isAdminRole, question_option_controllers_1.updateQuestionOption);
-router.delete("/deleteOption", validateAdmin_1.isAdminRole, question_option_controllers_1.deleteQuestionOption);
+router.post("/question_option", validateAdmin_1.isAdminRole, questionOption_controllers_1.createQuestionOption);
+router.get("/question_option", validateAdmin_1.isAdminRole, questionOption_controllers_1.getQuestionOptions);
+router.get("/question_option/:id", validateAdmin_1.isAdminRole, questionOption_controllers_1.getQuestionOption);
+router.put("/question_option/:id", validateAdmin_1.isAdminRole, questionOption_controllers_1.updateQuestionOption);
+router.delete("/question_option", validateAdmin_1.isAdminRole, questionOption_controllers_1.deleteQuestionOption);
 exports.default = router;

@@ -21,38 +21,25 @@ __decorate([
     __metadata("design:type", Number)
 ], Procedure.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ length: 30, default: "Procedure title" }),
+    (0, typeorm_1.Column)({ length: 30, unique: true }),
     __metadata("design:type", String)
 ], Procedure.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => Question_1.Question, (question) => question.procedures),
-    (0, typeorm_1.JoinTable)({
-        name: "procedure_has_question",
-        joinColumn: {
-            name: "procedure_idquestion",
-            referencedColumnName: "id"
-        },
-        inverseJoinColumn: {
-            name: "question_idprocedure",
-            referencedColumnName: "id"
-        }
-    }),
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Procedure.prototype, "category_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Procedure.prototype, "description", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Question_1.Question, (question) => question.procedure),
     __metadata("design:type", Array)
 ], Procedure.prototype, "question", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => Category_1.Category, (category) => category.procedure),
-    (0, typeorm_1.JoinTable)({
-        name: "procedure_has_category",
-        joinColumn: {
-            name: "procedure_id",
-            referencedColumnName: "id"
-        },
-        inverseJoinColumn: {
-            name: "category_id",
-            referencedColumnName: "id"
-        }
-    }),
-    __metadata("design:type", Array)
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedure),
+    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
+    __metadata("design:type", Category_1.Category)
 ], Procedure.prototype, "categories", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedure_history) => procedure_history.procedure),

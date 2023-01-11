@@ -9,17 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedures = exports.createProcedure = void 0;
+exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
+const validators_1 = require("../validators/validators");
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title } = req.body;
+        const { title, category_id, description } = req.body;
         const procedure = new Procedure_1.Procedure();
+        yield validators_1.createCategorySchema.validateAsync(req.body);
         procedure.title = title;
+        procedure.description = description;
+        procedure.category_id = category_id;
         const savedProcedure = yield procedure.save();
         res.json(savedProcedure);
-        console.log(savedProcedure);
     }
     catch (error) {
         if (error instanceof Error) {
@@ -43,6 +46,22 @@ const getProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getProcedures = getProcedures;
+// GET
+const getProcedureByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { category_id } = req.params;
+        const procedures = yield Procedure_1.Procedure.findBy({ category_id: parseInt(req.params.category_id) });
+        if (procedures.length === 0)
+            return res.send({ message: "No hay trámites para esta categoría por el momento" });
+        return res.json(procedures);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+});
+exports.getProcedureByCategory = getProcedureByCategory;
 // GET
 const getProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

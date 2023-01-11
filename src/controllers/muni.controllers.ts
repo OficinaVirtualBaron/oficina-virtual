@@ -12,7 +12,7 @@ export const createMuni = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password, cuil, categories } = req.body;
         const user = new UserMuni();
-        const validateMuni = await createMuniSchema.validateAsync(req.body);
+        await createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt.hashSync(password, salt);

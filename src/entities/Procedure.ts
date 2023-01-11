@@ -5,11 +5,14 @@ import {
     BaseEntity,
     OneToMany,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    OneToOne
 } from "typeorm";
+import { Document } from "./Document";
+import { Status } from "./Status";
 import { Question } from "./Question";
 import { Category } from "./Category";
-import { ProcedureHistory } from "./ProcedureHistory";
+import { User } from "./User";
 
 @Entity({ name: "procedure" })
 export class Procedure extends BaseEntity {
@@ -25,13 +28,20 @@ export class Procedure extends BaseEntity {
     @Column()
     description: string;
 
+    @ManyToOne(() => User, (user) => user.procedures)
+    user: User
+
     @OneToMany(() => Question, (question) => question.procedure)
     question: Question[]
+
+    @OneToMany(() => Document, (documents) => documents.procedure)
+    documents: Document[]
 
     @ManyToOne(() => Category, (category) => category.procedure)
     @JoinColumn({name: "category_id"})
     categories: Category;
 
-    @OneToMany(() => ProcedureHistory, (procedure_history) => procedure_history.procedure)
-    procedure_history: ProcedureHistory
+    @OneToOne(() => Status, (status) => status.procedure)
+    @JoinColumn({name: "status_id"})
+    status: Status
 }

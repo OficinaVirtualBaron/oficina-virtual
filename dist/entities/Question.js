@@ -28,9 +28,10 @@ __decorate([
     __metadata("design:type", Array)
 ], Question.prototype, "question_options", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => Procedure_1.Procedure, (procedure) => procedure.question),
+    (0, typeorm_1.ManyToOne)(() => Procedure_1.Procedure, (procedure) => procedure.question),
+    (0, typeorm_1.JoinColumn)({ name: "procedure_id" }),
     __metadata("design:type", Procedure_1.Procedure)
-], Question.prototype, "procedures", void 0);
+], Question.prototype, "procedure", void 0);
 Question = __decorate([
     (0, typeorm_1.Entity)({ name: "question" })
 ], Question);

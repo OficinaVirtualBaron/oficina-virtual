@@ -10,7 +10,6 @@ import proceduresRoutes from "./routes/procedures.routes";
 import categoryRoutes from "./routes/categories.routes";
 import questionsRoutes from "./routes/question.routes";
 import optionsRoutes from "./routes/questionOption.routes";
-import procedureHistoryRoutes from "./routes/procedureHistory.routes";
 import statusRoutes from "./routes/status.routes";
 const app = express();
 
@@ -24,7 +23,6 @@ app.use("/auth", authRoutes);
 app.use("/api/status", statusRoutes); // solo admin
 app.use("/oficina", userRoutes);
 app.use("/municipales", muniRoutes);
-app.use("/municipales/history", procedureHistoryRoutes);
 app.use("/oficina/categories", categoryRoutes);
 app.use("/oficina/procedures", proceduresRoutes);
 app.use("/oficina/questions", questionsRoutes);

@@ -33,6 +33,9 @@ export const createMuniSchema = Joi.object({
     email: Joi.string().email().required(),
     cuil: Joi.string().min(11).max(11).required(),
     area: Joi.string().required(),
+    required: Joi.number(),
+    inprocess: Joi.number(),
+    finalized: Joi.number()
 })
 
 export const updateMuniSchema = Joi.object({

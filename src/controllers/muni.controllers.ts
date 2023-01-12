@@ -10,7 +10,7 @@ const saltround = 10;
 export const createMuni = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
-        const { firstname, lastname, email, password, cuil, categories } = req.body;
+        const { firstname, lastname, email, password, cuil, categories, required, inprocess, finalized } = req.body;
         const user = new UserMuni();
         await createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
@@ -19,6 +19,9 @@ export const createMuni = async (req: Request, res: Response) => {
         user.email = email;
         user.cuil = cuil;
         user.categories = categories;
+        user.required = required;
+        user.inprocess = inprocess;
+        user.finalized = finalized;
         await user.save();
         res.status(201).send({message: `¡Usuario ${firstname} ${lastname} creado exitosamente!`});
     } catch (error) {

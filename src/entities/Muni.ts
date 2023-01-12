@@ -33,6 +33,15 @@ export class UserMuni extends BaseEntity {
     @Column({default: "MUNI_ROLE"})
     role: string;
 
+    @Column()
+    required: number;
+
+    @Column()
+    inprocess: number;
+
+    @Column()
+    finalized: number;
+
     @CreateDateColumn()
     created_at: Date;
 

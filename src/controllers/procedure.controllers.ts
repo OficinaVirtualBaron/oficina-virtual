@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { AppDataSource } from "../db";
 import { Procedure} from "../entities/Procedure";
-import { Question } from "../entities/Question";
 import { createCategorySchema } from "../validators/validators";
 
 // POST
@@ -15,7 +13,6 @@ export const createProcedure = async (req: Request, res: Response) => {
             procedure.description = description;
             procedure.category_id = category_id;
             const savedProcedure = await procedure.save();
-            console.log(savedProcedure);
             return res.status(200).send({message: "Trámite creado", savedProcedure});
         } catch (error) {
             return res.send({message: "Error. Alguno de los campos es incorrecto o está mal"});

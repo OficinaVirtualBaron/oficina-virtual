@@ -10,7 +10,6 @@ import {
     OneToOne
 } from "typeorm";
 import { Procedure } from "./Procedure";
-import { Profile } from "../entities/Profile";
 
 export interface IUser extends Document {
     firstname: string;
@@ -55,8 +54,4 @@ export class User extends BaseEntity {
 
     @OneToMany(() => Procedure, (procedures) => procedures.user)
     procedures: Procedure[]
-
-    @OneToOne(() => Profile)
-    @JoinColumn({name: "profile_id"})
-    profile: Profile;
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Procedure} from "../entities/Procedure";
 import { createCategorySchema } from "../validators/validators";
+import { createQuestionOption } from "./questionOption.controllers";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -23,6 +24,26 @@ export const createProcedure = async (req: Request, res: Response) => {
         }
     }
 }
+
+// POST
+export const saveProcedure = async (req: Request, res: Response) => {
+    const templateProcedure = req.body.savedProcedure;
+    console.log("template: ", templateProcedure);
+    for (var question of templateProcedure) {
+        var questionId = await createProcedure;
+        console.log("question id: ", questionId);
+        if (questionId != null) {
+            for (var question_option of question.question_option) {
+                var question_optionId = await createQuestionOption;
+                console.log("question_option_id: ", question_optionId);
+            }
+        } else {
+            res.status(500).send("Error, questionId null");
+        }
+    }
+    res.status(200).send({message: "Todo salió bien"});
+}
+
 
 // GET
 export const getProcedures = async (req: Request, res: Response) => {

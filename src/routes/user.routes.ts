@@ -8,11 +8,12 @@ import {
 import { isUserRole } from "../middlewares/validateUser";
 import { isMuniRole } from "../middlewares/validateMuni";
 import { isAdminRole } from "../middlewares/validateAdmin";
+import { validateId } from "../middlewares/validateId";
 const router = Router();
 
 router.get("/users", isMuniRole, getUsers);
-router.get("/users/:id", isMuniRole, getUser);
-router.put("/user/:id", isUserRole, updateUser);
+router.get("/users/:id", isUserRole, validateId, getUser);
+router.put("/user/:id", isUserRole, validateId, updateUser);
 router.delete("/user/:id", isAdminRole, deleteUser);
 
 export default router;

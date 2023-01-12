@@ -7,7 +7,6 @@ import { Question_Option } from "./entities/Question_Option";
 import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
 import { Category } from "./entities/Category";
-import { Profile } from "./entities/Profile";
 import { Status } from "./entities/Status";
 dotenv.config();
 
@@ -26,8 +25,7 @@ export const AppDataSource = new DataSource ({
         Question, 
         Question_Option, 
         Document, 
-        Category, 
-        Profile,
+        Category,
         Status
     ],
     logging: true,

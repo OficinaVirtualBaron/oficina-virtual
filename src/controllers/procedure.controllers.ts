@@ -8,13 +8,18 @@ import { createCategorySchema } from "../validators/validators";
 export const createProcedure = async (req: Request, res: Response) => {
     try {
         const { title, category_id, description } = req.body;
-        const procedure = new Procedure();
         await createCategorySchema.validateAsync(req.body);
-        procedure.title = title;
-        procedure.description = description;
-        procedure.category_id = category_id;
-        const savedProcedure = await procedure.save();
-        res.json(savedProcedure);
+        try {
+            const procedure = new Procedure();
+            procedure.title = title;
+            procedure.description = description;
+            procedure.category_id = category_id;
+            const savedProcedure = await procedure.save();
+            console.log(savedProcedure);
+            return res.status(200).send({message: "Trámite creado", savedProcedure});
+        } catch (error) {
+            return res.send({message: "Error. Alguno de los campos es incorrecto o está mal"});
+        }
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({message: error.message});

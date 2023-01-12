@@ -24,7 +24,7 @@ const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { firstname, lastname, email, password, cuil, categories } = req.body;
         const user = new Muni_1.UserMuni();
-        const validateMuni = yield validators_1.createMuniSchema.validateAsync(req.body);
+        yield validators_1.createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt_1.default.hashSync(password, salt);

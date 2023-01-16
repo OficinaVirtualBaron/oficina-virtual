@@ -6,8 +6,6 @@ export const createQuestionOption = async (req: Request, res: Response) => {
     try {
         const { title, enabled, question_option_id } = req.body;
         const option = new Question_Option();
-        option.title = title;
-        option.enabled = enabled;
         option.question = question_option_id;
         const savedOption = await option.save();
         res.json(savedOption);
@@ -51,7 +49,6 @@ export const updateQuestionOption = async (req: Request, res: Response) => {
         const { title } = req.body;
         const option = await Question_Option.findOneBy({id: parseInt(req.params.id)});
         if (!option) return res.status(404).send({message: "La opción no está disponible"});
-        option.title = title;
         await option.save();
         return res.status(200).send({message: "Título de la opción actualizado correctamente"});
     } catch (error) {

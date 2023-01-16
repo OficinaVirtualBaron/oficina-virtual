@@ -34,6 +34,9 @@ exports.createMuniSchema = joi_1.default.object({
     email: joi_1.default.string().email().required(),
     cuil: joi_1.default.string().min(11).max(11).required(),
     area: joi_1.default.string().required(),
+    required: joi_1.default.number(),
+    inprocess: joi_1.default.number(),
+    finalized: joi_1.default.number()
 });
 exports.updateMuniSchema = joi_1.default.object({
     firstname: joi_1.default.string().min(3).max(30),

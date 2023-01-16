@@ -17,7 +17,7 @@ const isAdminRole = (req, res, next) => {
             next();
         }
         else {
-            res.status(401).json("Usted no es administrador. Acceso denegado");
+            res.status(401).send({ message: "No posee un rol autorizado. Acceso denegado" });
         }
     }
     catch (error) {

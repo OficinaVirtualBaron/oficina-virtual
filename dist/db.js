@@ -13,7 +13,6 @@ const Question_Option_1 = require("./entities/Question_Option");
 const Question_1 = require("./entities/Question");
 const Document_1 = require("./entities/Document");
 const Category_1 = require("./entities/Category");
-const Profile_1 = require("./entities/Profile");
 const Status_1 = require("./entities/Status");
 dotenv_1.default.config();
 // DATABASE
@@ -32,7 +31,6 @@ exports.AppDataSource = new typeorm_1.DataSource({
         Question_Option_1.Question_Option,
         Document_1.Document,
         Category_1.Category,
-        Profile_1.Profile,
         Status_1.Status
     ],
     logging: true,

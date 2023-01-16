@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const Procedure_1 = require("./Procedure");
-const Profile_1 = require("../entities/Profile");
 let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -59,11 +58,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Procedure_1.Procedure, (procedures) => procedures.user),
     __metadata("design:type", Array)
 ], User.prototype, "procedures", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => Profile_1.Profile),
-    (0, typeorm_1.JoinColumn)({ name: "profile_id" }),
-    __metadata("design:type", Profile_1.Profile)
-], User.prototype, "profile", void 0);
 User = __decorate([
     (0, typeorm_1.Entity)()
 ], User);

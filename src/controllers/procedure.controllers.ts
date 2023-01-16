@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Procedure} from "../entities/Procedure";
+import { Question } from "../entities/Question";
+import { Question_Option } from "../entities/Question_Option";
 import { createCategorySchema } from "../validators/validators";
 import { createQuestionOption } from "./questionOption.controllers";
 
@@ -25,24 +27,19 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
-// POST
-export const saveProcedure = async (req: Request, res: Response) => {
-    const templateProcedure = req.body.savedProcedure;
-    console.log("template: ", templateProcedure);
-    for (var question of templateProcedure) {
-        var questionId = await createProcedure;
-        console.log("question id: ", questionId);
-        if (questionId != null) {
-            for (var question_option of question.question_option) {
-                var question_optionId = await createQuestionOption;
-                console.log("question_option_id: ", question_optionId);
-            }
-        } else {
-            res.status(500).send("Error, questionId null");
-        }
-    }
-    res.status(200).send({message: "Todo salió bien"});
-}
+// POST PARA GUARDAR Y ENVIAR TRÁMITE RESUELTO A LA DB
+// export const sendProcedure = async (req: Request, res: Response) => {
+//     const procedure = new Procedure();
+//     for (var question in req.body.questions) {
+        
+//         for(var questionOptions in questionOptions) {
+
+//             for(var option in questionOptions) {
+
+//             }
+//         }
+//     }
+// }
 
 
 // GET

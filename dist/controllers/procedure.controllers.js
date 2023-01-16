@@ -9,20 +9,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.createProcedure = void 0;
+exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.saveProcedure = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
 const validators_1 = require("../validators/validators");
+const questionOption_controllers_1 = require("./questionOption.controllers");
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, category_id, description } = req.body;
-        const procedure = new Procedure_1.Procedure();
         yield validators_1.createCategorySchema.validateAsync(req.body);
-        procedure.title = title;
-        procedure.description = description;
-        procedure.category_id = category_id;
-        const savedProcedure = yield procedure.save();
-        res.json(savedProcedure);
+        try {
+            const procedure = new Procedure_1.Procedure();
+            procedure.title = title;
+            procedure.description = description;
+            procedure.category_id = category_id;
+            const savedProcedure = yield procedure.save();
+            return res.status(200).send({ message: "Trámite creado", savedProcedure });
+        }
+        catch (error) {
+            return res.send({ message: "Error. Alguno de los campos es incorrecto o está mal" });
+        }
     }
     catch (error) {
         if (error instanceof Error) {
@@ -31,6 +37,26 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.createProcedure = createProcedure;
+// POST
+const saveProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const templateProcedure = req.body.savedProcedure;
+    console.log("template: ", templateProcedure);
+    for (var question of templateProcedure) {
+        var questionId = yield exports.createProcedure;
+        console.log("question id: ", questionId);
+        if (questionId != null) {
+            for (var question_option of question.question_option) {
+                var question_optionId = yield questionOption_controllers_1.createQuestionOption;
+                console.log("question_option_id: ", question_optionId);
+            }
+        }
+        else {
+            res.status(500).send("Error, questionId null");
+        }
+    }
+    res.status(200).send({ message: "Todo salió bien" });
+});
+exports.saveProcedure = saveProcedure;
 // GET
 const getProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

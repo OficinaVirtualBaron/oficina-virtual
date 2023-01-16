@@ -8,6 +8,7 @@ import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
 import { Category } from "./entities/Category";
 import { Status } from "./entities/Status";
+import { Option } from "./entities/Option";
 dotenv.config();
 
 // DATABASE
@@ -26,7 +27,8 @@ export const AppDataSource = new DataSource ({
         Question_Option, 
         Document, 
         Category,
-        Status
+        Status,
+        Option
     ],
     logging: true,
     synchronize: true

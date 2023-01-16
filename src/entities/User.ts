@@ -5,9 +5,7 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToMany,
-    JoinColumn,
-    OneToOne
+    OneToMany
 } from "typeorm";
 import { Procedure } from "./Procedure";
 

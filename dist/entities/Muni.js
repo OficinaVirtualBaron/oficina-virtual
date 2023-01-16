@@ -43,6 +43,18 @@ __decorate([
     __metadata("design:type", String)
 ], UserMuni.prototype, "role", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], UserMuni.prototype, "required", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], UserMuni.prototype, "inprocess", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], UserMuni.prototype, "finalized", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserMuni.prototype, "created_at", void 0);

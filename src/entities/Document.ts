@@ -6,7 +6,7 @@ import {
     JoinColumn,
     ManyToOne
 } from "typeorm";
-import { Procedure } from "./Procedure";
+import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({name: "document"})
 export class Document extends BaseEntity {
@@ -19,6 +19,6 @@ export class Document extends BaseEntity {
     @Column()
     path: string;
 
-    @ManyToOne(() => Procedure, (procedure) => procedure.documents)
-    procedure: Procedure
+    @ManyToOne(() => ProcedureHistory, (procedure) => procedure.documents)
+    procedure: ProcedureHistory
 }

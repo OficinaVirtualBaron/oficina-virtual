@@ -22,10 +22,3 @@ export class Question_Option extends BaseEntity{
     @OneToMany(() => Option, (options) => options.question_option)
     options: Option[]
 }
-
-// For (var question in req.body.questions){
-//     For (var questionOptions in       questionOptions){
-//        For (var option in questionOptions){
-//      }
-//     }
-// }  

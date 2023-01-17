@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { UserMuni } from "./Muni";
 import { Procedure } from "./Procedure";
+import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({name: "category"})
 export class Category extends BaseEntity {
@@ -29,8 +30,8 @@ export class Category extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date
 
-    @OneToMany(() => Procedure, (procedure) => procedure.categories)
-    procedure: Procedure[];
+    @OneToMany(() => ProcedureHistory, (procedure) => procedure.categories)
+    procedure: ProcedureHistory[];
 
     @ManyToMany(() => UserMuni, (munis) => munis.categories)
     @JoinTable({

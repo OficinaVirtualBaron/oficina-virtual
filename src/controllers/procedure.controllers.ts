@@ -3,6 +3,9 @@ import { Procedure } from "../entities/Procedure";
 import { Question } from "../entities/Question";
 import { Option } from "../entities/Option";
 import { createCategorySchema } from "../validators/validators";
+import { ProcedureHistory } from "../entities/ProcedureHistory";
+import { QuestionHistory } from "../entities/QuestionHistory";
+import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -25,28 +28,6 @@ export const createProcedure = async (req: Request, res: Response) => {
         }
     }
 }
-
-
-// export const sendProcedure = async (req: Request, res: Response) => {
-    
-// }
-
-
-// POST PRUEBA PARA MANDAR UN TRÁMITE
-// export const sendProcedure = async (req: Request, res: Response) => {
-//     try {
-//         const { procedureId, userId, question_option } = req.body;
-//         const procedureSaved = new ProcedureHistory();
-//         procedureSaved.procedure = procedureId;
-//         procedureSaved.user = userId;
-//         procedureId.question_option = question_option;
-//         const result = await procedureAnswer.save();
-//     } catch (error) {
-//         return res.send("ERROR. NO FUNCIONA");
-//     }
-    
-// }
-
 
 // GET
 export const getProcedures = async (req: Request, res: Response) => {
@@ -122,33 +103,38 @@ export const deleteProcedure = async (req: Request, res: Response) => {
 }
 
 // POST
-export const saveProcedure = async (req: Request, res: Response) => {
-  try {
-    // Create new procedure
-    const procedure = new Procedure();
-    procedure.title = req.body.procedureTitle;
-    procedure.description = req.body.procedureDescription;
-    procedure.category_id = req.body.categoryId;
-    await procedure.save();
+export const submitProcedure = async (req: Request, res: Response) => {
+    try {
+        // Create new procedure
+        const procedure = new ProcedureHistory();
+        procedure.user = req.body.user_id;
+        procedure.title = req.body.procedureTitle;
+        procedure.description = req.body.procedureDescription;
+        procedure.category_id = req.body.categoryId;
+        procedure.status = req.body.status;
+        await procedure.save();
 
-    // Create new questions and options
-    req.body.questions.forEach(async (question: any) => {
-      const newQuestion = new Question();
-      newQuestion.title = question.title;
-      newQuestion.procedure = procedure;
-      await newQuestion.save();
+        // Create questions and options
+        req.body.questions.forEach(async (question: any) => {
+            const newQuestion = new QuestionHistory();
+            newQuestion.title = question.title;
+            newQuestion.procedure = procedure;
+            await newQuestion.save();
+            //console.log("newQuestion " + newQuestion);
 
-      question.options.forEach(async (option: any) => {
-        const newOption = new Option();
-        newOption.title = option.title;
-        newOption.enabled = option.enabled;
-        newOption.question_option = option.question_option;
-        await newOption.save();
-      });
-    });
-
-    res.status(201).send("Procedure and questions created");
-  } catch (error) {
-    return error;
-  }
+            question.options.forEach(async (option: any) => {
+                const newOption = new QuestionOptionHistory();
+                newOption.title = option.title;
+                newOption.enabled = option.enabled;
+                newOption.question = newQuestion;
+                await newOption.save();
+                //console.log("newOption " + newOption.question);
+            });
+        });
+        return res.status(201).send("Trámite creado correctamente. ¡Gracias vecino!");
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.json({message: error.message});
+        }
+    }
 }

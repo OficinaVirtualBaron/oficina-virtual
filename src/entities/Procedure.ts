@@ -28,20 +28,6 @@ export class Procedure extends BaseEntity {
     @Column()
     description: string;
 
-    @ManyToOne(() => User, (user) => user.procedures)
-    user: User
-
     @OneToMany(() => Question, (question) => question.procedure)
-    question: Question[]
-
-    @OneToMany(() => Document, (documents) => documents.procedure)
-    documents: Document[]
-
-    @ManyToOne(() => Category, (category) => category.procedure)
-    @JoinColumn({name: "category_id"})
-    categories: Category;
-
-    @OneToOne(() => Status, (status) => status.procedure)
-    @JoinColumn({name: "status_id"})
-    status: Status
+    question: Question[];
 }

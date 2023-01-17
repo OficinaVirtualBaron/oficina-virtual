@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Procedure } from "../entities/Procedure";
+import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { createCategorySchema } from "../validators/validators";
 
 // POST
@@ -24,7 +25,31 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
-// POST PARA GUARDAR Y ENVIAR TRÁMITE RESUELTO A LA DB
+
+
+
+
+
+
+// POST PRUEBA PARA MANDAR UN TRÁMITE
+// export const sendProcedure = async (req: Request, res: Response) => {
+//     try {
+//         const { procedureId, userId, question_option } = req.body;
+//         const procedureSaved = new ProcedureHistory();
+//         procedureSaved.procedure = procedureId;
+//         procedureSaved.user = userId;
+//         procedureId.question_option = question_option;
+//         const result = await procedureAnswer.save();
+//     } catch (error) {
+//         return res.send("ERROR. NO FUNCIONA");
+//     }
+    
+// }
+
+
+
+
+
 
 
 

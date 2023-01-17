@@ -45,3 +45,9 @@ export const updateMuniSchema = Joi.object({
     email: Joi.string(),
     area: Joi.string().required(),
 })
+
+export const createOptionSchema = Joi.object({
+    title: Joi.string().min(2).max(30),
+    enabled: Joi.boolean(),
+    question_option: Joi.number().min(1)
+})

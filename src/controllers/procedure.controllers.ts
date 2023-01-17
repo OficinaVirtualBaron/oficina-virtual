@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Procedure } from "../entities/Procedure";
-import { ProcedureHistory } from "../entities/ProcedureHistory";
+import { Question } from "../entities/Question";
+import { Option } from "../entities/Option";
 import { createCategorySchema } from "../validators/validators";
 
 // POST
@@ -26,9 +27,9 @@ export const createProcedure = async (req: Request, res: Response) => {
 }
 
 
-
-
-
+// export const sendProcedure = async (req: Request, res: Response) => {
+    
+// }
 
 
 // POST PRUEBA PARA MANDAR UN TRÁMITE
@@ -45,12 +46,6 @@ export const createProcedure = async (req: Request, res: Response) => {
 //     }
     
 // }
-
-
-
-
-
-
 
 
 // GET
@@ -124,4 +119,36 @@ export const deleteProcedure = async (req: Request, res: Response) => {
             return res.status(500).json({ message: error.message });
         }
     }
+}
+
+// POST
+export const saveProcedure = async (req: Request, res: Response) => {
+  try {
+    // Create new procedure
+    const procedure = new Procedure();
+    procedure.title = req.body.procedureTitle;
+    procedure.description = req.body.procedureDescription;
+    procedure.category_id = req.body.categoryId;
+    await procedure.save();
+
+    // Create new questions and options
+    req.body.questions.forEach(async (question: any) => {
+      const newQuestion = new Question();
+      newQuestion.title = question.title;
+      newQuestion.procedure = procedure;
+      await newQuestion.save();
+
+      question.options.forEach(async (option: any) => {
+        const newOption = new Option();
+        newOption.title = option.title;
+        newOption.enabled = option.enabled;
+        newOption.question_option = option.question_option;
+        await newOption.save();
+      });
+    });
+
+    res.status(201).send("Procedure and questions created");
+  } catch (error) {
+    return error;
+  }
 }

@@ -4,13 +4,16 @@ import {
     getProcedures,
     getProcedure,
     updateProcedure,
-    deleteProcedure
+    deleteProcedure,
+    saveProcedure
 } from "../controllers/procedure.controllers";
 import { isAdminRole } from "../middlewares/validateAdmin";
 import { isUserOrMuni } from "../middlewares/validateMuniAndUser";
 const router = Router();
 
 router.post("/procedure", isAdminRole, createProcedure);
+// PRUEBA DE PRESENTAR UN TRAMITE
+router.post("/submit-procedure", isAdminRole, saveProcedure);
 router.get("/procedures", isUserOrMuni, getProcedures);
 router.get("/procedure/:id", isUserOrMuni, getProcedure);
 router.put("/procedure/:id", isAdminRole, updateProcedure);

@@ -3,7 +3,7 @@ import { User } from "./entities/User";
 import { UserMuni } from "./entities/Muni";
 import { Procedure } from "./entities/Procedure";
 import dotenv from "dotenv";
-import { Question_Option } from "./entities/Question_Option";
+import { Question_Option } from "./entities/QuestionOption";
 import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
 import { Category } from "./entities/Category";

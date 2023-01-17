@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { Category } from "./Category";
 import { Procedure } from "./Procedure";
-import { Question_Option } from "./Question_Option";
+import { Question_Option } from "./QuestionOption";
 
 @Entity({name: "question"})
 export class Question extends BaseEntity {

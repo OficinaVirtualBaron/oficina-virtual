@@ -8,7 +8,7 @@ import {
     ManyToOne,
     JoinColumn
 } from "typeorm";
-import { Question_Option } from "./Question_Option";
+import { Question_Option } from "./QuestionOption";
 
 @Entity()
 export class Option extends BaseEntity {

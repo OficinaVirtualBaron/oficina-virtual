@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateMuniSchema = exports.createMuniSchema = exports.updateCategorySchema = exports.createCategorySchema = exports.updateUserSchema = exports.createUserSchema = void 0;
+exports.createOptionSchema = exports.updateMuniSchema = exports.createMuniSchema = exports.updateCategorySchema = exports.createCategorySchema = exports.updateUserSchema = exports.createUserSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.createUserSchema = joi_1.default.object({
     firstname: joi_1.default.string().min(3).max(30).required(),
@@ -44,4 +44,9 @@ exports.updateMuniSchema = joi_1.default.object({
     password: joi_1.default.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).min(8).max(30),
     email: joi_1.default.string(),
     area: joi_1.default.string().required(),
+});
+exports.createOptionSchema = joi_1.default.object({
+    title: joi_1.default.string().min(2).max(30),
+    enabled: joi_1.default.boolean(),
+    question_option: joi_1.default.number().min(1)
 });

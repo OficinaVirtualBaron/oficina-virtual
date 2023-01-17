@@ -11,11 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Procedure = void 0;
 const typeorm_1 = require("typeorm");
-const Document_1 = require("./Document");
-const Status_1 = require("./Status");
 const Question_1 = require("./Question");
-const Category_1 = require("./Category");
-const User_1 = require("./User");
 let Procedure = class Procedure extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -35,27 +31,9 @@ __decorate([
     __metadata("design:type", String)
 ], Procedure.prototype, "description", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.procedures),
-    __metadata("design:type", User_1.User)
-], Procedure.prototype, "user", void 0);
-__decorate([
     (0, typeorm_1.OneToMany)(() => Question_1.Question, (question) => question.procedure),
     __metadata("design:type", Array)
 ], Procedure.prototype, "question", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => Document_1.Document, (documents) => documents.procedure),
-    __metadata("design:type", Array)
-], Procedure.prototype, "documents", void 0);
-__decorate([
-    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedure),
-    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
-    __metadata("design:type", Category_1.Category)
-], Procedure.prototype, "categories", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => Status_1.Status, (status) => status.procedure),
-    (0, typeorm_1.JoinColumn)({ name: "status_id" }),
-    __metadata("design:type", Status_1.Status)
-], Procedure.prototype, "status", void 0);
 Procedure = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure" })
 ], Procedure);

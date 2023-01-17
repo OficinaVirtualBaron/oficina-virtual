@@ -24,14 +24,14 @@ __decorate([
     __metadata("design:type", String)
 ], QuestionHistory.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => QuestionOptionsHistory_1.QuestionOptionsHistory, (question_option_history) => question_option_history.question_history),
-    __metadata("design:type", QuestionOptionsHistory_1.QuestionOptionsHistory)
+    (0, typeorm_1.OneToMany)(() => QuestionOptionsHistory_1.QuestionOptionHistory, (question_option_history) => question_option_history.question),
+    __metadata("design:type", Array)
 ], QuestionHistory.prototype, "question_option_history", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => ProcedureHistory_1.ProcedureHistory, (procedure_history) => procedure_history.question_history),
-    (0, typeorm_1.JoinColumn)({ name: "procedure_history_id" }),
+    (0, typeorm_1.ManyToOne)(() => ProcedureHistory_1.ProcedureHistory, (procedure) => procedure.questions),
+    (0, typeorm_1.JoinColumn)({ name: "procedure_id" }),
     __metadata("design:type", ProcedureHistory_1.ProcedureHistory)
-], QuestionHistory.prototype, "procedure_history", void 0);
+], QuestionHistory.prototype, "procedure", void 0);
 QuestionHistory = __decorate([
     (0, typeorm_1.Entity)({ name: "question_history" })
 ], QuestionHistory);

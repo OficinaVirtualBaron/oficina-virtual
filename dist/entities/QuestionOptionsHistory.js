@@ -9,29 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.QuestionOptionsHistory = void 0;
+exports.QuestionOptionHistory = void 0;
 const typeorm_1 = require("typeorm");
 const QuestionHistory_1 = require("./QuestionHistory");
-let QuestionOptionsHistory = class QuestionOptionsHistory extends typeorm_1.BaseEntity {
+let QuestionOptionHistory = class QuestionOptionHistory extends typeorm_1.BaseEntity {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
-], QuestionOptionsHistory.prototype, "id", void 0);
+], QuestionOptionHistory.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], QuestionOptionsHistory.prototype, "title", void 0);
+], QuestionOptionHistory.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
-], QuestionOptionsHistory.prototype, "enable", void 0);
+], QuestionOptionHistory.prototype, "enabled", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => QuestionHistory_1.QuestionHistory, (question_history) => question_history.question_option_history),
-    (0, typeorm_1.JoinColumn)({ name: "option_historyid" }),
+    (0, typeorm_1.ManyToOne)(() => QuestionHistory_1.QuestionHistory, (question) => question.question_option_history),
+    (0, typeorm_1.JoinColumn)({ name: "question_history_id" }),
     __metadata("design:type", QuestionHistory_1.QuestionHistory)
-], QuestionOptionsHistory.prototype, "question_history", void 0);
-QuestionOptionsHistory = __decorate([
-    (0, typeorm_1.Entity)({ name: "question_option__history" })
-], QuestionOptionsHistory);
-exports.QuestionOptionsHistory = QuestionOptionsHistory;
+], QuestionOptionHistory.prototype, "question", void 0);
+QuestionOptionHistory = __decorate([
+    (0, typeorm_1.Entity)({ name: "question_option_history" })
+], QuestionOptionHistory);
+exports.QuestionOptionHistory = QuestionOptionHistory;

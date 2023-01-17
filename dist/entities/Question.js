@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Question = void 0;
 const typeorm_1 = require("typeorm");
+const Category_1 = require("./Category");
 const Procedure_1 = require("./Procedure");
 const Question_Option_1 = require("./Question_Option");
 let Question = class Question extends typeorm_1.BaseEntity {
@@ -32,6 +33,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: "procedure_id" }),
     __metadata("design:type", Procedure_1.Procedure)
 ], Question.prototype, "procedure", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedure),
+    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
+    __metadata("design:type", Category_1.Category)
+], Question.prototype, "categories", void 0);
 Question = __decorate([
     (0, typeorm_1.Entity)({ name: "question" })
 ], Question);

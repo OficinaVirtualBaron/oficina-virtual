@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Question_Option = void 0;
 const typeorm_1 = require("typeorm");
 const Question_1 = require("./Question");
+const Option_1 = require("./Option");
 let Question_Option = class Question_Option extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -19,18 +20,14 @@ __decorate([
     __metadata("design:type", Number)
 ], Question_Option.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], Question_Option.prototype, "title", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Boolean)
-], Question_Option.prototype, "enabled", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => Question_1.Question, (question) => question.question_options),
-    (0, typeorm_1.JoinColumn)({ name: "question_option_id" }),
+    (0, typeorm_1.JoinColumn)({ name: "question_id" }),
     __metadata("design:type", Question_1.Question)
 ], Question_Option.prototype, "question", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Option_1.Option, (options) => options.question_option),
+    __metadata("design:type", Array)
+], Question_Option.prototype, "options", void 0);
 Question_Option = __decorate([
     (0, typeorm_1.Entity)({ name: "question_option" })
 ], Question_Option);

@@ -1,0 +1,42 @@
+{
+	"user_id": 1,
+	"procedureTitle": "Trámite de prueba 2",
+	"procedureDescription": "Este es el tra.....",
+	"categoryId": 1,
+	"questions": [
+		{
+			"title": "¿Qué década es su auto",
+			"options": [
+				{
+					"title": "2000 en adelante",
+					"enabled": false
+				},
+				{
+					"title": "2010 en adelante",
+					"enabled": false
+				},
+				{
+					"title": "2020 en adelante",
+					"enabled": true
+				}
+			]
+		},
+		{
+			"title": "¿Qué marca es?",
+			"options": [
+				{
+					"title": "Ford",
+					"enabled": false
+				},
+				{
+					"title": "BMW",
+					"enabled": false
+				},
+				{
+					"title": "Mercedes Benz",
+					"enabled": true
+				}
+			]
+		}
+	]
+}

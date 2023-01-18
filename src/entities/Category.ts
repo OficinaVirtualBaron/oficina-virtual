@@ -12,6 +12,7 @@ import {
 import { UserMuni } from "./Muni";
 import { Procedure } from "./Procedure";
 import { ProcedureHistory } from "./ProcedureHistory";
+import { Question } from "./Question";
 
 @Entity({name: "category"})
 export class Category extends BaseEntity {
@@ -29,6 +30,9 @@ export class Category extends BaseEntity {
 
     @UpdateDateColumn()
     updated_at: Date
+
+    @OneToMany(() => Procedure, (procedure) => procedure.category)
+    procedureTemplate: Procedure[]
 
     @OneToMany(() => ProcedureHistory, (procedure) => procedure.categories)
     procedure: ProcedureHistory[];

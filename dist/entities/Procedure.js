@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Procedure = void 0;
 const typeorm_1 = require("typeorm");
 const Question_1 = require("./Question");
+const Category_1 = require("./Category");
 let Procedure = class Procedure extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -34,6 +35,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => Question_1.Question, (question) => question.procedure),
     __metadata("design:type", Array)
 ], Procedure.prototype, "question", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedureTemplate),
+    __metadata("design:type", Category_1.Category)
+], Procedure.prototype, "category", void 0);
 Procedure = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure" })
 ], Procedure);

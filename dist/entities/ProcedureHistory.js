@@ -53,6 +53,14 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => QuestionHistory_1.QuestionHistory, (questions) => questions.procedure),
     __metadata("design:type", Array)
 ], ProcedureHistory.prototype, "questions", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], ProcedureHistory.prototype, "created_at", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], ProcedureHistory.prototype, "updated_at", void 0);
 ProcedureHistory = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure_history" })
 ], ProcedureHistory);

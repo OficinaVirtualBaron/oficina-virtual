@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Category = void 0;
 const typeorm_1 = require("typeorm");
 const Muni_1 = require("./Muni");
+const Procedure_1 = require("./Procedure");
 const ProcedureHistory_1 = require("./ProcedureHistory");
 let Category = class Category extends typeorm_1.BaseEntity {
 };
@@ -35,6 +36,10 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], Category.prototype, "updated_at", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => Procedure_1.Procedure, (procedure) => procedure.category),
+    __metadata("design:type", Array)
+], Category.prototype, "procedureTemplate", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedure) => procedure.categories),
     __metadata("design:type", Array)

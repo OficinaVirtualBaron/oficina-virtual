@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.submitProcedure = exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.createProcedure = void 0;
+exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.submitProcedure = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
 const validators_1 = require("../validators/validators");
 const ProcedureHistory_1 = require("../entities/ProcedureHistory");
@@ -39,6 +39,38 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.createProcedure = createProcedure;
+// POST  validar que ninguno de estos campos venga vacio salvo el documentId
+const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const procedure = new ProcedureHistory_1.ProcedureHistory();
+        procedure.user = req.body.user_id;
+        procedure.title = req.body.procedureTitle;
+        procedure.description = req.body.procedureDescription;
+        procedure.categories = req.body.categoryId;
+        procedure.status = req.body.status_id;
+        yield procedure.save();
+        req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
+            const newQuestion = new QuestionHistory_1.QuestionHistory();
+            newQuestion.title = question.title;
+            newQuestion.procedure = procedure;
+            yield newQuestion.save();
+            question.options.forEach((option) => __awaiter(void 0, void 0, void 0, function* () {
+                const newOption = new QuestionOptionsHistory_1.QuestionOptionHistory();
+                newOption.title = option.title;
+                newOption.enabled = option.enabled;
+                newOption.question = newQuestion;
+                yield newOption.save();
+            }));
+        }));
+        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.json({ message: error.message });
+        }
+    }
+});
+exports.submitProcedure = submitProcedure;
 // GET
 const getProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -120,43 +152,3 @@ const deleteProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.deleteProcedure = deleteProcedure;
-// POST
-const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        // Create new procedure
-        const procedure = new ProcedureHistory_1.ProcedureHistory();
-        procedure.user = req.body.user_id;
-        procedure.title = req.body.procedureTitle;
-        procedure.description = req.body.procedureDescription;
-        procedure.categories = req.body.categoryId;
-        procedure.status = req.body.status_id;
-        console.log("procedureStatus: " + procedure.status);
-        console.log("req.body.status: " + req.body.status_id);
-        yield procedure.save();
-        //console.log("categoryId: " + procedure.categories);
-        // Create questions
-        req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
-            const newQuestion = new QuestionHistory_1.QuestionHistory();
-            newQuestion.title = question.title;
-            newQuestion.procedure = procedure;
-            yield newQuestion.save();
-            //console.log("newQuestion " + newQuestion);
-            // Create options
-            question.options.forEach((option) => __awaiter(void 0, void 0, void 0, function* () {
-                const newOption = new QuestionOptionsHistory_1.QuestionOptionHistory();
-                newOption.title = option.title;
-                newOption.enabled = option.enabled;
-                newOption.question = newQuestion;
-                yield newOption.save();
-                //console.log("newOption " + newOption.question);
-            }));
-        }));
-        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            return res.json({ message: error.message });
-        }
-    }
-});
-exports.submitProcedure = submitProcedure;

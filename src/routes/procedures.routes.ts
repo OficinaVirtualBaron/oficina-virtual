@@ -13,7 +13,7 @@ const router = Router();
 
 router.post("/procedure", isAdminRole, createProcedure);
 // PRUEBA DE PRESENTAR UN TRAMITE
-router.post("/submit-procedure", isAdminRole, submitProcedure);
+router.post("/submit-procedure", isUserOrMuni, submitProcedure);
 router.get("/procedures", isUserOrMuni, getProcedures);
 router.get("/procedure/:id", isUserOrMuni, getProcedure);
 router.put("/procedure/:id", isAdminRole, updateProcedure);

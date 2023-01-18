@@ -4,15 +4,10 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     OneToMany,
-    ManyToOne,
-    JoinColumn,
-    OneToOne
+    ManyToOne
 } from "typeorm";
-import { Document } from "./Document";
-import { Status } from "./Status";
 import { Question } from "./Question";
 import { Category } from "./Category";
-import { User } from "./User";
 
 @Entity({ name: "procedure" })
 export class Procedure extends BaseEntity {
@@ -30,4 +25,7 @@ export class Procedure extends BaseEntity {
 
     @OneToMany(() => Question, (question) => question.procedure)
     question: Question[];
+
+    @ManyToOne(() => Category, (category) => category.procedureTemplate)
+    category: Category
 }

@@ -30,24 +30,7 @@
 				},
 				{
 					"title": "Opción 2",
-					"enabled": false
-				},
-				{
-					"title": "Opción 3",
 					"enabled": true
-				}
-			]
-		},
-		{
-			"title": "Pregunta 3",
-			"options": [
-				{
-					"title": "Opción 1",
-					"enabled": true
-				},
-				{
-					"title": "Opción 2",
-					"enabled": false
 				}
 			]
 		}

@@ -6,7 +6,9 @@ import {
     OneToMany,
     ManyToOne,
     JoinColumn,
-    OneToOne
+    OneToOne,
+    CreateDateColumn,
+    UpdateDateColumn
 } from "typeorm";
 import { Category } from "./Category";
 import { Document } from "./Document";
@@ -42,4 +44,10 @@ export class ProcedureHistory extends BaseEntity {
 
     @OneToMany(() => QuestionHistory, (questions) => questions.procedure)
     questions: QuestionHistory[]
+
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
 }

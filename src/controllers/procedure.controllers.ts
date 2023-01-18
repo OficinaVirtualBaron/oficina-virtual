@@ -27,6 +27,39 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
+// POST  validar que ninguno de estos campos venga vacio salvo el documentId
+export const submitProcedure = async (req: Request, res: Response) => {
+    try {
+        const procedure = new ProcedureHistory();
+        procedure.user = req.body.user_id;
+        procedure.title = req.body.procedureTitle;
+        procedure.description = req.body.procedureDescription;
+        procedure.categories = req.body.categoryId;
+        procedure.status = req.body.status_id;
+        await procedure.save();
+
+        req.body.questions.forEach(async (question: any) => {
+            const newQuestion = new QuestionHistory();
+            newQuestion.title = question.title;
+            newQuestion.procedure = procedure;
+            await newQuestion.save();
+
+            question.options.forEach(async (option: any) => {
+                const newOption = new QuestionOptionHistory();
+                newOption.title = option.title;
+                newOption.enabled = option.enabled;
+                newOption.question = newQuestion;
+                await newOption.save();
+            });
+        });
+        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.json({message: error.message});
+        }
+    }
+}
+
 // GET
 export const getProcedures = async (req: Request, res: Response) => {
     try {
@@ -96,41 +129,6 @@ export const deleteProcedure = async (req: Request, res: Response) => {
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });
-        }
-    }
-}
-
-// POST
-export const submitProcedure = async (req: Request, res: Response) => {
-    try {
-        const procedure = new ProcedureHistory();
-        procedure.user = req.body.user_id;
-        procedure.title = req.body.procedureTitle;
-        procedure.description = req.body.procedureDescription;
-        procedure.categories = req.body.categoryId;
-        procedure.status = req.body.status_id;
-        console.log("procedureStatus: " + procedure.status);
-        console.log("req.body.status: " + req.body.status_id);
-        await procedure.save();
-
-        req.body.questions.forEach(async (question: any) => {
-            const newQuestion = new QuestionHistory();
-            newQuestion.title = question.title;
-            newQuestion.procedure = procedure;
-            await newQuestion.save();
-
-            question.options.forEach(async (option: any) => {
-                const newOption = new QuestionOptionHistory();
-                newOption.title = option.title;
-                newOption.enabled = option.enabled;
-                newOption.question = newQuestion;
-                await newOption.save();
-            });
-        });
-        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
-    } catch (error) {
-        if (error instanceof Error) {
-            return res.json({message: error.message});
         }
     }
 }

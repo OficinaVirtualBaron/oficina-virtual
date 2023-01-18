@@ -8,7 +8,6 @@ import { Question } from "./entities/Question";
 import { Document } from "./entities/Document";
 import { Category } from "./entities/Category";
 import { Status } from "./entities/Status";
-import { Option } from "./entities/Option";
 import { ProcedureHistory } from "./entities/ProcedureHistory";
 import { QuestionHistory } from "./entities/QuestionHistory";
 import { QuestionOptionHistory } from "./entities/QuestionOptionsHistory";
@@ -31,7 +30,6 @@ export const AppDataSource = new DataSource ({
         Document, 
         Category,
         Status,
-        Option,
         ProcedureHistory,
         QuestionHistory,
         QuestionOptionHistory

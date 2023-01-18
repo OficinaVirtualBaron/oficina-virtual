@@ -8,7 +8,6 @@ import {
     OneToMany
 } from "typeorm";
 import { Question } from "./Question";
-import { Option } from "./Option";
 
 @Entity({name: "question_option"})
 export class Question_Option extends BaseEntity{
@@ -18,7 +17,4 @@ export class Question_Option extends BaseEntity{
     @ManyToOne(() => Question, (question) => question.question_options)
     @JoinColumn({name: "question_id"})
     question: Question
-
-    @OneToMany(() => Option, (options) => options.question_option)
-    options: Option[]
 }

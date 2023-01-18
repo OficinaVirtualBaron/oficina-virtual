@@ -9,7 +9,7 @@ const User_1 = require("./entities/User");
 const Muni_1 = require("./entities/Muni");
 const Procedure_1 = require("./entities/Procedure");
 const dotenv_1 = __importDefault(require("dotenv"));
-const Question_Option_1 = require("./entities/Question_Option");
+const QuestionOption_1 = require("./entities/QuestionOption");
 const Question_1 = require("./entities/Question");
 const Document_1 = require("./entities/Document");
 const Category_1 = require("./entities/Category");
@@ -32,7 +32,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
         Muni_1.UserMuni,
         Procedure_1.Procedure,
         Question_1.Question,
-        Question_Option_1.Question_Option,
+        QuestionOption_1.Question_Option,
         Document_1.Document,
         Category_1.Category,
         Status_1.Status,

@@ -40,7 +40,7 @@ __decorate([
     __metadata("design:type", Array)
 ], ProcedureHistory.prototype, "documents", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => Status_1.Status, (status) => status.procedure),
+    (0, typeorm_1.OneToOne)(() => Status_1.Status, (status) => status.procedure, { cascade: true }),
     (0, typeorm_1.JoinColumn)({ name: "status_id" }),
     __metadata("design:type", Status_1.Status)
 ], ProcedureHistory.prototype, "status", void 0);

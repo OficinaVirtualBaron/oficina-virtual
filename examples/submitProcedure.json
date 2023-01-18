@@ -1,40 +1,53 @@
 {
 	"user_id": 1,
-	"procedureTitle": "Trámite de prueba 2",
-	"procedureDescription": "Este es el tra.....",
+	"procedureTitle": "Trámite de prueba",
+	"procedureDescription": "Este es el tramite de prueba JSON",
 	"categoryId": 1,
 	"questions": [
 		{
-			"title": "¿Qué década es su auto",
+			"title": "Pregunta 1",
 			"options": [
 				{
-					"title": "2000 en adelante",
+					"title": "Opción 1",
 					"enabled": false
 				},
 				{
-					"title": "2010 en adelante",
+					"title": "Opción 2",
 					"enabled": false
 				},
 				{
-					"title": "2020 en adelante",
+					"title": "Opción 3",
 					"enabled": true
 				}
 			]
 		},
 		{
-			"title": "¿Qué marca es?",
+			"title": "Pregunta 2",
 			"options": [
 				{
-					"title": "Ford",
+					"title": "Opción 1",
 					"enabled": false
 				},
 				{
-					"title": "BMW",
+					"title": "Opción 2",
 					"enabled": false
 				},
 				{
-					"title": "Mercedes Benz",
+					"title": "Opción 3",
 					"enabled": true
+				}
+			]
+		},
+		{
+			"title": "Pregunta 3",
+			"options": [
+				{
+					"title": "Opción 1",
+					"enabled": true
+				},
+				{
+					"title": "Opción 2",
+					"enabled": false
 				}
 			]
 		}

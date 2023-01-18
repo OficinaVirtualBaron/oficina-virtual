@@ -13,7 +13,7 @@ exports.Question = void 0;
 const typeorm_1 = require("typeorm");
 const Category_1 = require("./Category");
 const Procedure_1 = require("./Procedure");
-const Question_Option_1 = require("./Question_Option");
+const QuestionOption_1 = require("./QuestionOption");
 let Question = class Question extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -25,7 +25,7 @@ __decorate([
     __metadata("design:type", String)
 ], Question.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Question_Option_1.Question_Option, (question_option) => question_option.question),
+    (0, typeorm_1.OneToMany)(() => QuestionOption_1.Question_Option, (question_option) => question_option.question),
     __metadata("design:type", Array)
 ], Question.prototype, "question_options", void 0);
 __decorate([

@@ -110,11 +110,14 @@ export const submitProcedure = async (req: Request, res: Response) => {
         procedure.user = req.body.user_id;
         procedure.title = req.body.procedureTitle;
         procedure.description = req.body.procedureDescription;
-        procedure.category_id = req.body.categoryId;
-        procedure.status = req.body.status;
+        procedure.categories = req.body.categoryId;
+        procedure.status = req.body.status_id;
+        console.log("procedureStatus: " + procedure.status);
+        console.log("req.body.status: " + req.body.status_id);
         await procedure.save();
+        //console.log("categoryId: " + procedure.categories);
 
-        // Create questions and options
+        // Create questions
         req.body.questions.forEach(async (question: any) => {
             const newQuestion = new QuestionHistory();
             newQuestion.title = question.title;
@@ -122,6 +125,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
             await newQuestion.save();
             //console.log("newQuestion " + newQuestion);
 
+            // Create options
             question.options.forEach(async (option: any) => {
                 const newOption = new QuestionOptionHistory();
                 newOption.title = option.title;
@@ -131,7 +135,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
                 //console.log("newOption " + newOption.question);
             });
         });
-        return res.status(201).send("Trámite creado correctamente. ¡Gracias vecino!");
+        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
     } catch (error) {
         if (error instanceof Error) {
             return res.json({message: error.message});

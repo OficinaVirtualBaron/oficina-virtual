@@ -128,16 +128,20 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
         procedure.user = req.body.user_id;
         procedure.title = req.body.procedureTitle;
         procedure.description = req.body.procedureDescription;
-        procedure.category_id = req.body.categoryId;
-        procedure.status = req.body.status;
+        procedure.categories = req.body.categoryId;
+        procedure.status = req.body.status_id;
+        console.log("procedureStatus: " + procedure.status);
+        console.log("req.body.status: " + req.body.status_id);
         yield procedure.save();
-        // Create questions and options
+        //console.log("categoryId: " + procedure.categories);
+        // Create questions
         req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
             const newQuestion = new QuestionHistory_1.QuestionHistory();
             newQuestion.title = question.title;
             newQuestion.procedure = procedure;
             yield newQuestion.save();
             //console.log("newQuestion " + newQuestion);
+            // Create options
             question.options.forEach((option) => __awaiter(void 0, void 0, void 0, function* () {
                 const newOption = new QuestionOptionsHistory_1.QuestionOptionHistory();
                 newOption.title = option.title;
@@ -147,7 +151,7 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
                 //console.log("newOption " + newOption.question);
             }));
         }));
-        return res.status(201).send("Trámite creado correctamente. ¡Gracias vecino!");
+        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
     }
     catch (error) {
         if (error instanceof Error) {

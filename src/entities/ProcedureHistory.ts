@@ -32,14 +32,13 @@ export class ProcedureHistory extends BaseEntity {
     @OneToMany(() => Document, (documents) => documents.procedure)
     documents: Document[];
 
-    @OneToOne(() => Status, (status) => status.procedure)
+    @OneToOne(() => Status, (status) => status.procedure, {cascade: true})
     @JoinColumn({name: "status_id"})
     status: Status;
     
     @ManyToOne(() => Category, (category) => category.procedure)
     @JoinColumn({name: "category_id"})
     categories: Category;
-    category_id: number;
 
     @OneToMany(() => QuestionHistory, (questions) => questions.procedure)
     questions: QuestionHistory[]

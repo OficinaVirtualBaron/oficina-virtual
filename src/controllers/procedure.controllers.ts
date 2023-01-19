@@ -4,6 +4,7 @@ import { createCategorySchema, submitProcedureSchema } from "../validators/valid
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
+import { Question } from "../entities/Question";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -65,6 +66,19 @@ export const submitProcedure = async (req: Request, res: Response) => {
 }
 
 // GET
+export const getCompletedProcedure = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const procedure = await ProcedureHistory.findOneByOrFail({ id: parseInt(req.params.id) });
+        return res.json({ message: `Trámite ID #${id}`, procedure });
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+}
+
+// GET
 export const getProcedures = async (req: Request, res: Response) => {
     try {
         const procedures = await Procedure.find();
@@ -77,7 +91,7 @@ export const getProcedures = async (req: Request, res: Response) => {
     }
 }
 
-// GET
+// GET arreglar
 export const getProcedureByCategory = async (req: Request, res: Response) => {
     const { category_id } = req.params;
     try {

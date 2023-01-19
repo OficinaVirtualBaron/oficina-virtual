@@ -34,7 +34,7 @@ export class Category extends BaseEntity {
     @OneToMany(() => Procedure, (procedure) => procedure.category)
     procedureTemplate: Procedure[]
 
-    @OneToMany(() => ProcedureHistory, (procedure) => procedure.categories)
+    @OneToMany(() => ProcedureHistory, (procedure) => procedure.category)
     procedure: ProcedureHistory[];
 
     @ManyToMany(() => UserMuni, (munis) => munis.categories)

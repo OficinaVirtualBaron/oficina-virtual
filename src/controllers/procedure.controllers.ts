@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Procedure } from "../entities/Procedure";
-import { createCategorySchema } from "../validators/validators";
+import { createCategorySchema, submitProcedureSchema } from "../validators/validators";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
@@ -14,7 +14,7 @@ export const createProcedure = async (req: Request, res: Response) => {
             const procedure = new Procedure();
             procedure.title = title;
             procedure.description = description;
-            procedure.category_id = category_id;
+            procedure.category = category_id;
             const savedProcedure = await procedure.save();
             return res.status(200).send({ message: "Trámite creado", savedProcedure });
         } catch (error) {
@@ -27,36 +27,40 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
-// POST  validar que ninguno de estos campos venga vacio salvo el documentId
+// POST
 export const submitProcedure = async (req: Request, res: Response) => {
     try {
-        const procedure = new ProcedureHistory();
-        procedure.user = req.body.user_id;
-        procedure.title = req.body.procedureTitle;
-        procedure.description = req.body.procedureDescription;
-        procedure.categories = req.body.categoryId;
-        procedure.status = req.body.status_id;
-        await procedure.save();
+        const { userId, categoryId, statusId } = req.body;
+        try {
+            const procedure = new ProcedureHistory();
+            procedure.user = userId;
+            procedure.category = categoryId;
+            procedure.status = statusId;
+            await procedure.save();
 
-        req.body.questions.forEach(async (question: any) => {
-            const newQuestion = new QuestionHistory();
-            newQuestion.title = question.title;
-            newQuestion.procedure = procedure;
-            await newQuestion.save();
+            req.body.questions.forEach(async (question: any) => {
+                const newQuestion = new QuestionHistory();
+                newQuestion.question = question.question;
+                newQuestion.procedure = procedure;
+                await newQuestion.save();
 
-            question.options.forEach(async (option: any) => {
-                const newOption = new QuestionOptionHistory();
-                newOption.title = option.title;
-                newOption.enabled = option.enabled;
-                newOption.question = newQuestion;
-                await newOption.save();
+                question.options.forEach(async (option: any) => {
+                    const newOption = new QuestionOptionHistory();
+                    newOption.questionOption = option.questionOption;
+                    newOption.answer = option.answer;
+                    newOption.question = newQuestion;
+                    console.log(newOption.answer);
+                    await newOption.save();
+                });
             });
-        });
-        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
-    } catch (error) {
-        if (error instanceof Error) {
-            return res.json({message: error.message});
+            return res.status(201).send(`Trámite enviado correctamente. ¡Gracias vecino!`);
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.json({ message: error.message });
+            }
         }
+    } catch (error) {
+        return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
     }
 }
 
@@ -77,9 +81,9 @@ export const getProcedures = async (req: Request, res: Response) => {
 export const getProcedureByCategory = async (req: Request, res: Response) => {
     const { category_id } = req.params;
     try {
-        const procedures = await Procedure.findBy({ category_id: parseInt(req.params.category_id) });
-        if (procedures.length === 0) return res.send({ message: "No hay trámites para esta categoría por el momento" });
-        return res.json(procedures);
+        //const procedures = await Procedure.findBy({ category_id: parseInt(req.params.category_id) });
+        //if (procedures.length === 0) return res.send({ message: "No hay trámites para esta categoría por el momento" });
+        //return res.json(procedures);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });
@@ -121,7 +125,7 @@ export const updateProcedure = async (req: Request, res: Response) => {
 export const deleteProcedure = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const deleteProcedure = await Procedure.delete({id: parseInt(req.params.id)});
+        const deleteProcedure = await Procedure.delete({ id: parseInt(req.params.id) });
         if (deleteProcedure.affected === 0) {
             return res.status(404).send({ message: "Trámite no encontrado o incorrecto. Intente nuevamente" })
         }

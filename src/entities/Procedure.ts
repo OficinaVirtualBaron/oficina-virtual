@@ -4,7 +4,8 @@ import {
     PrimaryGeneratedColumn,
     BaseEntity,
     OneToMany,
-    ManyToOne
+    ManyToOne,
+    JoinColumn
 } from "typeorm";
 import { Question } from "./Question";
 import { Category } from "./Category";
@@ -13,12 +14,9 @@ import { Category } from "./Category";
 export class Procedure extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
-  
-    @Column({length: 30, unique: true})
-    title: string;
 
-    @Column()
-    category_id: number;
+    @Column({ length: 30, unique: true })
+    title: string;
 
     @Column()
     description: string;
@@ -27,5 +25,6 @@ export class Procedure extends BaseEntity {
     question: Question[];
 
     @ManyToOne(() => Category, (category) => category.procedureTemplate)
-    category: Category
+    @JoinColumn({ name: "category_id" })
+    category: Category;
 }

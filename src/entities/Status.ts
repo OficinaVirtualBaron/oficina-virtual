@@ -3,7 +3,7 @@ import {
     Column,
     PrimaryGeneratedColumn,
     BaseEntity,
-    OneToOne
+    OneToMany
 } from "typeorm";
 import { ProcedureHistory } from "./ProcedureHistory";
 
@@ -12,9 +12,9 @@ export class Status extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true})
-    status: number;
+    @Column({default: true})
+    status: string;
 
-    @OneToOne(() => ProcedureHistory, (procedure) => procedure.status)
+    @OneToMany(() => ProcedureHistory, (procedure) => procedure.status)
     procedure: ProcedureHistory
 }

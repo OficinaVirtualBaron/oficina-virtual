@@ -8,9 +8,11 @@ import {
     OneToMany
 } from "typeorm";
 import { Procedure } from "./Procedure";
-import { Question_Option } from "./QuestionOption";
+import { QuestionHistory } from "./QuestionHistory";
+import { QuestionOption } from "./QuestionOption";
+import { } from "./QuestionOption";
 
-@Entity({name: "question"})
+@Entity({ name: "question" })
 export class Question extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -18,10 +20,13 @@ export class Question extends BaseEntity {
     @Column()
     title: string;
 
-    @OneToMany(() => Question_Option, (question_option) => question_option.question)
-    question_options: Question_Option[]
+    @OneToMany(() => QuestionOption, (question_option) => question_option.question)
+    question_options: QuestionOption[]
 
     @ManyToOne(() => Procedure, (procedure) => procedure.question)
-    @JoinColumn({name: "procedure_id"})
+    @JoinColumn({ name: "procedure_id" })
     procedure: Procedure
+
+    @OneToMany(() => QuestionHistory, (questionHistory) => questionHistory.question)
+    questionHistory: QuestionHistory[];
 }

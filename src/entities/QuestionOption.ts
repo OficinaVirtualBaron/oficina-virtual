@@ -1,19 +1,27 @@
 import {
     Entity,
-    Column,
     PrimaryGeneratedColumn,
     BaseEntity,
     JoinColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany,
+    Column
 } from "typeorm";
 import { Question } from "./Question";
+import { QuestionOptionHistory } from "./QuestionOptionsHistory";
 
-@Entity({name: "question_option"})
-export class Question_Option extends BaseEntity{
+@Entity({ name: "question_option" })
+export class QuestionOption extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    title: string;
+
     @ManyToOne(() => Question, (question) => question.question_options)
-    @JoinColumn({name: "question_id"})
+    @JoinColumn({ name: "question_id" })
     question: Question
+
+    @OneToMany(() => QuestionOptionHistory, (questionOptionHistory) => questionOptionHistory.questionOption)
+    questionOptionHistory: QuestionOptionHistory;
 }

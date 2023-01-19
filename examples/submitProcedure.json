@@ -1,36 +1,32 @@
 {
-	"user_id": 1,
-	"procedureTitle": "Trámite de prueba",
-	"procedureDescription": "Este es el tramite de prueba JSON",
-	"categoryId": 1,
+	"userId": 1,
+	"categoryId": 12,
+	"statusId": 13,
 	"questions": [
 		{
-			"title": "Pregunta 1",
+			"question": 15,
 			"options": [
 				{
-					"title": "Opción 1",
-					"enabled": false
-				},
-				{
-					"title": "Opción 2",
-					"enabled": false
-				},
-				{
-					"title": "Opción 3",
+					"questionOption": 14,
 					"enabled": true
 				}
 			]
 		},
 		{
-			"title": "Pregunta 2",
+			"question": 16,
 			"options": [
 				{
-					"title": "Opción 1",
-					"enabled": false
-				},
+					"questionOption": 15,
+					"answer": "5000"
+				}
+			]
+		},
+		{
+			"question": 13,
+			"options": [
 				{
-					"title": "Opción 2",
-					"enabled": true
+					"questionOption": 16,
+					"answer": "No poseo"
 				}
 			]
 		}

@@ -4,6 +4,7 @@ import { createCategorySchema, submitProcedureSchema } from "../validators/valid
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
+import { Equal } from "typeorm";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -133,14 +134,14 @@ export const getProcedures = async (req: Request, res: Response) => {
 
 // GET arreglar
 export const getProcedureByCategory = async (req: Request, res: Response) => {
-    const { id } = req.params;
     try {
-        const procedures = await Procedure.findBy({ id: parseInt(req.params.id) });
-        if (procedures.length === 0) return res.send({ message: "No hay trámites para esta categoría por el momento" });
+        const { category_id } = req.params;
+        const procedures = await Procedure.find({ where: { category: Equal(category_id) } });
+        if (procedures.length === 0) return res.status(404).send({ message: "No hay trámites para esta categoría por el momento" });
         return res.json(procedures);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).send({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
     }
 }

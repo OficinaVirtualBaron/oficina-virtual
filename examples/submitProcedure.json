@@ -1,6 +1,6 @@
 {
 	"userId": 1,
-	"categoryId": 12,
+	"categoryId": 17,
 	"statusId": 13,
 	"questions": [
 		{
@@ -8,7 +8,7 @@
 			"options": [
 				{
 					"questionOption": 14,
-					"enabled": true
+					"answer": "10000"
 				}
 			]
 		},
@@ -17,7 +17,7 @@
 			"options": [
 				{
 					"questionOption": 15,
-					"answer": "5000"
+					"answer": "https://raw.githubusercontent.com/OficinaVirtualBaron/oficina-virtual/main/examples/imgprueba.webp?token=GHSAT0AAAAAAB4D5WZN34OUODIUVYPMXJ54Y6JWVFA"
 				}
 			]
 		},
@@ -26,7 +26,7 @@
 			"options": [
 				{
 					"questionOption": 16,
-					"answer": "No poseo"
+					"answer": 2
 				}
 			]
 		}

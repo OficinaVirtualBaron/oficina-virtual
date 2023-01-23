@@ -12,14 +12,13 @@ import {
 import { UserMuni } from "./Muni";
 import { Procedure } from "./Procedure";
 import { ProcedureHistory } from "./ProcedureHistory";
-import { Question } from "./Question";
 
-@Entity({name: "category"})
+@Entity({ name: "category" })
 export class Category extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true})
+    @Column({ unique: true })
     title: string;
 
     @Column()

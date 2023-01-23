@@ -10,10 +10,10 @@ export const createCategory = async (req: Request, res: Response) => {
         category.title = title;
         category.description = description;
         const categorySaved = await category.save();
-        res.status(200).send({message: "Categoría creada exitosamente"});
+        res.status(200).send({ message: "Categoría creada exitosamente" });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -21,12 +21,12 @@ export const createCategory = async (req: Request, res: Response) => {
 // GET
 export const getCategories = async (req: Request, res: Response) => {
     try {
-        const categories = await Category.find();
-        if (categories.length === 0) return res.status(404).send({message: "No se encontraron categorías"});
+        const categories = await Category.find({ cache: true });
+        if (categories.length === 0) return res.status(404).send({ message: "No se encontraron categorías" });
         return res.json(categories);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -35,11 +35,11 @@ export const getCategories = async (req: Request, res: Response) => {
 export const getCategory = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const category = await Category.findOneByOrFail({id: parseInt(req.params.id)});
+        const category = await Category.findOneByOrFail({ id: parseInt(req.params.id) });
         return res.json(category);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({message: error.message});
+            return res.status(500).json({ message: error.message });
         }
     }
 }
@@ -49,15 +49,15 @@ export const updateCategory = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { title } = req.body;
-        const category = await Category.findOneBy({id: parseInt(req.params.id)});
-        if (!category) return res.status(404).send({message: "La categoría no existe"});
+        const category = await Category.findOneBy({ id: parseInt(req.params.id) });
+        if (!category) return res.status(404).send({ message: "La categoría no existe" });
         const updateValidation = await updateCategorySchema.validateAsync(req.body);
         category.title = title;
         await category.save();
-        return res.status(200).send({message: "Datos de la categoría actualizados correctamente"});
+        return res.status(200).send({ message: "Datos de la categoría actualizados correctamente" });
     } catch (error) {
         if (error instanceof Error) {
-            res.status(500).json({message: error.message});
+            res.status(500).json({ message: error.message });
         }
     }
 }
@@ -66,14 +66,14 @@ export const updateCategory = async (req: Request, res: Response) => {
 export const deleteCategory = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const result = await Category.delete({id: parseInt(id)});
+        const result = await Category.delete({ id: parseInt(id) });
         if (result.affected === 0) {
             return res.status(404).json("Categoría no encontrada o incorrecta. Intente nuevamente")
         }
-        return res.status(200).send({message: "Categoría borrada de la DB correctamente"})
+        return res.status(200).send({ message: "Categoría borrada de la DB correctamente" })
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(50).json({message: error.message});
+            return res.status(50).json({ message: error.message });
         }
     }
 }

@@ -4,7 +4,6 @@ import { createCategorySchema, submitProcedureSchema } from "../validators/valid
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
-import { Question } from "../entities/Question";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -65,15 +64,56 @@ export const submitProcedure = async (req: Request, res: Response) => {
     }
 }
 
-// GET
-export const getCompletedProcedure = async (req: Request, res: Response) => {
+//GET 
+export const getHistoryOfProcedures = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const procedure = await ProcedureHistory.findOneByOrFail({ id: parseInt(req.params.id) });
-        return res.json({ message: `Trámite ID #${id}`, procedure });
+        const history = await ProcedureHistory.find({
+            relations: {
+                user: true,
+                category: true,
+                status: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            }
+        });
+        if (history.length === 0) {
+            return res.status(404).send({ message: "No hay ningún trámite en el historial" });
+        }
+        return res.status(201).send({ message: "Historial de trámites presentados: ", history });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
+        }
+    }
+}
+
+// GET
+export const getOneProcedureFromHistory = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const procedure = await ProcedureHistory.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            relations: {
+                user: true,
+                category: true,
+                status: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            }
+        });
+        if (procedure === null) {
+            return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
+        }
+        return res.status(200).send({ message: `Trámite ID #${id}: `, procedure });
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
         }
     }
 }
@@ -86,7 +126,7 @@ export const getProcedures = async (req: Request, res: Response) => {
         return res.json(procedures);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 }
@@ -100,7 +140,7 @@ export const getProcedureByCategory = async (req: Request, res: Response) => {
         //return res.json(procedures);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 }
@@ -110,10 +150,10 @@ export const getProcedure = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const procedure = await Procedure.findOneByOrFail({ id: parseInt(req.params.id) });
-        return res.json(procedure);
+        return res.status(200).json(procedure);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 }
@@ -130,7 +170,7 @@ export const updateProcedure = async (req: Request, res: Response) => {
         return res.status(200).send({ message: "Datos del trámite actualizados correctamente" });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 }
@@ -146,7 +186,7 @@ export const deleteProcedure = async (req: Request, res: Response) => {
         return res.status(200).send({ message: "Trámite borrado de la DB correctamente" });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 }

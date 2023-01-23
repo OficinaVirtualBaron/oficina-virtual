@@ -132,7 +132,7 @@ export const getProcedures = async (req: Request, res: Response) => {
     }
 }
 
-// GET arreglar
+// GET
 export const getProcedureByCategory = async (req: Request, res: Response) => {
     try {
         const { category_id } = req.params;

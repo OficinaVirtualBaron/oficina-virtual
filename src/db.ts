@@ -35,6 +35,5 @@ export const AppDataSource = new DataSource({
         QuestionOptionHistory
     ],
     logging: true,
-    synchronize: true,
-    cache: true
+    synchronize: true
 }) 

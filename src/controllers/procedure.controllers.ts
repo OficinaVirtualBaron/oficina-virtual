@@ -77,6 +77,21 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
                     question: true,
                     question_option_history: true
                 }
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    email: true
+                },
+                category: {
+                    title: true
+                },
+                status: {
+                    status: true
+                }
             }
         });
         if (history.length === 0) {
@@ -106,8 +121,24 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
                     question: true,
                     question_option_history: true
                 }
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    email: true
+                },
+                category: {
+                    title: true
+                },
+                status: {
+                    status: true
+                }
             }
         });
+        console.log(procedure?.questions);
         if (procedure === null) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
         }

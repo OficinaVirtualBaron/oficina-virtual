@@ -1,0 +1,11 @@
+{
+    "firstname": "Jorge",
+    "lastname": "Ramírez",
+    "password": "password",
+    "email": "jorgeram11@gmail.com",
+    "area": "TRANSITO",
+    "cuil": "23451932447",
+    "required": 1,
+    "inprocess": 0,
+    "finalized": 0
+}

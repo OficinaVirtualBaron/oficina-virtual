@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { ProcedureHistory } from "./ProcedureHistory";
 
-@Entity({name: "document"})
+@Entity({ name: "document" })
 export class Document extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -20,5 +20,6 @@ export class Document extends BaseEntity {
     path: string;
 
     @ManyToOne(() => ProcedureHistory, (procedure) => procedure.documents)
+    @JoinColumn({ name: "procedure_history_id" })
     procedure: ProcedureHistory
 }

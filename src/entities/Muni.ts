@@ -6,9 +6,11 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     JoinColumn,
-    ManyToMany
+    ManyToMany,
+    OneToMany
 } from "typeorm"
 import { Category } from "./Category";
+import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity()
 export class UserMuni extends BaseEntity {
@@ -24,13 +26,13 @@ export class UserMuni extends BaseEntity {
     @Column()
     password: string;
 
-    @Column({unique: true})
+    @Column({ unique: true })
     email: string;
 
-    @Column({unique: true, length: 20})
+    @Column({ unique: true, length: 20 })
     cuil: string;
 
-    @Column({default: "MUNI_ROLE"})
+    @Column({ default: "MUNI_ROLE" })
     role: string;
 
     @Column()
@@ -49,6 +51,9 @@ export class UserMuni extends BaseEntity {
     update_at: Date;
 
     @ManyToMany(() => Category, (categories) => categories.munis)
-    @JoinColumn({name: "category_id"})
+    @JoinColumn({ name: "category_id" })
     categories: Category[]
+
+    @OneToMany(() => ProcedureHistory, (procedureHistory) => procedureHistory.userMuni)
+    procedureHistory: ProcedureHistory[];
 }

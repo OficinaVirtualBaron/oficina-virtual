@@ -5,6 +5,8 @@ import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 import { Equal } from "typeorm";
+import { UserMuni } from "../entities/Muni";
+import { User } from "../entities/User";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -28,42 +30,48 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
+var currentNum = -1;
 // POST
 export const submitProcedure = async (req: Request, res: Response) => {
+    const { userId, categoryId, statusId } = req.body;
     try {
-        const { userId, categoryId, statusId } = req.body;
-        try {
-            const procedure = new ProcedureHistory();
-            procedure.user = userId;
-            procedure.category = categoryId;
-            procedure.status = statusId;
-            await procedure.save();
-
-            req.body.questions.forEach(async (question: any) => {
-                const newQuestion = new QuestionHistory();
-                newQuestion.question = question.question;
-                newQuestion.procedure = procedure;
-                await newQuestion.save();
-
-                question.options.forEach(async (option: any) => {
-                    const newOption = new QuestionOptionHistory();
-                    newOption.questionOption = option.questionOption;
-                    newOption.answer = option.answer;
-                    newOption.question = newQuestion;
-                    console.log(newOption.answer);
-                    await newOption.save();
-                });
-            });
-            return res.status(201).send(`Trámite enviado correctamente. ¡Gracias vecino!`);
-        } catch (error) {
-            if (error instanceof Error) {
-                return res.json({ message: error.message });
-            }
+        let procedureCompleted: ProcedureHistory;
+        const procedure = new ProcedureHistory();
+        if (currentNum >= 2) {
+            currentNum = 0;
+        } else {
+            currentNum++;
         }
+
+        procedure.user = userId;
+        procedure.category = categoryId;
+        procedure.status = statusId;
+        procedure.userMuni = currentNum as unknown as UserMuni;
+        procedureCompleted = await procedure.save();
+
+        req.body.questions.forEach(async (question: any) => {
+            const newQuestion = new QuestionHistory();
+            newQuestion.question = question.question;
+            newQuestion.procedure = procedureCompleted;
+            await newQuestion.save();
+
+            question.options.forEach(async (option: any) => {
+                const newOption = new QuestionOptionHistory();
+                newOption.questionOption = option.questionOption;
+                newOption.answer = option.answer;
+                newOption.question = newQuestion;
+                await newOption.save();
+            });
+        });
+        return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
     } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
         return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
     }
 }
+
 
 //GET 
 export const getHistoryOfProcedures = async (req: Request, res: Response) => {
@@ -138,7 +146,6 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
                 }
             }
         });
-        console.log(procedure?.questions);
         if (procedure === null) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
         }

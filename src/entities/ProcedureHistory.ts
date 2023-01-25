@@ -11,15 +11,21 @@ import {
 } from "typeorm";
 import { Category } from "./Category";
 import { Document } from "./Document";
-import { Question } from "./Question";
 import { QuestionHistory } from "./QuestionHistory";
 import { Status } from "./Status";
 import { User } from "./User";
+import { UserMuni } from "./Muni";
 
 @Entity({ name: "procedure_history" })
 export class ProcedureHistory extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
 
     @ManyToOne(() => User, (user) => user.procedures)
     @JoinColumn({ name: "user_id" })
@@ -39,9 +45,7 @@ export class ProcedureHistory extends BaseEntity {
     @OneToMany(() => QuestionHistory, (questions) => questions.procedure)
     questions: QuestionHistory[];
 
-    @CreateDateColumn()
-    created_at: Date;
-
-    @UpdateDateColumn()
-    updated_at: Date;
+    @ManyToOne(() => UserMuni, (userMuni) => userMuni.procedureHistory)
+    @JoinColumn({ name: "userMuniId" })
+    userMuni: UserMuni;
 }

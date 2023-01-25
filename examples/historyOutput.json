@@ -1,0 +1,182 @@
+{
+    "message": "Historial de trámites presentados: ",
+    "history": [
+        {
+            "id": 92,
+            "created_at": "2023-01-23T17:09:14.075Z",
+            "updated_at": "2023-01-23T17:09:14.075Z",
+            "user": {
+                "firstname": "Joaquin",
+                "lastname": "Nuñez",
+                "email": "joanuñez1@gmail.com",
+                "cuil": "23440921447",
+                "adress": "Calle 3"
+            },
+            "category": {
+                "title": "Deportes"
+            },
+            "status": {
+                "status": "PRESENTADO"
+            },
+            "questions": [
+                {
+                    "id": 159,
+                    "question": {
+                        "id": 15,
+                        "title": "Ingrese un monto"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 342,
+                            "answer": "5000"
+                        }
+                    ]
+                },
+                {
+                    "id": 160,
+                    "question": {
+                        "id": 16,
+                        "title": "Suba un archivo"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 343,
+                            "answer": "https://raw.githubusercontent.com/OficinaVirtualBaron/oficina-virtual/main/examples/imgprueba.webp?token=GHSAT0AAAAAAB4D5WZN34OUODIUVYPMXJ54Y6JWVFA"
+                        }
+                    ]
+                },
+                {
+                    "id": 161,
+                    "question": {
+                        "id": 13,
+                        "title": "Tipo de negocio"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 344,
+                            "answer": "1"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 93,
+            "created_at": "2023-01-23T17:10:53.574Z",
+            "updated_at": "2023-01-23T17:10:53.574Z",
+            "user": {
+                "firstname": "Patricio",
+                "lastname": "Poncini",
+                "email": "patricioponcini@gmail.com",
+                "cuil": "23450933449",
+                "adress": "Calle 2"
+            },
+            "category": {
+                "title": "Tránsito y seguridad vial"
+            },
+            "status": {
+                "status": "PRESENTADO"
+            },
+            "questions": [
+                {
+                    "id": 162,
+                    "question": {
+                        "id": 15,
+                        "title": "Ingrese un monto"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 345,
+                            "answer": "10000"
+                        }
+                    ]
+                },
+                {
+                    "id": 163,
+                    "question": {
+                        "id": 16,
+                        "title": "Suba un archivo"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 346,
+                            "answer": "https://raw.githubusercontent.com/OficinaVirtualBaron/oficina-virtual/main/examples/imgprueba.webp?token=GHSAT0AAAAAAB4D5WZN34OUODIUVYPMXJ54Y6JWVFA"
+                        }
+                    ]
+                },
+                {
+                    "id": 164,
+                    "question": {
+                        "id": 13,
+                        "title": "Tipo de negocio"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 347,
+                            "answer": "2"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 94,
+            "created_at": "2023-01-23T18:12:43.229Z",
+            "updated_at": "2023-01-23T18:12:43.229Z",
+            "user": {
+                "firstname": "Patricio",
+                "lastname": "Poncini",
+                "email": "patricioponcini@gmail.com",
+                "cuil": "23450933449",
+                "adress": "Calle 2"
+            },
+            "category": {
+                "title": "Tránsito y seguridad vial"
+            },
+            "status": {
+                "status": "PRESENTADO"
+            },
+            "questions": [
+                {
+                    "id": 165,
+                    "question": {
+                        "id": 15,
+                        "title": "Ingrese un monto"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 348,
+                            "answer": "10000"
+                        }
+                    ]
+                },
+                {
+                    "id": 166,
+                    "question": {
+                        "id": 16,
+                        "title": "Suba un archivo"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 349,
+                            "answer": "https://raw.githubusercontent.com/OficinaVirtualBaron/oficina-virtual/main/examples/imgprueba.webp?token=GHSAT0AAAAAAB52YNY6OPWKMJAXPXNSMLCCY6OZY6Q"
+                        }
+                    ]
+                },
+                {
+                    "id": 167,
+                    "question": {
+                        "id": 13,
+                        "title": "Tipo de negocio"
+                    },
+                    "question_option_history": [
+                        {
+                            "id": 350,
+                            "answer": "2"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

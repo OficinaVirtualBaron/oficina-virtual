@@ -54,8 +54,7 @@ export const createOptionSchema = Joi.object({
 
 export const submitProcedureSchema = Joi.object({
     userId: Joi.number().min(1),
-    procedureTitle: Joi.string().min(5).max(30),
-    procedureDescription: Joi.string().min(10).max(200),
     categoryId: Joi.number().min(1),
     statusId: Joi.number().min(1),
+    questions: Joi.array(),
 });

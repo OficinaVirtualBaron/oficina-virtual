@@ -6,7 +6,7 @@ import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
-import { User } from "../entities/User";
+var currentNum = -1;
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -30,19 +30,19 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
-var currentNum = -1;
-// POST
+// POST cambiar el IF por una función que cuente cual es el user con menos trámites en su
+// array se lo asigne a él
 export const submitProcedure = async (req: Request, res: Response) => {
-    const { userId, categoryId, statusId } = req.body;
     try {
-        let procedureCompleted: ProcedureHistory;
+        const { userId, categoryId, statusId } = req.body;
+        await submitProcedureSchema.validateAsync(req.body);
         const procedure = new ProcedureHistory();
+        let procedureCompleted: ProcedureHistory;
         if (currentNum >= 2) {
             currentNum = 0;
         } else {
             currentNum++;
         }
-
         procedure.user = userId;
         procedure.category = categoryId;
         procedure.status = statusId;

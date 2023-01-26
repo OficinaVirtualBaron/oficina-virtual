@@ -5,9 +5,7 @@ import {
     BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToMany,
-    ManyToMany,
-    JoinTable
+    OneToMany
 } from "typeorm";
 import { UserMuni } from "./Muni";
 import { Procedure } from "./Procedure";
@@ -36,17 +34,6 @@ export class Category extends BaseEntity {
     @OneToMany(() => ProcedureHistory, (procedure) => procedure.category)
     procedure: ProcedureHistory[];
 
-    @ManyToMany(() => UserMuni, (munis) => munis.categories)
-    @JoinTable({
-        name: "category_has_muni",
-        joinColumn: {
-            name: "category_id",
-            referencedColumnName: "id"
-        },
-        inverseJoinColumn: {
-            name: "muni_id",
-            referencedColumnName: "id"
-        }
-    })
-    munis: UserMuni[]
+    @OneToMany(() => UserMuni, (munis) => munis.category)
+    munis: UserMuni
 }

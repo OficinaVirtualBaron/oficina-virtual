@@ -6,8 +6,9 @@ import * as isUserOrMuni from "./validateMuniAndUser"
 export interface IPayload {
     id: string;
     role: string;
+    category: string;
     iat: number;
     exp: number;
 }
 
-export {isUserRole, isMuniRole, isAdminRole, isUserOrMuni};
+export { isUserRole, isMuniRole, isAdminRole, isUserOrMuni };

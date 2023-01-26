@@ -9,3 +9,9 @@ declare namespace Express {
         userRole: string;
     }
 }
+
+declare namespace Express {
+    export interface Request {
+        userMuniCategory: string;
+    }
+}

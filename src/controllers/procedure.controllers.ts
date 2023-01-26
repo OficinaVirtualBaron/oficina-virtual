@@ -6,6 +6,7 @@ import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
+import { User } from "../entities/User";
 var currentNum = -1;
 
 // POST
@@ -38,11 +39,15 @@ export const submitProcedure = async (req: Request, res: Response) => {
         await submitProcedureSchema.validateAsync(req.body);
         const procedure = new ProcedureHistory();
         let procedureCompleted: ProcedureHistory;
-        if (currentNum >= 2) {
+
+
+        if (currentNum >= 3) {
             currentNum = 0;
         } else {
             currentNum++;
         }
+
+
         procedure.user = userId;
         procedure.category = categoryId;
         procedure.status = statusId;

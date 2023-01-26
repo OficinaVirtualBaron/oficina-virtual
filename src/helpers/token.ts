@@ -1,10 +1,12 @@
 import jwt from "jsonwebtoken";
 
-export const tokenSign = async (user: { id: any; role: any; }) => {
+// cambiar any a number
+export const tokenSign = async (user: { id: any; role: any; category: any }) => {
     return jwt.sign(
         {
             id: user.id,
-            role: user.role
+            role: user.role,
+            category: user.category
         },
         process.env.SECRET_TOKEN_KEY || "tokentest",
         {
@@ -12,6 +14,10 @@ export const tokenSign = async (user: { id: any; role: any; }) => {
         }
     );
 }
+
+// export const tokenSignMuni = async (userMuni: { id: number; role: string; category: number }) => {
+//     return jwt.sign()
+// }
 
 export const verifyToken = async (token: any) => {
     try {

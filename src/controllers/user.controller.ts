@@ -3,6 +3,7 @@ import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { tokenSignUser } from "../helpers/token";
 const saltround = 10;
 
 // POST 
@@ -97,15 +98,13 @@ export const signIn = async (req: Request, res: Response) => {
         const salt = bcrypt.genSaltSync();
         const user = await User.findOne({ where: { cuil: req.body.cuil } })
         if (!user) {
-            return res.status(400).json("El usuario es incorrecto. Intente nuevamente");
+            return res.status(404).json("El usuario es incorrecto. Intente nuevamente");
         }
         const validatePassword = await bcrypt.compare(password, user.password);
         if (!validatePassword) {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
         }
-        const token = jwt.sign({ id: user.id, role: user.role }, process.env.SECRET_TOKEN_KEY || "tokentest", {
-            expiresIn: "24h"
-        });
+        const token = await tokenSignUser(user);
         res.status(200).json({ user, token });
     } catch (error) {
         if (error instanceof Error) {

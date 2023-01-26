@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
+import { UserMuni } from "../entities/Muni";
 
 // cambiar any a number
-export const tokenSign = async (user: { id: any; role: any; category: any }) => {
+export const tokenSignUser = async (user: { id: any; role: any; }) => {
     return jwt.sign(
         {
             id: user.id,
             role: user.role,
-            category: user.category
         },
         process.env.SECRET_TOKEN_KEY || "tokentest",
         {
@@ -15,9 +15,19 @@ export const tokenSign = async (user: { id: any; role: any; category: any }) => 
     );
 }
 
-// export const tokenSignMuni = async (userMuni: { id: number; role: string; category: number }) => {
-//     return jwt.sign()
-// }
+export const tokenSignMuni = async (userMuni: UserMuni) => {
+    const token = jwt.sign(
+        {
+            id: userMuni.id,
+            role: userMuni.role,
+            category: userMuni.category
+        }, process.env.SECRET_TOKEN_KEY || "tokentest",
+        {
+            expiresIn: "24h"
+        }
+    );
+    return token;
+}
 
 export const verifyToken = async (token: any) => {
     try {

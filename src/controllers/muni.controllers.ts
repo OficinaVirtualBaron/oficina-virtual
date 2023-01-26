@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { createMuniSchema, updateMuniSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { UserMuni } from "../entities/Muni";
-import { tokenSign } from "../helpers/token";
+import { tokenSignMuni } from "../helpers/token";
+import { CategoryHasMuni } from "../entities/CategoryHasMuni";
 const saltround = 10;
 
 // POST
@@ -12,17 +12,21 @@ export const createMuni = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password, cuil, category, required, inprocess, finalized } = req.body;
         const user = new UserMuni();
-        await createMuniSchema.validateAsync(req.body);
+        const categoryHasMuni = new CategoryHasMuni();
+        // await createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
-        user.category = category;
         user.required = required;
         user.inprocess = inprocess;
         user.finalized = finalized;
         await user.save();
+        categoryHasMuni.category = category;
+        categoryHasMuni.muni = user;
+        await categoryHasMuni.save();
+        console.log("-- userID: " + user.id);
         res.status(201).send({ message: `¡Usuario municipal ${firstname} ${lastname} creado exitosamente!` });
     } catch (error) {
         if (error instanceof Error) {
@@ -93,24 +97,20 @@ export const deleteMuni = async (req: Request, res: Response) => {
     }
 }
 
-// POST
+// POST firmar tambien el category
 export const signInMuni = async (req: Request, res: Response) => {
     try {
         const { password } = req.body;
-        const salt = bcrypt.genSaltSync();
-        const user = await UserMuni.findOne({ where: { cuil: req.body.cuil } });
-        if (!user) {
+        const userMuni = await UserMuni.findOne({ where: { cuil: req.body.cuil } });
+        if (!userMuni) {
             return res.status(400).json("El CUIL es incorrecto o no existe. Intente nuevamente");
         }
-        const validatePassword = await bcrypt.compare(password, user.password);
+        const validatePassword = await bcrypt.compare(password, userMuni.password);
         if (!validatePassword) {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
-        const token = jwt.sign({ id: user.id, role: user.role, category: user.category }, process.env.SECRET_TOKEN_KEY || "tokentest", {
-            expiresIn: "24h"
-        })
-        console.log("USER: " + user + "ID USER " + user.id + ", ID ROLE: " + user.role + ", ID CATEGORY: " + user.category);
-        return res.status(200).json({ user, token });
+        const token = await tokenSignMuni(userMuni);
+        return res.status(200).send({ message: userMuni, token });
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });

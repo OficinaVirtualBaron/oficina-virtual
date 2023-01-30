@@ -9,12 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.submitProcedure = exports.createProcedure = void 0;
+exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.submitProcedure = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
 const validators_1 = require("../validators/validators");
 const ProcedureHistory_1 = require("../entities/ProcedureHistory");
 const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
+const typeorm_1 = require("typeorm");
+var currentNum = -1;
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -24,7 +26,7 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
             const procedure = new Procedure_1.Procedure();
             procedure.title = title;
             procedure.description = description;
-            procedure.category_id = category_id;
+            procedure.category = category_id;
             const savedProcedure = yield procedure.save();
             return res.status(200).send({ message: "Trámite creado", savedProcedure });
         }
@@ -39,38 +41,134 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.createProcedure = createProcedure;
-// POST  validar que ninguno de estos campos venga vacio salvo el documentId
+// POST cambiar el IF por una función que cuente cual es el user con menos trámites en su
+// array se lo asigne a él
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const { userId, categoryId, statusId } = req.body;
+        yield validators_1.submitProcedureSchema.validateAsync(req.body);
         const procedure = new ProcedureHistory_1.ProcedureHistory();
-        procedure.user = req.body.user_id;
-        procedure.title = req.body.procedureTitle;
-        procedure.description = req.body.procedureDescription;
-        procedure.categories = req.body.categoryId;
-        procedure.status = req.body.status_id;
-        yield procedure.save();
+        let procedureCompleted;
+        if (currentNum >= 3) {
+            currentNum = 0;
+        }
+        else {
+            currentNum++;
+        }
+        procedure.user = userId;
+        procedure.category = categoryId;
+        procedure.status = statusId;
+        procedure.userMuni = currentNum;
+        procedureCompleted = yield procedure.save();
         req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
             const newQuestion = new QuestionHistory_1.QuestionHistory();
-            newQuestion.title = question.title;
-            newQuestion.procedure = procedure;
+            newQuestion.question = question.question;
+            newQuestion.procedure = procedureCompleted;
             yield newQuestion.save();
             question.options.forEach((option) => __awaiter(void 0, void 0, void 0, function* () {
                 const newOption = new QuestionOptionsHistory_1.QuestionOptionHistory();
-                newOption.title = option.title;
-                newOption.enabled = option.enabled;
+                newOption.questionOption = option.questionOption;
+                newOption.answer = option.answer;
                 newOption.question = newQuestion;
                 yield newOption.save();
             }));
         }));
-        return res.status(201).send(`Trámite para "${procedure.title}" enviado correctamente. ¡Gracias vecino!`);
+        return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.json({ message: error.message });
+            return res.status(500).json({ message: error.message });
         }
+        return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
     }
 });
 exports.submitProcedure = submitProcedure;
+//GET 
+const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const history = yield ProcedureHistory_1.ProcedureHistory.find({
+            relations: {
+                user: true,
+                category: true,
+                status: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    email: true
+                },
+                category: {
+                    title: true
+                },
+                status: {
+                    status: true
+                }
+            }
+        });
+        if (history.length === 0) {
+            return res.status(404).send({ message: "No hay ningún trámite en el historial" });
+        }
+        return res.status(201).send({ message: "Historial de trámites presentados: ", history });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.getHistoryOfProcedures = getHistoryOfProcedures;
+// GET
+const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const procedure = yield ProcedureHistory_1.ProcedureHistory.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            relations: {
+                user: true,
+                category: true,
+                status: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    email: true
+                },
+                category: {
+                    title: true
+                },
+                status: {
+                    status: true
+                }
+            }
+        });
+        if (procedure === null) {
+            return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
+        }
+        return res.status(200).send({ message: `Trámite ID #${id}: `, procedure });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.getOneProcedureFromHistory = getOneProcedureFromHistory;
 // GET
 const getProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -81,18 +179,18 @@ const getProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 });
 exports.getProcedures = getProcedures;
 // GET
 const getProcedureByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { category_id } = req.params;
     try {
-        const procedures = yield Procedure_1.Procedure.findBy({ category_id: parseInt(req.params.category_id) });
+        const { category_id } = req.params;
+        const procedures = yield Procedure_1.Procedure.find({ where: { category: (0, typeorm_1.Equal)(category_id) } });
         if (procedures.length === 0)
-            return res.send({ message: "No hay trámites para esta categoría por el momento" });
+            return res.status(404).send({ message: "No hay trámites para esta categoría por el momento" });
         return res.json(procedures);
     }
     catch (error) {
@@ -107,11 +205,11 @@ const getProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const { id } = req.params;
         const procedure = yield Procedure_1.Procedure.findOneByOrFail({ id: parseInt(req.params.id) });
-        return res.json(procedure);
+        return res.status(200).json(procedure);
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 });
@@ -130,7 +228,7 @@ const updateProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 });
@@ -147,7 +245,7 @@ const deleteProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
     }
 });

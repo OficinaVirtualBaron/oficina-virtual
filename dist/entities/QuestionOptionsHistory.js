@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionOptionHistory = void 0;
 const typeorm_1 = require("typeorm");
 const QuestionHistory_1 = require("./QuestionHistory");
+const QuestionOption_1 = require("./QuestionOption");
 let QuestionOptionHistory = class QuestionOptionHistory extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -19,18 +20,19 @@ __decorate([
     __metadata("design:type", Number)
 ], QuestionOptionHistory.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
-], QuestionOptionHistory.prototype, "title", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Boolean)
-], QuestionOptionHistory.prototype, "enabled", void 0);
+], QuestionOptionHistory.prototype, "answer", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => QuestionHistory_1.QuestionHistory, (question) => question.question_option_history),
     (0, typeorm_1.JoinColumn)({ name: "question_history_id" }),
     __metadata("design:type", QuestionHistory_1.QuestionHistory)
 ], QuestionOptionHistory.prototype, "question", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => QuestionOption_1.QuestionOption, (questionOption) => questionOption.questionOptionHistory),
+    (0, typeorm_1.JoinColumn)({ name: "question_option_id" }),
+    __metadata("design:type", Array)
+], QuestionOptionHistory.prototype, "questionOption", void 0);
 QuestionOptionHistory = __decorate([
     (0, typeorm_1.Entity)({ name: "question_option_history" })
 ], QuestionOptionHistory);

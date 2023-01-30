@@ -16,6 +16,7 @@ const Document_1 = require("./Document");
 const QuestionHistory_1 = require("./QuestionHistory");
 const Status_1 = require("./Status");
 const User_1 = require("./User");
+const Muni_1 = require("./Muni");
 let ProcedureHistory = class ProcedureHistory extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -23,13 +24,13 @@ __decorate([
     __metadata("design:type", Number)
 ], ProcedureHistory.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], ProcedureHistory.prototype, "title", void 0);
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", Date)
+], ProcedureHistory.prototype, "created_at", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], ProcedureHistory.prototype, "description", void 0);
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], ProcedureHistory.prototype, "updated_at", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => User_1.User, (user) => user.procedures),
     (0, typeorm_1.JoinColumn)({ name: "user_id" }),
@@ -40,7 +41,7 @@ __decorate([
     __metadata("design:type", Array)
 ], ProcedureHistory.prototype, "documents", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => Status_1.Status, (status) => status.procedure, { cascade: true }),
+    (0, typeorm_1.ManyToOne)(() => Status_1.Status, (status) => status.procedure),
     (0, typeorm_1.JoinColumn)({ name: "status_id" }),
     __metadata("design:type", Status_1.Status)
 ], ProcedureHistory.prototype, "status", void 0);
@@ -48,19 +49,16 @@ __decorate([
     (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedure),
     (0, typeorm_1.JoinColumn)({ name: "category_id" }),
     __metadata("design:type", Category_1.Category)
-], ProcedureHistory.prototype, "categories", void 0);
+], ProcedureHistory.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => QuestionHistory_1.QuestionHistory, (questions) => questions.procedure),
     __metadata("design:type", Array)
 ], ProcedureHistory.prototype, "questions", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
-    __metadata("design:type", Date)
-], ProcedureHistory.prototype, "created_at", void 0);
-__decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
-    __metadata("design:type", Date)
-], ProcedureHistory.prototype, "updated_at", void 0);
+    (0, typeorm_1.ManyToOne)(() => Muni_1.UserMuni, (userMuni) => userMuni.procedureHistory),
+    (0, typeorm_1.JoinColumn)({ name: "userMuniId" }),
+    __metadata("design:type", Muni_1.UserMuni)
+], ProcedureHistory.prototype, "userMuni", void 0);
 ProcedureHistory = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure_history" })
 ], ProcedureHistory);

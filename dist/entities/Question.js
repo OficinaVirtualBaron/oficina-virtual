@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Question = void 0;
 const typeorm_1 = require("typeorm");
 const Procedure_1 = require("./Procedure");
+const QuestionHistory_1 = require("./QuestionHistory");
 const QuestionOption_1 = require("./QuestionOption");
 let Question = class Question extends typeorm_1.BaseEntity {
 };
@@ -24,7 +25,7 @@ __decorate([
     __metadata("design:type", String)
 ], Question.prototype, "title", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => QuestionOption_1.Question_Option, (question_option) => question_option.question),
+    (0, typeorm_1.OneToMany)(() => QuestionOption_1.QuestionOption, (question_option) => question_option.question),
     __metadata("design:type", Array)
 ], Question.prototype, "question_options", void 0);
 __decorate([
@@ -32,6 +33,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: "procedure_id" }),
     __metadata("design:type", Procedure_1.Procedure)
 ], Question.prototype, "procedure", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => QuestionHistory_1.QuestionHistory, (questionHistory) => questionHistory.question),
+    __metadata("design:type", Array)
+], Question.prototype, "questionHistory", void 0);
 Question = __decorate([
     (0, typeorm_1.Entity)({ name: "question" })
 ], Question);

@@ -15,27 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signInMuni = exports.deleteMuni = exports.updateMuni = exports.getMuni = exports.getMunis = exports.createMuni = void 0;
 const validators_1 = require("../validators/validators");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const Muni_1 = require("../entities/Muni");
+const token_1 = require("../helpers/token");
+const CategoryHasMuni_1 = require("../entities/CategoryHasMuni");
 const saltround = 10;
 // POST
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const salt = bcrypt_1.default.genSaltSync();
     try {
-        const { firstname, lastname, email, password, cuil, categories, required, inprocess, finalized } = req.body;
+        const { firstname, lastname, email, password, cuil, category, required, inprocess, finalized } = req.body;
         const user = new Muni_1.UserMuni();
+        const categoryHasMuni = new CategoryHasMuni_1.CategoryHasMuni();
         yield validators_1.createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt_1.default.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
-        user.categories = categories;
         user.required = required;
         user.inprocess = inprocess;
         user.finalized = finalized;
         yield user.save();
-        res.status(201).send({ message: `¡Usuario ${firstname} ${lastname} creado exitosamente!` });
+        categoryHasMuni.category = category;
+        categoryHasMuni.muni = user;
+        yield categoryHasMuni.save();
+        console.log("-- userID: " + user.id);
+        res.status(201).send({ message: `¡Usuario municipal ${firstname} ${lastname} creado exitosamente!` });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -112,23 +117,20 @@ const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteMuni = deleteMuni;
-// POST
+// POST firmar tambien el category
 const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { password } = req.body;
-        const salt = bcrypt_1.default.genSaltSync();
-        const user = yield Muni_1.UserMuni.findOne({ where: { cuil: req.body.cuil } });
-        if (!user) {
-            return res.status(400).json("El usuario municipal es incorrecto o no existe. Intente nuevamente");
+        const userMuni = yield Muni_1.UserMuni.findOne({ where: { cuil: req.body.cuil } });
+        if (!userMuni) {
+            return res.status(400).json("El CUIL es incorrecto o no existe. Intente nuevamente");
         }
-        const validatePassword = yield bcrypt_1.default.compare(password, user.password);
+        const validatePassword = yield bcrypt_1.default.compare(password, userMuni.password);
         if (!validatePassword) {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
-        const token = jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.SECRET_TOKEN_KEY || "tokentest", {
-            expiresIn: "24h"
-        });
-        return res.status(200).json({ user, token });
+        const token = yield (0, token_1.tokenSignMuni)(userMuni);
+        return res.status(200).send({ message: userMuni, token });
     }
     catch (error) {
         if (error instanceof Error) {

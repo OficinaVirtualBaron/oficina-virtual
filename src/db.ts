@@ -11,7 +11,6 @@ import { Status } from "./entities/Status";
 import { ProcedureHistory } from "./entities/ProcedureHistory";
 import { QuestionHistory } from "./entities/QuestionHistory";
 import { QuestionOptionHistory } from "./entities/QuestionOptionsHistory";
-import { CategoryHasMuni } from "./entities/CategoryHasMuni";
 dotenv.config();
 
 // DATABASE
@@ -33,8 +32,7 @@ export const AppDataSource = new DataSource({
         Status,
         ProcedureHistory,
         QuestionHistory,
-        QuestionOptionHistory,
-        CategoryHasMuni
+        QuestionOptionHistory
     ],
     logging: true,
     synchronize: true

@@ -6,7 +6,7 @@ export const tokenSignUser = async (user: { id: any; role: any; }) => {
     return jwt.sign(
         {
             id: user.id,
-            role: user.role,
+            role: user.role
         },
         process.env.SECRET_TOKEN_KEY || "tokentest",
         {
@@ -16,17 +16,16 @@ export const tokenSignUser = async (user: { id: any; role: any; }) => {
 }
 
 export const tokenSignMuni = async (userMuni: UserMuni) => {
-    const token = jwt.sign(
+    return jwt.sign(
         {
             id: userMuni.id,
             role: userMuni.role,
-            category: userMuni.category
+            category: userMuni.category.id
         }, process.env.SECRET_TOKEN_KEY || "tokentest",
         {
             expiresIn: "24h"
         }
     );
-    return token;
 }
 
 export const verifyToken = async (token: any) => {

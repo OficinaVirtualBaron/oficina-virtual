@@ -6,9 +6,10 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
-    ManyToMany
+    ManyToMany,
+    ManyToOne,
+    OneToOne
 } from "typeorm";
-import { CategoryHasMuni } from "./CategoryHasMuni";
 import { UserMuni } from "./Muni";
 import { Procedure } from "./Procedure";
 import { ProcedureHistory } from "./ProcedureHistory";
@@ -36,9 +37,6 @@ export class Category extends BaseEntity {
     @OneToMany(() => ProcedureHistory, (procedure) => procedure.category)
     procedure: ProcedureHistory[];
 
-    @ManyToMany(() => UserMuni, (munis) => munis.category)
-    munis: UserMuni[];
-
-    @OneToMany(() => CategoryHasMuni, (category_has_muni) => category_has_muni.muni)
-    category_has_muni: CategoryHasMuni[];
+    @OneToOne(() => UserMuni, (munis) => munis.category)
+    munis: UserMuni;
 }

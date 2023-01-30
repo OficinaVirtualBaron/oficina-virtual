@@ -28,6 +28,7 @@ __decorate([
 ], Document.prototype, "path", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => ProcedureHistory_1.ProcedureHistory, (procedure) => procedure.documents),
+    (0, typeorm_1.JoinColumn)({ name: "procedure_history_id" }),
     __metadata("design:type", ProcedureHistory_1.ProcedureHistory)
 ], Document.prototype, "procedure", void 0);
 Document = __decorate([

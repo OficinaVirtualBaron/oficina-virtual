@@ -17,6 +17,7 @@ const Status_1 = require("./entities/Status");
 const ProcedureHistory_1 = require("./entities/ProcedureHistory");
 const QuestionHistory_1 = require("./entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("./entities/QuestionOptionsHistory");
+const CategoryHasMuni_1 = require("./entities/CategoryHasMuni");
 dotenv_1.default.config();
 // DATABASE
 exports.AppDataSource = new typeorm_1.DataSource({
@@ -31,13 +32,14 @@ exports.AppDataSource = new typeorm_1.DataSource({
         Muni_1.UserMuni,
         Procedure_1.Procedure,
         Question_1.Question,
-        QuestionOption_1.Question_Option,
+        QuestionOption_1.QuestionOption,
         Document_1.Document,
         Category_1.Category,
         Status_1.Status,
         ProcedureHistory_1.ProcedureHistory,
         QuestionHistory_1.QuestionHistory,
-        QuestionOptionsHistory_1.QuestionOptionHistory
+        QuestionOptionsHistory_1.QuestionOptionHistory,
+        CategoryHasMuni_1.CategoryHasMuni
     ],
     logging: true,
     synchronize: true

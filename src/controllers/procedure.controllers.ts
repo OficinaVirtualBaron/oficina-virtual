@@ -6,7 +6,10 @@ import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
+import jwt from "jsonwebtoken";
 import { User } from "../entities/User";
+import { verifyToken } from "../helpers/token";
+import { IPayload } from "../middlewares";
 var currentNum = -1;
 
 // POST
@@ -78,9 +81,14 @@ export const submitProcedure = async (req: Request, res: Response) => {
 }
 
 
-//GET 
+// GET
 export const getHistoryOfProcedures = async (req: Request, res: Response) => {
+    const token = req.header("auth-header");
     try {
+        if (!token) return res.status(401).send("ERROR: NO HAY TOKEN MOSTRO");
+        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        req.userMuniCategory = payload.category;
+        res.send(token)
         const history = await ProcedureHistory.find({
             relations: {
                 user: true,
@@ -105,7 +113,12 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
                 status: {
                     status: true
                 }
-            }
+            },
+            // where: {
+            //     category: {
+            //         id: req.userMuniCategory
+            //     }
+            // }
         });
         if (history.length === 0) {
             return res.status(404).send({ message: "No hay ningún trámite en el historial" });

@@ -25,10 +25,6 @@ __decorate([
 ], Procedure.prototype, "title", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Procedure.prototype, "category_id", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Procedure.prototype, "description", void 0);
 __decorate([
@@ -37,6 +33,7 @@ __decorate([
 ], Procedure.prototype, "question", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedureTemplate),
+    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
     __metadata("design:type", Category_1.Category)
 ], Procedure.prototype, "category", void 0);
 Procedure = __decorate([

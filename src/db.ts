@@ -16,11 +16,11 @@ dotenv.config();
 // DATABASE
 export const AppDataSource = new DataSource({
     type: "mysql",
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.MYSQL_PASSW,
+    host: "bfilpfqwntql84bh8g2z-mysql.services.clever-cloud.com",
+    username: "uurwxwq1go11lwqj",
+    password: "uurwxwq1go11lwqj",
     port: 3306,
-    database: process.env.DB_NAME,
+    database: "bfilpfqwntql84bh8g2z-mysql.services.clever-cloud.com",
     entities: [
         User,
         UserMuni,

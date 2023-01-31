@@ -46,7 +46,7 @@ export const getMunis = async (req: Request, res: Response) => {
 // GET
 export const getMuni = async (req: Request, res: Response) => {
     try {
-        const user = await UserMuni.findOneByOrFail({ id: parseInt(req.params.id) });
+        const user = await UserMuni.findOne({ where: { id: parseInt(req.params.id) }, relations: { category: true }, select: { category: { id: true, title: true } } });
         return res.json(user);
     } catch (error) {
         if (error instanceof Error) {
@@ -93,7 +93,7 @@ export const deleteMuni = async (req: Request, res: Response) => {
 export const signInMuni = async (req: Request, res: Response) => {
     try {
         const { password } = req.body;
-        const userMuni = await UserMuni.findOne({ where: { cuil: req.body.cuil }, relations: { category: true }, select: { category: { id: true } } });
+        const userMuni = await UserMuni.findOne({ where: { cuil: req.body.cuil } });
         if (!userMuni) {
             return res.status(400).json("El CUIL es incorrecto o no existe. Intente nuevamente");
         }
@@ -102,7 +102,7 @@ export const signInMuni = async (req: Request, res: Response) => {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
         const token = await tokenSignMuni(userMuni);
-        // console.log("userMuni.category " + userMuni.category)
+        console.log("userMuni.category " + userMuni.category + " TOKEN: " + token)
         return res.status(200).send({ message: userMuni, token });
     } catch (error) {
         if (error instanceof Error) {

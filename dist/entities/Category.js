@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Category = void 0;
 const typeorm_1 = require("typeorm");
-const CategoryHasMuni_1 = require("./CategoryHasMuni");
 const Muni_1 = require("./Muni");
 const Procedure_1 = require("./Procedure");
 const ProcedureHistory_1 = require("./ProcedureHistory");
@@ -46,13 +45,13 @@ __decorate([
     __metadata("design:type", Array)
 ], Category.prototype, "procedure", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => Muni_1.UserMuni, (munis) => munis.category),
-    __metadata("design:type", Array)
+    (0, typeorm_1.OneToOne)(() => Muni_1.UserMuni, (munis) => munis.category),
+    __metadata("design:type", Muni_1.UserMuni)
 ], Category.prototype, "munis", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => CategoryHasMuni_1.CategoryHasMuni, (category_has_muni) => category_has_muni.muni),
-    __metadata("design:type", Array)
-], Category.prototype, "category_has_muni", void 0);
+    (0, typeorm_1.OneToOne)(() => Muni_1.UserMuni, (muni) => muni.category),
+    __metadata("design:type", Muni_1.UserMuni)
+], Category.prototype, "muni", void 0);
 Category = __decorate([
     (0, typeorm_1.Entity)({ name: "category" })
 ], Category);

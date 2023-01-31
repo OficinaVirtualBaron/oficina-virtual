@@ -8,14 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.submitProcedure = exports.createProcedure = void 0;
+exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getTemplateProcedureById = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.submitProcedure = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
 const validators_1 = require("../validators/validators");
 const ProcedureHistory_1 = require("../entities/ProcedureHistory");
 const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
 const typeorm_1 = require("typeorm");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var currentNum = -1;
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -83,9 +87,15 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.submitProcedure = submitProcedure;
-//GET 
+// GET
 const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.header("auth-header");
     try {
+        if (!token)
+            return res.status(401).send("ERROR: NO HAY TOKEN MOSTRO");
+        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const userMuniCategory = payload.category;
+        res.send(token);
         const history = yield ProcedureHistory_1.ProcedureHistory.find({
             relations: {
                 user: true,
@@ -110,7 +120,13 @@ const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, f
                 status: {
                     status: true
                 }
-            }
+            },
+            // INDICAR ACA QUE TRAIGA TODOS LOS TRAMITES DONDE EL CATEGORYID SEA IGUAL CATEGORYID DEL MUNICIPAL
+            // where: {
+            //     category: {
+            //         id: parseInt(userMuniCategory)
+            //     }
+            // }
         });
         if (history.length === 0) {
             return res.status(404).send({ message: "No hay ningún trámite en el historial" });
@@ -157,7 +173,7 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
                 }
             }
         });
-        if (procedure === null) {
+        if (!procedure) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
         }
         return res.status(200).send({ message: `Trámite ID #${id}: `, procedure });
@@ -169,6 +185,39 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
     }
 });
 exports.getOneProcedureFromHistory = getOneProcedureFromHistory;
+// GET
+const getTemplateProcedureById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const template = yield Procedure_1.Procedure.findOne({
+            where: {
+                id: parseInt(id)
+            },
+            relations: {
+                category: true,
+                question: {
+                    question_options: true
+                }
+            },
+            select: {
+                question: true,
+                category: {
+                    title: true
+                }
+            }
+        });
+        if (!template) {
+            return res.status(404).send({ message: "404 - Procedure Not Found" });
+        }
+        return res.status(200).send(template);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.getTemplateProcedureById = getTemplateProcedureById;
 // GET
 const getProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

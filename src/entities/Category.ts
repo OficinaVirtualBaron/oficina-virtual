@@ -6,8 +6,6 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
-    ManyToMany,
-    ManyToOne,
     OneToOne
 } from "typeorm";
 import { UserMuni } from "./Muni";
@@ -39,4 +37,7 @@ export class Category extends BaseEntity {
 
     @OneToOne(() => UserMuni, (munis) => munis.category)
     munis: UserMuni;
+
+    @OneToOne(() => UserMuni, (muni) => muni.category)
+    muni: UserMuni;
 }

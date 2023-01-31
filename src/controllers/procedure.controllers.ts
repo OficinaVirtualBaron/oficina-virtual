@@ -87,7 +87,7 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
     try {
         if (!token) return res.status(401).send("ERROR: NO HAY TOKEN MOSTRO");
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
-        req.userMuniCategory = payload.category;
+        const userMuniCategory = payload.category;
         res.send(token)
         const history = await ProcedureHistory.find({
             relations: {
@@ -114,9 +114,10 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
                     status: true
                 }
             },
+            // INDICAR ACA QUE TRAIGA TODOS LOS TRAMITES DONDE EL CATEGORYID SEA IGUAL CATEGORYID DEL MUNICIPAL
             // where: {
             //     category: {
-            //         id: req.userMuniCategory
+            //         id: parseInt(userMuniCategory)
             //     }
             // }
         });
@@ -164,10 +165,42 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
                 }
             }
         });
-        if (procedure === null) {
+        if (!procedure) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
         }
         return res.status(200).send({ message: `Trámite ID #${id}: `, procedure });
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+}
+
+// GET
+export const getTemplateProcedureById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const template = await Procedure.findOne({
+            where: {
+                id: parseInt(id)
+            },
+            relations: {
+                category: true,
+                question: {
+                    question_options: true
+                }
+            },
+            select: {
+                question: true,
+                category: {
+                    title: true
+                }
+            }
+        });
+        if (!template) {
+            return res.status(404).send({ message: "404 - Procedure Not Found" });
+        }
+        return res.status(200).send(template);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).send({ message: error.message });

@@ -7,7 +7,8 @@ import {
     deleteProcedure,
     submitProcedure,
     getOneProcedureFromHistory,
-    getHistoryOfProcedures
+    getHistoryOfProcedures,
+    getTemplateProcedureById
 } from "../controllers/procedure.controllers";
 import { isMuniRole } from "../middlewares/validateMuni";
 import { isAdminRole } from "../middlewares/validateAdmin";
@@ -16,6 +17,7 @@ const router = Router();
 
 router.post("/procedure", isAdminRole, createProcedure);
 router.post("/submit-procedure", isAdminRole, submitProcedure);
+router.get("/template/:id", isUserOrMuni, getTemplateProcedureById);
 router.get("/history", isMuniRole, getHistoryOfProcedures);
 router.get("/history/:id", isMuniRole, getOneProcedureFromHistory);
 router.get("/procedures", isUserOrMuni, getProcedures);

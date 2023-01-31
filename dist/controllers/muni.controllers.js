@@ -17,7 +17,6 @@ const validators_1 = require("../validators/validators");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Muni_1 = require("../entities/Muni");
 const token_1 = require("../helpers/token");
-const CategoryHasMuni_1 = require("../entities/CategoryHasMuni");
 const saltround = 10;
 // POST
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,21 +24,17 @@ const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { firstname, lastname, email, password, cuil, category, required, inprocess, finalized } = req.body;
         const user = new Muni_1.UserMuni();
-        const categoryHasMuni = new CategoryHasMuni_1.CategoryHasMuni();
         yield validators_1.createMuniSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt_1.default.hashSync(password, salt);
         user.email = email;
         user.cuil = cuil;
+        user.category = category;
         user.required = required;
         user.inprocess = inprocess;
         user.finalized = finalized;
         yield user.save();
-        categoryHasMuni.category = category;
-        categoryHasMuni.muni = user;
-        yield categoryHasMuni.save();
-        console.log("-- userID: " + user.id);
         res.status(201).send({ message: `¡Usuario municipal ${firstname} ${lastname} creado exitosamente!` });
     }
     catch (error) {
@@ -67,8 +62,7 @@ exports.getMunis = getMunis;
 // GET
 const getMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const user = yield Muni_1.UserMuni.findOneByOrFail({ id: parseInt(req.params.id) });
+        const user = yield Muni_1.UserMuni.findOne({ where: { id: parseInt(req.params.id) }, relations: { category: true }, select: { category: { id: true, title: true } } });
         return res.json(user);
     }
     catch (error) {
@@ -81,7 +75,6 @@ exports.getMuni = getMuni;
 // PUT
 const updateMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
         const { firstname, lastname, email, password } = req.body;
         const user = yield Muni_1.UserMuni.findOneBy({ id: parseInt(req.params.id) });
         if (!user)
@@ -103,8 +96,7 @@ exports.updateMuni = updateMuni;
 // DELETE
 const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const result = yield Muni_1.UserMuni.delete({ id: parseInt(id) });
+        const result = yield Muni_1.UserMuni.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
@@ -130,6 +122,7 @@ const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
         const token = yield (0, token_1.tokenSignMuni)(userMuni);
+        console.log("userMuni.category " + userMuni.category + " TOKEN: " + token);
         return res.status(200).send({ message: userMuni, token });
     }
     catch (error) {

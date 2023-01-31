@@ -64,8 +64,9 @@ __decorate([
     __metadata("design:type", Date)
 ], UserMuni.prototype, "update_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => Category_1.Category, (category) => category.munis),
-    __metadata("design:type", Array)
+    (0, typeorm_1.OneToOne)(() => Category_1.Category, (category) => category.muni),
+    (0, typeorm_1.JoinColumn)({ name: "categoryId" }),
+    __metadata("design:type", Category_1.Category)
 ], UserMuni.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedureHistory) => procedureHistory.userMuni),

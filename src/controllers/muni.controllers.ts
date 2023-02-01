@@ -10,18 +10,18 @@ export const createMuni = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
         const { firstname, lastname, email, password, cuil, category, required, inprocess, finalized } = req.body;
-        const user = new UserMuni();
+        const userMuni = new UserMuni();
         await createMuniSchema.validateAsync(req.body);
-        user.firstname = firstname;
-        user.lastname = lastname;
-        user.password = bcrypt.hashSync(password, salt);
-        user.email = email;
-        user.cuil = cuil;
-        user.category = category;
-        user.required = required;
-        user.inprocess = inprocess;
-        user.finalized = finalized;
-        await user.save();
+        userMuni.firstname = firstname;
+        userMuni.lastname = lastname;
+        userMuni.password = bcrypt.hashSync(password, salt);
+        userMuni.email = email;
+        userMuni.cuil = cuil;
+        userMuni.category = category;
+        userMuni.required = required;
+        userMuni.inprocess = inprocess;
+        userMuni.finalized = finalized;
+        await userMuni.save();
         res.status(201).send({ message: `¡Usuario municipal ${firstname} ${lastname} creado exitosamente!` });
     } catch (error) {
         if (error instanceof Error) {
@@ -33,8 +33,24 @@ export const createMuni = async (req: Request, res: Response) => {
 // GET 
 export const getMunis = async (req: Request, res: Response) => {
     try {
-        const munis = await UserMuni.find();
-        if (munis.length === 0) return res.status(404).send({ message: "No se encontraron usuarios municipales" });
+        const munis = await UserMuni.find({
+            relations: {
+                category: true
+            },
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                cuil: true,
+                email: true,
+                category: {
+                    title: true
+                }
+            }
+        });
+        if (munis.length === 0) {
+            return res.status(404).send({ message: "No se encontraron usuarios municipales" });
+        }
         return res.json(munis);
     } catch (error) {
         if (error instanceof Error) {
@@ -46,8 +62,27 @@ export const getMunis = async (req: Request, res: Response) => {
 // GET
 export const getMuni = async (req: Request, res: Response) => {
     try {
-        const user = await UserMuni.findOne({ where: { id: parseInt(req.params.id) }, relations: { category: true }, select: { category: { id: true, title: true } } });
-        return res.json(user);
+        const userMuni = await UserMuni.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            relations:
+            {
+                category: true
+            },
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                cuil: true,
+                email: true,
+                category: {
+                    id: true,
+                    title: true
+                }
+            }
+        });
+        return res.json(userMuni);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });
@@ -59,13 +94,13 @@ export const getMuni = async (req: Request, res: Response) => {
 export const updateMuni = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password } = req.body;
-        const user = await UserMuni.findOneBy({ id: parseInt(req.params.id) });
-        if (!user) return res.status(404).json({ message: "El usuario no existe" });
-        const result = await updateMuniSchema.validateAsync(req.body);
-        user.firstname = firstname;
-        user.lastname = lastname;
-        user.email = email;
-        await user.save();
+        const userMuni = await UserMuni.findOneBy({ id: parseInt(req.params.id) });
+        if (!userMuni) return res.status(404).json({ message: "El usuario no existe" });
+        await updateMuniSchema.validateAsync(req.body);
+        userMuni.firstname = firstname;
+        userMuni.lastname = lastname;
+        userMuni.email = email;
+        await userMuni.save();
         return res.status(200).json("Datos del usuario municipal actualizados correctamente");
     } catch (error) {
         if (error instanceof Error) {
@@ -77,8 +112,8 @@ export const updateMuni = async (req: Request, res: Response) => {
 // DELETE
 export const deleteMuni = async (req: Request, res: Response) => {
     try {
-        const result = await UserMuni.delete({ id: parseInt(req.params.id) });
-        if (result.affected === 0) {
+        const userMuni = await UserMuni.delete({ id: parseInt(req.params.id) });
+        if (userMuni.affected === 0) {
             return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
         return res.status(200).json("Usuario municipal borrado de la DB correctamente")
@@ -89,11 +124,24 @@ export const deleteMuni = async (req: Request, res: Response) => {
     }
 }
 
-// POST firmar tambien el category
+// POST
 export const signInMuni = async (req: Request, res: Response) => {
     try {
-        const { password } = req.body;
-        const userMuni = await UserMuni.findOne({ where: { cuil: req.body.cuil } });
+        const { password, cuil } = req.body;
+        const userMuni = await UserMuni.findOne({
+            where: {
+                cuil: cuil
+            },
+            relations: {
+                category: true
+            },
+            select: {
+                category: {
+                    id: true,
+                    title: true
+                }
+            }
+        });
         if (!userMuni) {
             return res.status(400).json("El CUIL es incorrecto o no existe. Intente nuevamente");
         }
@@ -102,7 +150,6 @@ export const signInMuni = async (req: Request, res: Response) => {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
         const token = await tokenSignMuni(userMuni);
-        console.log("userMuni.category " + userMuni.category + " TOKEN: " + token)
         return res.status(200).send({ message: userMuni, token });
     } catch (error) {
         if (error instanceof Error) {

@@ -20,7 +20,7 @@ export const tokenSignMuni = async (userMuni: UserMuni) => {
         {
             id: userMuni.id,
             role: userMuni.role,
-            category: userMuni.category
+            category: userMuni.category.id
         }, process.env.SECRET_TOKEN_KEY || "tokentest",
         {
             expiresIn: "24h"

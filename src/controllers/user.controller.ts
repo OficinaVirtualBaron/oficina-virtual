@@ -4,6 +4,8 @@ import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { tokenSignUser } from "../helpers/token";
+import { Procedure } from "../entities/Procedure";
+import { ProcedureHistory } from "../entities/ProcedureHistory";
 const saltround = 10;
 
 // POST 
@@ -31,7 +33,16 @@ export const createUser = async (req: Request, res: Response) => {
 // GET 
 export const getUsers = async (req: Request, res: Response) => {
     try {
-        const users = await User.find();
+        const users = await User.find({
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                adress: true,
+                cuil: true,
+                email: true
+            }
+        });
         if (users.length === 0) return res.status(404).send({ message: "No se encontraron usuarios" });
         return res.json(users);
     } catch (error) {
@@ -44,9 +55,23 @@ export const getUsers = async (req: Request, res: Response) => {
 // GET 
 export const getUser = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const user = await User.findOneByOrFail({ id: parseInt(req.params.id) })
-        return res.json(user);
+        const user = await User.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                adress: true,
+                cuil: true,
+                email: true
+            }
+        });
+        if (!user) {
+            return res.status(404).send({ message: `El vecino ID #${req.params.id} no existe` });
+        }
+        return res.status(200).send(user);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });
@@ -57,11 +82,10 @@ export const getUser = async (req: Request, res: Response) => {
 // PUT 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
         const { firstname, lastname, email, password } = req.body;
         const user = await User.findOneBy({ id: parseInt(req.params.id) });
         if (!user) return res.status(404).send({ message: "El usuario no existe" });
-        updateUserSchema.validateAsync(req.body);
+        await updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
@@ -78,8 +102,7 @@ export const updateUser = async (req: Request, res: Response) => {
 // DELETE 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const result = await User.delete({ id: parseInt(id) });
+        const result = await User.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json({ message: "Usuario no encontrado o incorrecto. Intente nuevamente" });
         }

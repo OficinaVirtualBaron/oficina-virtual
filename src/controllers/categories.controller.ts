@@ -21,7 +21,13 @@ export const createCategory = async (req: Request, res: Response) => {
 // GET
 export const getCategories = async (req: Request, res: Response) => {
     try {
-        const categories = await Category.find();
+        const categories = await Category.find({
+            select: {
+                id: true,
+                title: true,
+                description: true
+            }
+        });
         if (categories.length === 0) return res.status(404).send({ message: "No se encontraron categorías" });
         return res.json(categories);
     } catch (error) {
@@ -34,8 +40,16 @@ export const getCategories = async (req: Request, res: Response) => {
 // GET
 export const getCategory = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const category = await Category.findOneByOrFail({ id: parseInt(req.params.id) });
+        const category = await Category.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true
+            }
+        });
         return res.json(category);
     } catch (error) {
         if (error instanceof Error) {
@@ -47,7 +61,6 @@ export const getCategory = async (req: Request, res: Response) => {
 // PUT
 export const updateCategory = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
         const { title } = req.body;
         const category = await Category.findOneBy({ id: parseInt(req.params.id) });
         if (!category) return res.status(404).send({ message: "La categoría no existe" });
@@ -65,8 +78,7 @@ export const updateCategory = async (req: Request, res: Response) => {
 // DELETE
 export const deleteCategory = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const result = await Category.delete({ id: parseInt(id) });
+        const result = await Category.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json("Categoría no encontrada o incorrecta. Intente nuevamente")
         }

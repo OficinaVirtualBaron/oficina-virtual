@@ -1,4 +1,4 @@
-import {Router} from "express";
+import { Router } from "express";
 import {
     getUser,
     getUsers,
@@ -12,7 +12,7 @@ import { validateId } from "../middlewares/validateId";
 const router = Router();
 
 router.get("/users", isMuniRole, getUsers);
-router.get("/users/:id", isUserRole, validateId, getUser);
+router.get("/users/:id", isMuniRole, getUser);
 router.put("/user/:id", isUserRole, validateId, updateUser);
 router.delete("/user/:id", isAdminRole, deleteUser);
 

@@ -1,52 +1,163 @@
 # OFICNA VIRTUAL
 
-# Primero instalar los node_modules
-```
-npm install para modulos de node
-```
+# Instalar los node_modules
+```npm install``` para instalar ```node_modules```.
 
 # Conectar a una DB
 ![imagen](https://user-images.githubusercontent.com/116845688/211369820-88c1d80b-9937-4ae4-b018-1b3c8da1ef16.png)
 
 # Correr el server localmente
 
-```
-npm run dev para correr el servidor localmente
-```
+```npm run dev``` para correr el servidor localmente.
 
 
 # DOCUMENTACIÓN:
 # USER VECINO
 - Para crear un user:
-![imagen](https://user-images.githubusercontent.com/116845688/211362531-3c4d1ef2-4dd5-47a0-a9e6-e4139a977cc1.png)
+```
+{
+	"firstname": "Test 1",
+	"lastname": "Test 1",
+	"password": "password",
+	"email": "test1@gmail.com",
+	"cuil": "23328913239",
+	"adress": "Calle falsa 33"
+}
+```
 
 - Para iniciar sesión como user:
-![imagen](https://user-images.githubusercontent.com/116845688/211362597-a39ee599-54ed-472c-8753-3c679bf4d954.png)
+```
+{
+	"cuil": "23328913239",
+	"password": "password"
+}
+```
 
-- Para obtener la lista de users (solo Muni):
-![imagen](https://user-images.githubusercontent.com/116845688/211362772-2cf6270b-b2f2-4ce1-b83a-04fb503f75c5.png)
+- Para obtener la lista de users:
+Hacer un get al endpoint y recibe el array de users: 
+```
+[
+	{
+		"id": 1,
+		"firstname": "Test 1",
+		"lastname": "Test",
+		"email": "test1@gmail.com",
+		"cuil": "23328913239",
+		"adress": "Calle Falsa 33"
+	},
+	{
+		"id": 2,
+		"firstname": "Test 2",
+		"lastname": "Test",
+		"email": "test2@gmail.com",
+		"cuil": "23328913240",
+		"adress": "Calle Falsa 34"
+	},
+	{
+		"id": 3,
+		"firstname": "Test 3",
+		"lastname": "Test",
+		"email": "test3@gmail.com",
+		"cuil": "23328913241",
+		"adress": "Calle Falsa 35"
+	}
+]
+```
 
-- Para obtener un user por su Id (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211362882-3cff781e-5142-4b19-a5f0-19267ab04129.png)
+- Para obtener un user por su Id:
+```
+{
+		"id": 3,
+		"firstname": "Test 3",
+		"lastname": "Test",
+		"email": "test3@gmail.com",
+		"cuil": "23328913241",
+		"adress": "Calle Falsa 35"
+	}
+```
 
-- Para actualizar un user por su Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211365321-1e39fbd7-bd78-481a-ac10-2e7ec2840c99.png)
+- Para actualizar un user por su Id (se puede actualizar unicamente password y email):
+```
+{
+	"password": "password",
+	"email": "test1@gmail.com"
+}
+```
 
-- Para borrar un user por su Id (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211365459-2dd26c19-c872-48d7-b73f-7d3c6f3f8bd6.png)
+- Para borrar un user por su Id:
+Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve esto: 
+```
+{
+	"message": "Usuario borrado de la DB correctamente"
+}
+```
 
 # USER MUNICIPAL
-- Crear user municipal (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211365559-caef3f47-bb8f-4942-a3fc-bc8e7abd87ae.png)
+- Crear user municipal:
+```
+{
+	"firstname": "Test 1",
+	"lastname": "Test",
+	"password": "password",
+	"email": "test1@gmail.com",
+	"cuil": "23328913239",
+	"category": 12,
+	"required": 1,
+	"inprocess": 0,
+	"finalized": 0
+}
+```
 
-- Login de user municipal:
-![imagen](https://user-images.githubusercontent.com/116845688/211366554-bdebbae2-3178-4c16-a7ce-037576d3d115.png)
+- Login de user municipal: El login es mediante cuil y password
+```
+{
+	"cuil": "23328913239",
+	"password": "password"
+}
+```
 
-- Obtener lista de usuarios (solo Muni):
-![imagen](https://user-images.githubusercontent.com/116845688/211366684-b3fd8983-663b-458b-8859-b6a6fc9da326.png)
+- Obtener lista de usuarios:
+Cuando haces el get devuelve esto:
+```
+[
+	{
+		"id": 0,
+		"firstname": "Municipal 1",
+		"lastname": "Municipal",
+		"email": "municipal1@gmail.com",
+		"cuil": "23454932447",
+		"category": {
+			"title": "Gobierno y desarrollo"
+		}
+	},
+	{
+		"id": 1,
+		"firstname": "Municipal 2",
+		"lastname": "Municipal",
+		"email": "municipal2@gmail.com",
+		"cuil": "23454332447",
+		"category": {
+			"title": "Infraestructura y servicios publicos"
+		}
+	}
+]
+```
 
 - Obtener user municipal por Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211366738-4f49b330-63c8-41d9-9ab9-493210b1abc8.png)
+Cuando le pegas al endpoint devuelve esto:
+```
+{
+	"id": 2,
+	"firstname": "Martin",
+	"lastname": "Galvan",
+	"email": "martingalvan22@gmail.com",
+	"cuil": "23424332447",
+	"category": {
+		"id": 15,
+		"title": "Medio ambiente"
+	}
+}
+```
 
 - Actualizar user municipal por Id:
 ![imagen](https://user-images.githubusercontent.com/116845688/211366856-01ca287d-af36-4015-86ef-fb6f3794a80e.png)

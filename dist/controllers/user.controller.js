@@ -44,7 +44,16 @@ exports.createUser = createUser;
 // GET 
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield User_1.User.find();
+        const users = yield User_1.User.find({
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                adress: true,
+                cuil: true,
+                email: true
+            }
+        });
         if (users.length === 0)
             return res.status(404).send({ message: "No se encontraron usuarios" });
         return res.json(users);
@@ -59,9 +68,23 @@ exports.getUsers = getUsers;
 // GET 
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const user = yield User_1.User.findOneByOrFail({ id: parseInt(req.params.id) });
-        return res.json(user);
+        const user = yield User_1.User.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                adress: true,
+                cuil: true,
+                email: true
+            }
+        });
+        if (!user) {
+            return res.status(404).send({ message: `El vecino ID #${req.params.id} no existe` });
+        }
+        return res.status(200).send(user);
     }
     catch (error) {
         if (error instanceof Error) {
@@ -73,12 +96,11 @@ exports.getUser = getUser;
 // PUT 
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
         const { firstname, lastname, email, password } = req.body;
         const user = yield User_1.User.findOneBy({ id: parseInt(req.params.id) });
         if (!user)
             return res.status(404).send({ message: "El usuario no existe" });
-        validators_1.updateUserSchema.validateAsync(req.body);
+        yield validators_1.updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
@@ -96,8 +118,7 @@ exports.updateUser = updateUser;
 // DELETE 
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const result = yield User_1.User.delete({ id: parseInt(id) });
+        const result = yield User_1.User.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json({ message: "Usuario no encontrado o incorrecto. Intente nuevamente" });
         }

@@ -32,7 +32,13 @@ exports.createCategory = createCategory;
 // GET
 const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const categories = yield Category_1.Category.find();
+        const categories = yield Category_1.Category.find({
+            select: {
+                id: true,
+                title: true,
+                description: true
+            }
+        });
         if (categories.length === 0)
             return res.status(404).send({ message: "No se encontraron categorías" });
         return res.json(categories);
@@ -47,8 +53,16 @@ exports.getCategories = getCategories;
 // GET
 const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const category = yield Category_1.Category.findOneByOrFail({ id: parseInt(req.params.id) });
+        const category = yield Category_1.Category.findOne({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true
+            }
+        });
         return res.json(category);
     }
     catch (error) {
@@ -61,7 +75,6 @@ exports.getCategory = getCategory;
 // PUT
 const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
         const { title } = req.body;
         const category = yield Category_1.Category.findOneBy({ id: parseInt(req.params.id) });
         if (!category)
@@ -81,8 +94,7 @@ exports.updateCategory = updateCategory;
 // DELETE
 const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const result = yield Category_1.Category.delete({ id: parseInt(id) });
+        const result = yield Category_1.Category.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json("Categoría no encontrada o incorrecta. Intente nuevamente");
         }

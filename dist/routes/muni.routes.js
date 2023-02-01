@@ -8,7 +8,7 @@ const validateMuni_1 = require("../middlewares/validateMuni");
 const router = (0, express_1.Router)();
 router.post("/createMuni", validateAdmin_1.isAdminRole, muni_controllers_1.createMuni);
 router.get("/munis", validateMuni_1.isMuniRole, muni_controllers_1.getMunis);
-router.get("/munis/:id", validateMuni_1.isMuniRole, validateId_1.validateId, muni_controllers_1.getMuni);
+router.get("/munis/:id", validateMuni_1.isMuniRole, muni_controllers_1.getMuni);
 router.put("/munis/:id", validateMuni_1.isMuniRole, validateId_1.validateId, muni_controllers_1.updateMuni);
 router.delete("/munis/:id", validateAdmin_1.isAdminRole, muni_controllers_1.deleteMuni);
 exports.default = router;

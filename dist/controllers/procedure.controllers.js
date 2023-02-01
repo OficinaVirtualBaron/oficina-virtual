@@ -91,11 +91,11 @@ exports.submitProcedure = submitProcedure;
 const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header("auth-header");
     try {
-        if (!token)
-            return res.status(401).send("ERROR: NO HAY TOKEN MOSTRO");
+        if (!token) {
+            return res.status(401).send({ message: "Error. No hay token en la petición" });
+        }
         const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
         const userMuniCategory = payload.category;
-        res.send(token);
         const history = yield ProcedureHistory_1.ProcedureHistory.find({
             relations: {
                 user: true,
@@ -121,17 +121,16 @@ const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, f
                     status: true
                 }
             },
-            // INDICAR ACA QUE TRAIGA TODOS LOS TRAMITES DONDE EL CATEGORYID SEA IGUAL CATEGORYID DEL MUNICIPAL
-            // where: {
-            //     category: {
-            //         id: parseInt(userMuniCategory)
-            //     }
-            // }
+            where: {
+                category: {
+                    id: parseInt(userMuniCategory)
+                }
+            }
         });
         if (history.length === 0) {
             return res.status(404).send({ message: "No hay ningún trámite en el historial" });
         }
-        return res.status(201).send({ message: "Historial de trámites presentados: ", history });
+        return res.status(200).send({ message: "Historial de trámites presentados: ", history });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -143,11 +142,14 @@ exports.getHistoryOfProcedures = getHistoryOfProcedures;
 // GET
 const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const token = req.header("auth-header");
     try {
-        const procedure = yield ProcedureHistory_1.ProcedureHistory.findOne({
-            where: {
-                id: parseInt(req.params.id)
-            },
+        if (!token) {
+            return res.status(401).send({ message: "Error. No hay token en la petición" });
+        }
+        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const userMuniCategory = payload.category;
+        const procedure = yield ProcedureHistory_1.ProcedureHistory.find({
             relations: {
                 user: true,
                 category: true,
@@ -171,8 +173,17 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
                 status: {
                     status: true
                 }
+            },
+            where: {
+                id: parseInt(id),
+                category: {
+                    id: parseInt(userMuniCategory)
+                }
             }
         });
+        if (procedure.length === 0) {
+            return res.status(401).send({ message: `El trámite ID #${id} no corresponde a su área. No tiene autorización para verlo` });
+        }
         if (!procedure) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
         }

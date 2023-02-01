@@ -150,7 +150,7 @@ export const signInMuni = async (req: Request, res: Response) => {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
         const token = await tokenSignMuni(userMuni);
-        return res.status(200).send({ message: userMuni, token });
+        return res.status(200).json({ userMuni, token });
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });

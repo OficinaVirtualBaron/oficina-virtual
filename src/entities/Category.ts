@@ -37,7 +37,7 @@ export class Category extends BaseEntity {
 
     @OneToOne(() => UserMuni, (munis) => munis.category)
     munis: UserMuni;
-
+    // hacer esto OneToMany
     @OneToOne(() => UserMuni, (muni) => muni.category)
     muni: UserMuni;
 }

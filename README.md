@@ -1,73 +1,235 @@
 # OFICNA VIRTUAL
 
-# Primero instalar los node_modules
-```
-npm install para modulos de node
-```
+# Instalar los node_modules
+```npm install``` para instalar ```node_modules```.
 
 # Conectar a una DB
 ![imagen](https://user-images.githubusercontent.com/116845688/211369820-88c1d80b-9937-4ae4-b018-1b3c8da1ef16.png)
 
 # Correr el server localmente
 
-```
-npm run dev para correr el servidor localmente
-```
+```npm run dev``` para correr el servidor localmente.
 
 
 # DOCUMENTACIÓN:
 # USER VECINO
-- Para crear un user:
-![imagen](https://user-images.githubusercontent.com/116845688/211362531-3c4d1ef2-4dd5-47a0-a9e6-e4139a977cc1.png)
+- POST - Para crear un user:
+```
+{
+	"firstname": "Test 1",
+	"lastname": "Test 1",
+	"password": "password",
+	"email": "test1@gmail.com",
+	"cuil": "23328913239",
+	"adress": "Calle falsa 33"
+}
+```
 
-- Para iniciar sesión como user:
-![imagen](https://user-images.githubusercontent.com/116845688/211362597-a39ee599-54ed-472c-8753-3c679bf4d954.png)
+- POST - Para iniciar sesión como user:
+```
+{
+	"cuil": "23328913239",
+	"password": "password"
+}
+```
 
-- Para obtener la lista de users (solo Muni):
-![imagen](https://user-images.githubusercontent.com/116845688/211362772-2cf6270b-b2f2-4ce1-b83a-04fb503f75c5.png)
+- GET - Para obtener la lista de users:
+Hacer un get al endpoint y recibe el array de users: 
+```
+[
+	{
+		"id": 1,
+		"firstname": "Test 1",
+		"lastname": "Test",
+		"email": "test1@gmail.com",
+		"cuil": "23328913239",
+		"adress": "Calle Falsa 33"
+	},
+	{
+		"id": 2,
+		"firstname": "Test 2",
+		"lastname": "Test",
+		"email": "test2@gmail.com",
+		"cuil": "23328913240",
+		"adress": "Calle Falsa 34"
+	},
+	{
+		"id": 3,
+		"firstname": "Test 3",
+		"lastname": "Test",
+		"email": "test3@gmail.com",
+		"cuil": "23328913241",
+		"adress": "Calle Falsa 35"
+	}
+]
+```
 
-- Para obtener un user por su Id (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211362882-3cff781e-5142-4b19-a5f0-19267ab04129.png)
+- GET - Para obtener un user por su Id:
+```
+{
+	"id": 3,
+	"firstname": "Test 3",
+	"lastname": "Test",
+	"email": "test3@gmail.com",
+	"cuil": "23328913241",
+	"adress": "Calle Falsa 35"
+}
+```
 
-- Para actualizar un user por su Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211365321-1e39fbd7-bd78-481a-ac10-2e7ec2840c99.png)
+- PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email):
+```
+{
+	"password": "password",
+	"email": "test1@gmail.com"
+}
+```
 
-- Para borrar un user por su Id (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211365459-2dd26c19-c872-48d7-b73f-7d3c6f3f8bd6.png)
+- DELETE - Para borrar un user por su Id:
+Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve esto: 
+```
+{
+	"message": "Usuario borrado de la DB correctamente"
+}
+```
 
 # USER MUNICIPAL
-- Crear user municipal (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211365559-caef3f47-bb8f-4942-a3fc-bc8e7abd87ae.png)
+- POST - Crear user municipal:
+```
+{
+	"firstname": "Test 1",
+	"lastname": "Test",
+	"password": "password",
+	"email": "test1@gmail.com",
+	"cuil": "23328913239",
+	"category": 12,
+	"required": 1,
+	"inprocess": 0,
+	"finalized": 0
+}
+```
 
-- Login de user municipal:
-![imagen](https://user-images.githubusercontent.com/116845688/211366554-bdebbae2-3178-4c16-a7ce-037576d3d115.png)
+- POST - Login de user municipal: El login es mediante cuil y password
+```
+{
+	"cuil": "23328913239",
+	"password": "password"
+}
+```
 
-- Obtener lista de usuarios (solo Muni):
-![imagen](https://user-images.githubusercontent.com/116845688/211366684-b3fd8983-663b-458b-8859-b6a6fc9da326.png)
+- GET - Obtener lista de usuarios:
+Cuando haces el get devuelve esto:
+```
+[
+	{
+		"id": 0,
+		"firstname": "Municipal 1",
+		"lastname": "Municipal",
+		"email": "municipal1@gmail.com",
+		"cuil": "23454932447",
+		"category": {
+			"title": "Gobierno y desarrollo"
+		}
+	},
+	{
+		"id": 1,
+		"firstname": "Municipal 2",
+		"lastname": "Municipal",
+		"email": "municipal2@gmail.com",
+		"cuil": "23454332447",
+		"category": {
+			"title": "Infraestructura y servicios publicos"
+		}
+	}
+]
+```
 
-- Obtener user municipal por Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211366738-4f49b330-63c8-41d9-9ab9-493210b1abc8.png)
+- GET - Obtener user municipal por Id:
+Cuando le pegas al endpoint devuelve esto:
+```
+{
+	"id": 2,
+	"firstname": "Martin",
+	"lastname": "Galvan",
+	"email": "martingalvan22@gmail.com",
+	"cuil": "23424332447",
+	"category": {
+		"id": 15,
+		"title": "Medio ambiente"
+	}
+}
+```
 
-- Actualizar user municipal por Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211366856-01ca287d-af36-4015-86ef-fb6f3794a80e.png)
+- PUT - Actualizar user municipal por Id:
+```
+{
+	"password": "password123",
+	"email": "test@gmail.com"
+}
+```
 
-- Borrar user municipal por Id (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211367036-420cb2aa-df85-445a-8e43-278d1c438080.png)
+- DELETE - Borrar user municipal por Id. Cuando le pegas al endpoint te devuelve lo siguiente:
+```
+{
+	message: "Usuario municipal borrado de la DB correctamente"
+}
+```
 
 # CATEGORIES 
 (solo puede administrarlas el admin)
 
-- Crear categoría: 
-![imagen](https://user-images.githubusercontent.com/116845688/211367278-a94a892d-9ab9-46ab-907d-00aeec273a04.png)
+- POST - Crear categoría: 
+```
+{
+	"title": "Títulod de la categoría",
+	"description": "Descripción de la categoría"
+}
+```
 
-- Obtener todas las categorías:
-![imagen](https://user-images.githubusercontent.com/116845688/211367352-9f728d0b-3e9c-44e4-ac9b-615a7dab5d2b.png)
+- GET - Obtener todas las categorías:
+```
+[
+	{
+		"id": 1,
+		"title": "Categoría 1",
+		"description": "Descripción de la categoría 1"
+	},
+	{
+		"id": 2,
+		"title": "Categoría 2",
+		"description": "Descripción de la categoría 2"
+	},
+	{
+		"id": 3,
+		"title": "Categoría 3",
+		"description": "Descripción de la categoría 3"
+	}
+]
+```
 
-- Obtener una categoría por Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211367607-6f1b089c-b59f-4a0c-bb19-a96ff7270e68.png)
+- GET - Obtener una categoría por Id:
+```
+{
+	"id": 1,
+	"title": "Categoría 1",
+	"description": "Descripción de la categoría 1"
+}
+```
 
-- Obtener trámites por category_id (Query): 
-![imagen](https://user-images.githubusercontent.com/116845688/211396262-bdbe4552-c091-493b-829b-3e3ac3443ed0.png)
+- GET - Obtener trámites por category_id (Query): 
+```
+[
+	{
+		"id": 1,
+		"title": "Trámite 1",
+		"description": "Descripción del trámite 1"
+	},
+	{
+		"id": 2,
+		"title": "Trámite 2",
+		"description": "Descripción del trámite 2"
+	}
+]
+```
 
 
 

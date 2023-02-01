@@ -13,7 +13,7 @@
 
 # DOCUMENTACIÓN:
 # USER VECINO
-- Para crear un user:
+- POST - Para crear un user:
 ```
 {
 	"firstname": "Test 1",
@@ -25,7 +25,7 @@
 }
 ```
 
-- Para iniciar sesión como user:
+- POST - Para iniciar sesión como user:
 ```
 {
 	"cuil": "23328913239",
@@ -33,7 +33,7 @@
 }
 ```
 
-- Para obtener la lista de users:
+- GET - Para obtener la lista de users:
 Hacer un get al endpoint y recibe el array de users: 
 ```
 [
@@ -64,7 +64,7 @@ Hacer un get al endpoint y recibe el array de users:
 ]
 ```
 
-- Para obtener un user por su Id:
+- GET - Para obtener un user por su Id:
 ```
 {
 		"id": 3,
@@ -76,7 +76,7 @@ Hacer un get al endpoint y recibe el array de users:
 	}
 ```
 
-- Para actualizar un user por su Id (se puede actualizar unicamente password y email):
+- PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email):
 ```
 {
 	"password": "password",
@@ -84,7 +84,7 @@ Hacer un get al endpoint y recibe el array de users:
 }
 ```
 
-- Para borrar un user por su Id:
+- DELETE - Para borrar un user por su Id:
 Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve esto: 
 ```
 {
@@ -93,7 +93,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 ```
 
 # USER MUNICIPAL
-- Crear user municipal:
+- POST - Crear user municipal:
 ```
 {
 	"firstname": "Test 1",
@@ -108,7 +108,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 }
 ```
 
-- Login de user municipal: El login es mediante cuil y password
+- POST - Login de user municipal: El login es mediante cuil y password
 ```
 {
 	"cuil": "23328913239",
@@ -116,7 +116,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 }
 ```
 
-- Obtener lista de usuarios:
+- GET - Obtener lista de usuarios:
 Cuando haces el get devuelve esto:
 ```
 [
@@ -143,7 +143,7 @@ Cuando haces el get devuelve esto:
 ]
 ```
 
-- Obtener user municipal por Id:
+- GET - Obtener user municipal por Id:
 Cuando le pegas al endpoint devuelve esto:
 ```
 {
@@ -159,25 +159,25 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- Actualizar user municipal por Id:
+- PUT - Actualizar user municipal por Id:
 ![imagen](https://user-images.githubusercontent.com/116845688/211366856-01ca287d-af36-4015-86ef-fb6f3794a80e.png)
 
-- Borrar user municipal por Id (solo Admin):
+- DELETE - Borrar user municipal por Id (solo Admin):
 ![imagen](https://user-images.githubusercontent.com/116845688/211367036-420cb2aa-df85-445a-8e43-278d1c438080.png)
 
 # CATEGORIES 
 (solo puede administrarlas el admin)
 
-- Crear categoría: 
+- POST - Crear categoría: 
 ![imagen](https://user-images.githubusercontent.com/116845688/211367278-a94a892d-9ab9-46ab-907d-00aeec273a04.png)
 
-- Obtener todas las categorías:
+- GET - Obtener todas las categorías:
 ![imagen](https://user-images.githubusercontent.com/116845688/211367352-9f728d0b-3e9c-44e4-ac9b-615a7dab5d2b.png)
 
-- Obtener una categoría por Id:
+- GET - Obtener una categoría por Id:
 ![imagen](https://user-images.githubusercontent.com/116845688/211367607-6f1b089c-b59f-4a0c-bb19-a96ff7270e68.png)
 
-- Obtener trámites por category_id (Query): 
+- GET - Obtener trámites por category_id (Query): 
 ![imagen](https://user-images.githubusercontent.com/116845688/211396262-bdbe4552-c091-493b-829b-3e3ac3443ed0.png)
 
 

@@ -79,7 +79,11 @@ export const getMuni = async (req: Request, res: Response) => {
                 category: {
                     id: true,
                     title: true
-                }
+                },
+                required:true,
+                finalized:true,
+                inprocess:true,
+                
             }
         });
         return res.json(userMuni);

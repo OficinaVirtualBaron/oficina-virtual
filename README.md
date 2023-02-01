@@ -67,13 +67,13 @@ Hacer un get al endpoint y recibe el array de users:
 - GET - Para obtener un user por su Id:
 ```
 {
-		"id": 3,
-		"firstname": "Test 3",
-		"lastname": "Test",
-		"email": "test3@gmail.com",
-		"cuil": "23328913241",
-		"adress": "Calle Falsa 35"
-	}
+	"id": 3,
+	"firstname": "Test 3",
+	"lastname": "Test",
+	"email": "test3@gmail.com",
+	"cuil": "23328913241",
+	"adress": "Calle Falsa 35"
+}
 ```
 
 - PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email):
@@ -160,25 +160,76 @@ Cuando le pegas al endpoint devuelve esto:
 ```
 
 - PUT - Actualizar user municipal por Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211366856-01ca287d-af36-4015-86ef-fb6f3794a80e.png)
+```
+{
+	"password": "password123",
+	"email": "test@gmail.com"
+}
+```
 
-- DELETE - Borrar user municipal por Id (solo Admin):
-![imagen](https://user-images.githubusercontent.com/116845688/211367036-420cb2aa-df85-445a-8e43-278d1c438080.png)
+- DELETE - Borrar user municipal por Id. Cuando le pegas al endpoint te devuelve lo siguiente:
+```
+{
+	message: "Usuario municipal borrado de la DB correctamente"
+}
+```
 
 # CATEGORIES 
 (solo puede administrarlas el admin)
 
 - POST - Crear categoría: 
-![imagen](https://user-images.githubusercontent.com/116845688/211367278-a94a892d-9ab9-46ab-907d-00aeec273a04.png)
+```
+{
+	"title": "Títulod de la categoría",
+	"description": "Descripción de la categoría"
+}
+```
 
 - GET - Obtener todas las categorías:
-![imagen](https://user-images.githubusercontent.com/116845688/211367352-9f728d0b-3e9c-44e4-ac9b-615a7dab5d2b.png)
+```
+[
+	{
+		"id": 1,
+		"title": "Categoría 1",
+		"description": "Descripción de la categoría 1"
+	},
+	{
+		"id": 2,
+		"title": "Categoría 2",
+		"description": "Descripción de la categoría 2"
+	},
+	{
+		"id": 3,
+		"title": "Categoría 3",
+		"description": "Descripción de la categoría 3"
+	}
+]
+```
 
 - GET - Obtener una categoría por Id:
-![imagen](https://user-images.githubusercontent.com/116845688/211367607-6f1b089c-b59f-4a0c-bb19-a96ff7270e68.png)
+```
+{
+	"id": 1,
+	"title": "Categoría 1",
+	"description": "Descripción de la categoría 1"
+}
+```
 
 - GET - Obtener trámites por category_id (Query): 
-![imagen](https://user-images.githubusercontent.com/116845688/211396262-bdbe4552-c091-493b-829b-3e3ac3443ed0.png)
+```
+[
+	{
+		"id": 1,
+		"title": "Trámite 1",
+		"description": "Descripción del trámite 1"
+	},
+	{
+		"id": 2,
+		"title": "Trámite 2",
+		"description": "Descripción del trámite 2"
+	}
+]
+```
 
 
 

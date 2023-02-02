@@ -7,10 +7,7 @@ import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
 import jwt from "jsonwebtoken";
-import { User } from "../entities/User";
-import { verifyToken } from "../helpers/token";
 import { IPayload } from "../middlewares";
-var currentNum = -1;
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -36,6 +33,7 @@ export const createProcedure = async (req: Request, res: Response) => {
 
 // POST cambiar el IF por una función que cuente cual es el user con menos trámites en su
 // array se lo asigne a él
+var currentNum = -1;
 export const submitProcedure = async (req: Request, res: Response) => {
     try {
         const { userId, categoryId, statusId } = req.body;

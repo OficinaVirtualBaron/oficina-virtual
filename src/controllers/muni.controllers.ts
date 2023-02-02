@@ -136,6 +136,15 @@ export const signInMuni = async (req: Request, res: Response) => {
                 category: true
             },
             select: {
+                id: true,
+                firstname: true,
+                lastname: true,
+                email: true,
+                password: true,
+                cuil: true,
+                required: true,
+                inprocess: true,
+                finalized: true,
                 category: {
                     id: true,
                     title: true

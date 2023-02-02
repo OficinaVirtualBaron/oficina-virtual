@@ -31,8 +31,7 @@ export const createProcedure = async (req: Request, res: Response) => {
     }
 }
 
-// POST cambiar el IF por una función que cuente cual es el user con menos trámites en su
-// array se lo asigne a él
+// POST
 var currentNum = -1;
 export const submitProcedure = async (req: Request, res: Response) => {
     try {
@@ -40,15 +39,9 @@ export const submitProcedure = async (req: Request, res: Response) => {
         await submitProcedureSchema.validateAsync(req.body);
         const procedure = new ProcedureHistory();
         let procedureCompleted: ProcedureHistory;
-
-
-        if (currentNum >= 3) {
-            currentNum = 0;
-        } else {
-            currentNum++;
+        for (let i = 0; i < 1; i++) {
+            currentNum = (currentNum + 1) % 4;
         }
-
-
         procedure.user = userId;
         procedure.category = categoryId;
         procedure.status = statusId;

@@ -4,9 +4,11 @@ import { QuestionOption } from "../entities/QuestionOption";
 // POST
 export const createQuestionOption = async (req: Request, res: Response) => {
     try {
-        const { title, question_option_id } = req.body;
+        const { title, type, description, question_option_id } = req.body;
         const option = new QuestionOption();
         option.title = title;
+        option.type = type;
+        option.description = description;
         option.question = question_option_id;
         const savedOption = await option.save();
         res.json(savedOption);

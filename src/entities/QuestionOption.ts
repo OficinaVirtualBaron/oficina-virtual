@@ -18,6 +18,12 @@ export class QuestionOption extends BaseEntity {
     @Column()
     title: string;
 
+    @Column()
+    type: string;
+
+    @Column()
+    description: string;
+
     @ManyToOne(() => Question, (question) => question.question_options)
     @JoinColumn({ name: "question_id" })
     question: Question

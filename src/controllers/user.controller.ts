@@ -84,6 +84,7 @@ export const getMyProcedures = async (req: Request, res: Response) => {
                     id: userId
                 }
             }
+            //take: 5
         })
         if (procedures.length === 0) {
             return res.status(404).send({ message: "No hay ningún trámite presentado aún" });
@@ -130,6 +131,7 @@ export const getProceduresOfUser = async (req: Request, res: Response) => {
                     id: parseInt(id)
                 }
             }
+            //take: 5
         });
         if (procedures.length === 0) {
             return res.status(404).send({ message: "El vecino aún no realizó ningún trámite" });
@@ -218,7 +220,7 @@ export const signIn = async (req: Request, res: Response) => {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente")
         }
         const token = await tokenSignUser(user);
-        res.status(200).json({ user, token });
+        return res.status(200).json({ user, token });
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message })

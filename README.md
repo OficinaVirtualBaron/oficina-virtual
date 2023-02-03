@@ -64,7 +64,7 @@ Hacer un get al endpoint y recibe el array de users:
 ]
 ```
 
-- GET - Para obtener un user por su Id: ```localhost:3000/oficina/users/1```
+- GET - Para obtener un user por su Id: ```localhost:3000/oficina/users/:id```
 ```
 {
 	"id": 3,
@@ -76,7 +76,7 @@ Hacer un get al endpoint y recibe el array de users:
 }
 ```
 
-- PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email): ```localhost:3000/oficina/user/4```
+- PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email): ```localhost:3000/oficina/user/:id```
 ```
 {
 	"password": "password",
@@ -84,7 +84,7 @@ Hacer un get al endpoint y recibe el array de users:
 }
 ```
 
-- DELETE - Para borrar un user por su Id: ```localhost:3000/oficina/user/4```
+- DELETE - Para borrar un user por su Id: ```localhost:3000/oficina/user/:id```
 Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve esto: 
 ```
 {
@@ -143,7 +143,7 @@ Cuando haces el get devuelve esto:
 ]
 ```
 
-- GET - Obtener user municipal por Id: ```localhost:3000/municipales/munis/2```
+- GET - Obtener user municipal por Id: ```localhost:3000/municipales/munis/:id```
 Cuando le pegas al endpoint devuelve esto:
 ```
 {
@@ -159,7 +159,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- PUT - Actualizar user municipal por Id: ```localhost:3000/municipales/munis/4```
+- PUT - Actualizar user municipal por Id: ```localhost:3000/municipales/munis/:id```
 ```
 {
 	"password": "password123",
@@ -167,7 +167,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- DELETE - Borrar user municipal por Id. Cuando le pegas al endpoint te devuelve lo siguiente: ```localhost:3000/municipales/munis/4```
+- DELETE - Borrar user municipal por Id. Cuando le pegas al endpoint te devuelve lo siguiente: ```localhost:3000/municipales/munis/:id```
 ```
 {
 	message: "Usuario municipal borrado de la DB correctamente"
@@ -206,7 +206,7 @@ Cuando le pegas al endpoint devuelve esto:
 ]
 ```
 
-- GET - Obtener una categoría por Id: ```localhost:3000/oficina/categories/category/9```
+- GET - Obtener una categoría por Id: ```localhost:3000/oficina/categories/category/:id```
 ```
 {
 	"id": 1,
@@ -215,7 +215,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- GET - Obtener trámites (templates) por category_id (Query): ```localhost:3000/oficina/categories/category/procedure/15```
+- GET - Obtener trámites (templates) por category_id (Query): ```localhost:3000/oficina/categories/category/procedure/:id```
 ```
 [
 	{

@@ -13,7 +13,7 @@
 
 # DOCUMENTACIÓN:
 # USER VECINO
-- POST - Para crear un user:
+- POST - Para crear un user: ```localhost:3000/auth/signUp```
 ```
 {
 	"firstname": "Test 1",
@@ -25,7 +25,7 @@
 }
 ```
 
-- POST - Para iniciar sesión como user:
+- POST - Para iniciar sesión como user: ```localhost:3000/auth/signIn```
 ```
 {
 	"cuil": "23328913239",
@@ -33,7 +33,7 @@
 }
 ```
 
-- GET - Para obtener la lista de users:
+- GET - Para obtener la lista de users: ```localhost:3000/oficina/users```
 Hacer un get al endpoint y recibe el array de users: 
 ```
 [
@@ -64,7 +64,7 @@ Hacer un get al endpoint y recibe el array de users:
 ]
 ```
 
-- GET - Para obtener un user por su Id:
+- GET - Para obtener un user por su Id: ```localhost:3000/oficina/users/1```
 ```
 {
 	"id": 3,
@@ -76,7 +76,7 @@ Hacer un get al endpoint y recibe el array de users:
 }
 ```
 
-- PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email):
+- PUT - Para actualizar un user por su Id (se puede actualizar unicamente password y email): ```localhost:3000/oficina/user/4```
 ```
 {
 	"password": "password",
@@ -84,7 +84,7 @@ Hacer un get al endpoint y recibe el array de users:
 }
 ```
 
-- DELETE - Para borrar un user por su Id:
+- DELETE - Para borrar un user por su Id: ```localhost:3000/oficina/user/4```
 Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve esto: 
 ```
 {
@@ -93,7 +93,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 ```
 
 # USER MUNICIPAL
-- POST - Crear user municipal:
+- POST - Crear user municipal: ```localhost:3000/municipales/createMuni```
 ```
 {
 	"firstname": "Test 1",
@@ -108,7 +108,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 }
 ```
 
-- POST - Login de user municipal: El login es mediante cuil y password
+- POST - Login de user municipal: El login es mediante cuil y password ```localhost:3000/auth/signinMunicipales```
 ```
 {
 	"cuil": "23328913239",
@@ -116,7 +116,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 }
 ```
 
-- GET - Obtener lista de usuarios:
+- GET - Obtener lista de usuarios: ```localhost:3000/municipales/munis```
 Cuando haces el get devuelve esto:
 ```
 [
@@ -143,7 +143,7 @@ Cuando haces el get devuelve esto:
 ]
 ```
 
-- GET - Obtener user municipal por Id:
+- GET - Obtener user municipal por Id: ```localhost:3000/municipales/munis/2```
 Cuando le pegas al endpoint devuelve esto:
 ```
 {
@@ -159,7 +159,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- PUT - Actualizar user municipal por Id:
+- PUT - Actualizar user municipal por Id: ```localhost:3000/municipales/munis/4```
 ```
 {
 	"password": "password123",
@@ -167,7 +167,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- DELETE - Borrar user municipal por Id. Cuando le pegas al endpoint te devuelve lo siguiente:
+- DELETE - Borrar user municipal por Id. Cuando le pegas al endpoint te devuelve lo siguiente: ```localhost:3000/municipales/munis/4```
 ```
 {
 	message: "Usuario municipal borrado de la DB correctamente"
@@ -177,7 +177,7 @@ Cuando le pegas al endpoint devuelve esto:
 # CATEGORIES 
 (solo puede administrarlas el admin)
 
-- POST - Crear categoría: 
+- POST - Crear categoría: ```localhost:3000/oficina/categories/category```
 ```
 {
 	"title": "Títulod de la categoría",
@@ -185,7 +185,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- GET - Obtener todas las categorías:
+- GET - Obtener todas las categorías: ```localhost:3000/oficina/categories/categories```
 ```
 [
 	{
@@ -206,7 +206,7 @@ Cuando le pegas al endpoint devuelve esto:
 ]
 ```
 
-- GET - Obtener una categoría por Id:
+- GET - Obtener una categoría por Id: ```localhost:3000/oficina/categories/category/9```
 ```
 {
 	"id": 1,
@@ -215,7 +215,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-- GET - Obtener trámites por category_id (Query): 
+- GET - Obtener trámites (templates) por category_id (Query): ```localhost:3000/oficina/categories/category/procedure/15```
 ```
 [
 	{

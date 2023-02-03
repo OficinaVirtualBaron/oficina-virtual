@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {AppDataSource} from "./db";
+import { AppDataSource } from "./db";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -28,7 +28,7 @@ app.use("/oficina/procedures", proceduresRoutes);
 app.use("/oficina/questions", questionsRoutes);
 app.use("/oficina/questions/options", optionsRoutes);
 app.use("/", (req, res) => {
-    res.send({message: "404 - Page Not found"});
+    res.send("404 - Page Not found");
 });
 
 // SERVER

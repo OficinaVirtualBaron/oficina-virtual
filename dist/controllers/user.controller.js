@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
 const User_1 = require("../entities/User");
-const validators_1 = require("../validators/validators");
+const userSchema_1 = require("../validators/userSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tokenSignUser_1 = require("../helpers/tokenSignUser");
@@ -26,7 +26,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { firstname, lastname, email, password, cuil, adress } = req.body;
         const user = new User_1.User();
-        yield validators_1.createUserSchema.validateAsync(req.body);
+        yield userSchema_1.createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.password = bcrypt_1.default.hashSync(password, salt);
@@ -195,7 +195,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const user = yield User_1.User.findOneBy({ id: parseInt(req.params.id) });
         if (!user)
             return res.status(404).send({ message: "El usuario no existe" });
-        yield validators_1.updateUserSchema.validateAsync(req.body);
+        yield userSchema_1.updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;

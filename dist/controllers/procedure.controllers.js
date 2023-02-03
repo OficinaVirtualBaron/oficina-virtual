@@ -14,7 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getTemplateProcedureById = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.submitProcedure = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
-const validators_1 = require("../validators/validators");
+const procedureSchema_1 = require("../validators/procedureSchema");
+const categorySchema_1 = require("../validators/categorySchema");
 const ProcedureHistory_1 = require("../entities/ProcedureHistory");
 const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
@@ -24,7 +25,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, category_id, description } = req.body;
-        yield validators_1.createCategorySchema.validateAsync(req.body);
+        yield categorySchema_1.createCategorySchema.validateAsync(req.body);
         try {
             const procedure = new Procedure_1.Procedure();
             procedure.title = title;
@@ -49,7 +50,7 @@ var currentNum = -1;
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId, categoryId, statusId } = req.body;
-        yield validators_1.submitProcedureSchema.validateAsync(req.body);
+        yield procedureSchema_1.submitProcedureSchema.validateAsync(req.body);
         const procedure = new ProcedureHistory_1.ProcedureHistory();
         let procedureCompleted;
         for (let i = 0; i < 1; i++) {

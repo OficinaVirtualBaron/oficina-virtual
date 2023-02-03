@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { Procedure } from "../entities/Procedure";
-import { createCategorySchema, submitProcedureSchema } from "../validators/validators";
+import { submitProcedureSchema } from "../validators/procedureSchema";
+import { createCategorySchema } from "../validators/categorySchema";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { QuestionHistory } from "../entities/QuestionHistory";
 import { QuestionOptionHistory } from "../entities/QuestionOptionsHistory";
 import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
-import jwt from "jsonwebtoken";
 import { IPayload } from "../middlewares";
+import jwt from "jsonwebtoken";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {

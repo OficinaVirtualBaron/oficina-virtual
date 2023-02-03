@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Category } from "../entities/Category";
-import { updateCategorySchema } from "../validators/validators";
+import { updateCategorySchema } from "../validators/categorySchema";
 
 // POST
 export const createCategory = async (req: Request, res: Response) => {

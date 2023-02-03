@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signInMuni = exports.deleteMuni = exports.updateMuni = exports.getMuni = exports.getMunis = exports.createMuni = void 0;
-const validators_1 = require("../validators/validators");
+const muniSchema_1 = require("../validators/muniSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Muni_1 = require("../entities/Muni");
 const tokenSignMuni_1 = require("../helpers/tokenSignMuni");
@@ -24,7 +24,7 @@ const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const { firstname, lastname, email, password, cuil, category, required, inprocess, finalized } = req.body;
         const userMuni = new Muni_1.UserMuni();
-        yield validators_1.createMuniSchema.validateAsync(req.body);
+        yield muniSchema_1.createMuniSchema.validateAsync(req.body);
         userMuni.firstname = firstname;
         userMuni.lastname = lastname;
         userMuni.password = bcrypt_1.default.hashSync(password, salt);
@@ -115,7 +115,7 @@ const updateMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const userMuni = yield Muni_1.UserMuni.findOneBy({ id: parseInt(req.params.id) });
         if (!userMuni)
             return res.status(404).json({ message: "El usuario no existe" });
-        yield validators_1.updateMuniSchema.validateAsync(req.body);
+        yield muniSchema_1.updateMuniSchema.validateAsync(req.body);
         userMuni.firstname = firstname;
         userMuni.lastname = lastname;
         userMuni.email = email;

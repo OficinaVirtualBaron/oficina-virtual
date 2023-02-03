@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCategory = exports.updateCategory = exports.getCategory = exports.getCategories = exports.createCategory = void 0;
 const Category_1 = require("../entities/Category");
-const validators_1 = require("../validators/validators");
+const categorySchema_1 = require("../validators/categorySchema");
 // POST
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -79,7 +79,7 @@ const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const category = yield Category_1.Category.findOneBy({ id: parseInt(req.params.id) });
         if (!category)
             return res.status(404).send({ message: "La categoría no existe" });
-        const updateValidation = yield validators_1.updateCategorySchema.validateAsync(req.body);
+        const updateValidation = yield categorySchema_1.updateCategorySchema.validateAsync(req.body);
         category.title = title;
         yield category.save();
         return res.status(200).send({ message: "Datos de la categoría actualizados correctamente" });

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { User } from "../entities/User";
-import { createUserSchema, updateUserSchema } from "../validators/validators";
+import { createUserSchema, updateUserSchema } from "../validators/userSchema";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { tokenSignUser } from "../helpers/tokenSignUser";

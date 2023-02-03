@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createMuniSchema, updateMuniSchema } from "../validators/validators";
+import { createMuniSchema, updateMuniSchema } from "../validators/muniSchema";
 import bcrypt from "bcrypt";
 import { UserMuni } from "../entities/Muni";
 import { tokenSignMuni } from "../helpers/tokenSignMuni";

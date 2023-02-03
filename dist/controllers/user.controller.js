@@ -12,11 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getUsers = exports.createUser = void 0;
+exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
 const User_1 = require("../entities/User");
 const validators_1 = require("../validators/validators");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const token_1 = require("../helpers/token");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const tokenSignUser_1 = require("../helpers/tokenSignUser");
+const ProcedureHistory_1 = require("../entities/ProcedureHistory");
 const saltround = 10;
 // POST 
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -41,7 +43,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createUser = createUser;
-// GET 
+// GET en un futuro hacer paginacion
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield User_1.User.find({
@@ -52,7 +54,9 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 adress: true,
                 cuil: true,
                 email: true
-            }
+            },
+            // take: 10,
+            // skip: 0
         });
         if (users.length === 0)
             return res.status(404).send({ message: "No se encontraron usuarios" });
@@ -65,6 +69,97 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getUsers = getUsers;
+// GET en un futuro hacer paginacion
+const getMyProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.header("auth-header");
+    try {
+        if (!token) {
+            return res.status(401).send({ message: "Error. No hay token en la petición" });
+        }
+        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const userId = parseInt(payload.id);
+        const procedures = yield ProcedureHistory_1.ProcedureHistory.find({
+            relations: {
+                category: true,
+                status: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            },
+            select: {
+                category: {
+                    title: true
+                },
+                status: {
+                    status: true
+                }
+            },
+            where: {
+                user: {
+                    id: userId
+                }
+            }
+        });
+        if (procedures.length === 0) {
+            return res.status(404).send({ message: "No hay ningún trámite presentado aún" });
+        }
+        return res.status(200).send(procedures);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.getMyProcedures = getMyProcedures;
+// GET en un futuro hacer paginacion
+const getProceduresOfUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const procedures = yield ProcedureHistory_1.ProcedureHistory.find({
+            relations: {
+                user: true,
+                category: true,
+                status: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    email: true,
+                    adress: true
+                },
+                category: {
+                    title: true
+                },
+                status: {
+                    status: true
+                }
+            },
+            where: {
+                user: {
+                    id: parseInt(id)
+                }
+            }
+        });
+        if (procedures.length === 0) {
+            return res.status(404).send({ message: "El vecino aún no realizó ningún trámite" });
+        }
+        return res.status(200).send({ message: `Trámites del vecino ID #${id}`, procedures });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.getProceduresOfUser = getProceduresOfUser;
 // GET 
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -144,8 +239,8 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!validatePassword) {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
-        const token = yield (0, token_1.tokenSignUser)(user);
-        res.status(200).json({ user, token });
+        const token = yield (0, tokenSignUser_1.tokenSignUser)(user);
+        return res.status(200).json({ user, token });
     }
     catch (error) {
         if (error instanceof Error) {

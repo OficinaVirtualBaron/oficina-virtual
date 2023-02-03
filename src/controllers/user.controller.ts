@@ -3,7 +3,7 @@ import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { tokenSignUser } from "../helpers/token";
+import { tokenSignUser } from "../helpers/tokenSignUser";
 import { Procedure } from "../entities/Procedure";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { IPayload } from "../middlewares";
@@ -31,7 +31,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
-// GET 
+// GET en un futuro hacer paginacion
 export const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await User.find({
@@ -42,7 +42,9 @@ export const getUsers = async (req: Request, res: Response) => {
                 adress: true,
                 cuil: true,
                 email: true
-            }
+            },
+            // take: 10,
+            // skip: 0
         });
         if (users.length === 0) return res.status(404).send({ message: "No se encontraron usuarios" });
         return res.json(users);
@@ -53,7 +55,7 @@ export const getUsers = async (req: Request, res: Response) => {
     }
 }
 
-// GET 
+// GET en un futuro hacer paginacion
 export const getMyProcedures = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
@@ -84,8 +86,7 @@ export const getMyProcedures = async (req: Request, res: Response) => {
                     id: userId
                 }
             }
-            //take: 5
-        })
+        });
         if (procedures.length === 0) {
             return res.status(404).send({ message: "No hay ningún trámite presentado aún" });
         }
@@ -97,7 +98,7 @@ export const getMyProcedures = async (req: Request, res: Response) => {
     }
 }
 
-// GET
+// GET en un futuro hacer paginacion
 export const getProceduresOfUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
@@ -131,7 +132,6 @@ export const getProceduresOfUser = async (req: Request, res: Response) => {
                     id: parseInt(id)
                 }
             }
-            //take: 5
         });
         if (procedures.length === 0) {
             return res.status(404).send({ message: "El vecino aún no realizó ningún trámite" });

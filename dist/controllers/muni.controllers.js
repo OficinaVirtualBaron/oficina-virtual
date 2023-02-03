@@ -16,7 +16,7 @@ exports.signInMuni = exports.deleteMuni = exports.updateMuni = exports.getMuni =
 const validators_1 = require("../validators/validators");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Muni_1 = require("../entities/Muni");
-const token_1 = require("../helpers/token");
+const tokenSignMuni_1 = require("../helpers/tokenSignMuni");
 const saltround = 10;
 // POST
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,7 +93,10 @@ const getMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 category: {
                     id: true,
                     title: true
-                }
+                },
+                required: true,
+                finalized: true,
+                inprocess: true,
             }
         });
         return res.json(userMuni);
@@ -167,8 +170,8 @@ const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!validatePassword) {
             return res.status(400).json("Contraseña incorrecta. Intente nuevamente");
         }
-        const token = yield (0, token_1.tokenSignMuni)(userMuni);
-        return res.status(200).send({ message: userMuni, token });
+        const token = yield (0, tokenSignMuni_1.tokenSignMuni)(userMuni);
+        return res.status(200).json({ userMuni, token });
     }
     catch (error) {
         if (error instanceof Error) {

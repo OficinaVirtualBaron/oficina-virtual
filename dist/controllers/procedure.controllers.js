@@ -20,7 +20,6 @@ const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
 const typeorm_1 = require("typeorm");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var currentNum = -1;
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -45,19 +44,16 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.createProcedure = createProcedure;
-// POST cambiar el IF por una función que cuente cual es el user con menos trámites en su
-// array se lo asigne a él
+// POST
+var currentNum = -1;
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { userId, categoryId, statusId } = req.body;
         yield validators_1.submitProcedureSchema.validateAsync(req.body);
         const procedure = new ProcedureHistory_1.ProcedureHistory();
         let procedureCompleted;
-        if (currentNum >= 3) {
-            currentNum = 0;
-        }
-        else {
-            currentNum++;
+        for (let i = 0; i < 1; i++) {
+            currentNum = (currentNum + 1) % 4;
         }
         procedure.user = userId;
         procedure.category = categoryId;

@@ -74,6 +74,42 @@ export const submitProcedure = async (req: Request, res: Response) => {
 
 
 // GET
+export const getProceduresByStatus = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const procedures = await ProcedureHistory.find({
+            relations: {
+                status: true,
+                category: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            },
+            select: {
+                category: {
+                    title: true
+                }
+            },
+            where: {
+                status: {
+                    id: parseInt(id)
+                }
+            }
+        });
+        if (procedures.length === 0) {
+            return res.status(404).send({ message: "No hay ningún trámite en este estado" });
+        }
+        return res.status(200).send(procedures);
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+}
+
+
+// GET
 export const getHistoryOfProcedures = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {

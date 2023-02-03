@@ -8,7 +8,8 @@ import {
     submitProcedure,
     getOneProcedureFromHistory,
     getHistoryOfProcedures,
-    getTemplateProcedureById
+    getTemplateProcedureById,
+    getProceduresByStatus
 } from "../controllers/procedure.controllers";
 import {
     getMyProcedures,
@@ -27,11 +28,12 @@ router.post("/submit-procedure", isAdminRole, submitProcedure);
 // GET
 router.get("/history/user", isUserRole, getMyProcedures);
 router.get("/history/user/:id", isMuniRole, getProceduresOfUser);
-router.get("/template/:id", isUserOrMuni, getTemplateProcedureById);
 router.get("/history", isMuniRole, getHistoryOfProcedures);
 router.get("/history/:id", isMuniRole, getOneProcedureFromHistory);
+router.get("/template/:id", isUserOrMuni, getTemplateProcedureById);
 router.get("/procedures", isUserOrMuni, getProcedures);
 router.get("/procedure/:id", isUserOrMuni, getProcedure);
+router.get("/history-procedures/status/:id", getProceduresByStatus);
 
 // PUT
 router.put("/procedure/:id", isAdminRole, updateProcedure);

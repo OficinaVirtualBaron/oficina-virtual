@@ -9,7 +9,7 @@ export const createCategory = async (req: Request, res: Response) => {
         const category = new Category();
         category.title = title;
         category.description = description;
-        const categorySaved = await category.save();
+        await category.save();
         res.status(200).send({ message: "Categoría creada exitosamente" });
     } catch (error) {
         if (error instanceof Error) {

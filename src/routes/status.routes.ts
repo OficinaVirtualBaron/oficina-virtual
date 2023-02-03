@@ -5,6 +5,7 @@ import {
 import { isAdminRole } from "../middlewares/validateAdmin";
 const router = Router();
 
+// POST
 router.post("/", isAdminRole, createStatus);
 
 export default router;

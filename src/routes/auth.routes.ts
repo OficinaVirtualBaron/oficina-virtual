@@ -5,6 +5,7 @@ import { isAdminRole } from "../middlewares/validateAdmin";
 import { isMuniRole } from "../middlewares/validateMuni";
 const router = Router();
 
+// POST
 router.post("/signUp", isMuniRole, createUser);
 router.post("/signIn", signIn);
 router.post("/signinMunicipales", signInMuni);

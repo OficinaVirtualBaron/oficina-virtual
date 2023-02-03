@@ -4,7 +4,6 @@ import { createUserSchema, updateUserSchema } from "../validators/validators";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { tokenSignUser } from "../helpers/tokenSignUser";
-import { Procedure } from "../entities/Procedure";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { IPayload } from "../middlewares";
 const saltround = 10;
@@ -223,7 +222,7 @@ export const signIn = async (req: Request, res: Response) => {
         return res.status(200).json({ user, token });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message })
+            return res.status(500).json({ message: error.message });
         }
     }
 }

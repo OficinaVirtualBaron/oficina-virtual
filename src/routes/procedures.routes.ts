@@ -9,8 +9,7 @@ import {
     getOneProcedureFromHistory,
     getHistoryOfProcedures,
     getTemplateProcedureById,
-    getProceduresByStatus,
-    findProcedureByName
+    getProceduresByStatus
 } from "../controllers/procedure.controllers";
 import {
     getMyProcedures,
@@ -25,17 +24,16 @@ const router = Router();
 // POST
 router.post("/procedure", isAdminRole, createProcedure);
 router.post("/submit-procedure", isAdminRole, submitProcedure);
-router.post("/find-procedure/:title", findProcedureByName);
 
 // GET
 router.get("/history/user", isUserRole, getMyProcedures);
 router.get("/history/user/:id", isMuniRole, getProceduresOfUser);
 router.get("/history", isMuniRole, getHistoryOfProcedures);
+router.get("/history-procedures/status/:id", getProceduresByStatus);
 router.get("/history/:id", isMuniRole, getOneProcedureFromHistory);
 router.get("/template/:id", isUserOrMuni, getTemplateProcedureById);
 router.get("/procedures", isUserOrMuni, getProcedures);
 router.get("/procedure/:id", isUserOrMuni, getProcedure);
-router.get("/history-procedures/status/:id", getProceduresByStatus);
 
 // PUT
 router.put("/procedure/:id", isAdminRole, updateProcedure);

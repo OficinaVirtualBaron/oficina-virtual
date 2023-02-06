@@ -90,6 +90,12 @@ export const submitProcedure = async (req: Request, res: Response) => {
 // GET
 export const getProceduresByStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const token = req.header("auth-header");
+    if (!token) {
+        return res.status(401).send({ message: "Error. No hay token en la petición" });
+    }
+    const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+    const userMuniCategory = payload.category;
     try {
         const procedures = await ProcedureHistory.find({
             relations: {
@@ -116,6 +122,9 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
             where: {
                 status: {
                     id: parseInt(id)
+                },
+                category: {
+                    id: parseInt(userMuniCategory)
                 }
             }
         });
@@ -265,22 +274,6 @@ export const getTemplateProcedureById = async (req: Request, res: Response) => {
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).send({ message: error.message });
-        }
-    }
-}
-
-// POST
-export const findProcedureByName = async (req: Request, res: Response) => {
-    try {
-        const { title } = req.params;
-        const procedures = await Procedure.find({where: {title: title}});
-        if (procedures.length === 0) {
-            return res.status(404).send({message: `Lo sentimos. No se encontró ningún trámite con el nombre '${title}'`});
-        }
-        return res.status(200).send(procedures);
-    } catch (error) {
-        if (error instanceof Error) {
-            return res.status(500).send({message: error.message});
         }
     }
 }

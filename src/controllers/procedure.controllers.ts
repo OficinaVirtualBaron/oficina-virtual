@@ -93,6 +93,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
     try {
         const procedures = await ProcedureHistory.find({
             relations: {
+                user: true,
                 status: true,
                 category: true,
                 questions: {

@@ -9,6 +9,7 @@ import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
 import { IPayload } from "../middlewares";
 import jwt from "jsonwebtoken";
+import { User } from "../entities/User";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -35,43 +36,56 @@ export const createProcedure = async (req: Request, res: Response) => {
 // POST
 var currentNum = -1;
 export const submitProcedure = async (req: Request, res: Response) => {
+    const token = req.header("auth-header");
     try {
-        const { userId, categoryId, statusId } = req.body;
-        await submitProcedureSchema.validateAsync(req.body);
-        const procedure = new ProcedureHistory();
-        let procedureCompleted: ProcedureHistory;
-        for (let i = 0; i < 1; i++) {
-            currentNum = (currentNum + 1) % 4;
+        if (!token) {
+            return res.status(401).send({message: "Error. No hay token en la petición"});
         }
-        procedure.user = userId;
-        procedure.category = categoryId;
-        procedure.status = statusId;
-        procedure.userMuni = currentNum as unknown as UserMuni;
-        procedureCompleted = await procedure.save();
-
-        req.body.questions.forEach(async (question: any) => {
-            const newQuestion = new QuestionHistory();
-            newQuestion.question = question.question;
-            newQuestion.procedure = procedureCompleted;
-            await newQuestion.save();
-
-            question.options.forEach(async (option: any) => {
-                const newOption = new QuestionOptionHistory();
-                newOption.questionOption = option.questionOption;
-                newOption.answer = option.answer;
-                newOption.question = newQuestion;
-                await newOption.save();
+        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const user = await User.findOneBy({id: parseInt(payload.id)});
+        if (!user) {
+            return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
+        }
+        try {
+            const { categoryId, statusId } = req.body;
+            await submitProcedureSchema.validateAsync(req.body);
+            const procedure = new ProcedureHistory();
+            let procedureCompleted: ProcedureHistory;
+            for (let i = 0; i < 1; i++) {
+                currentNum = (currentNum + 1) % 4;
+            }
+            procedure.user = user;
+            procedure.category = categoryId;
+            procedure.status = statusId;
+            procedure.userMuni = currentNum as unknown as UserMuni;
+            procedureCompleted = await procedure.save();
+            req.body.questions.forEach(async (question: any) => {
+                const newQuestion = new QuestionHistory();
+                newQuestion.question = question.question;
+                newQuestion.procedure = procedureCompleted;
+                await newQuestion.save();
+                question.options.forEach(async (option: any) => {
+                    const newOption = new QuestionOptionHistory();
+                    newOption.questionOption = option.questionOption;
+                    newOption.answer = option.answer;
+                    newOption.question = newQuestion;
+                    await newOption.save();
+                });
             });
-        });
-        return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
+            return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).send({message: error.message})
+            }
+            return res.status(400).send({message: "Datos mal cargados. Intente nuevamente"});
+        }
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({message: error.message});
         }
-        return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
+        return res.status(401).send({message: "Error al validar el token o los datos de este"});
     }
 }
-
 
 // GET
 export const getProceduresByStatus = async (req: Request, res: Response) => {
@@ -87,6 +101,13 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
                 }
             },
             select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    email: true
+                },
                 category: {
                     title: true
                 }
@@ -107,7 +128,6 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
         }
     }
 }
-
 
 // GET
 export const getHistoryOfProcedures = async (req: Request, res: Response) => {
@@ -244,6 +264,22 @@ export const getTemplateProcedureById = async (req: Request, res: Response) => {
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).send({ message: error.message });
+        }
+    }
+}
+
+// POST
+export const findProcedureByName = async (req: Request, res: Response) => {
+    try {
+        const { title } = req.params;
+        const procedures = await Procedure.find({where: {title: title}});
+        if (procedures.length === 0) {
+            return res.status(404).send({message: `Lo sentimos. No se encontró ningún trámite con el nombre '${title}'`});
+        }
+        return res.status(200).send(procedures);
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({message: error.message});
         }
     }
 }

@@ -9,7 +9,8 @@ import {
     getOneProcedureFromHistory,
     getHistoryOfProcedures,
     getTemplateProcedureById,
-    getProceduresByStatus
+    getProceduresByStatus,
+    findProcedureByName
 } from "../controllers/procedure.controllers";
 import {
     getMyProcedures,
@@ -24,6 +25,7 @@ const router = Router();
 // POST
 router.post("/procedure", isAdminRole, createProcedure);
 router.post("/submit-procedure", isAdminRole, submitProcedure);
+router.post("/find-procedure/:title", findProcedureByName);
 
 // GET
 router.get("/history/user", isUserRole, getMyProcedures);

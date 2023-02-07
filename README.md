@@ -1,18 +1,34 @@
-# OFICNA VIRTUAL
+# OFICINA VIRTUAL 🖥️ 
 
-# Instalar los node_modules
+## Tecnologías usadas 👨‍💻
+- **MySQL:** Base de datos
+- **DBeaver:** Administración de la base de datos
+- **NodeJS:** Entorno de servidor
+- **Express:** Entorno de trabajo en conjunto con NodeJS
+- **TypeORM:** ORM de TypeScript
+- **Dotenv:** Variables de entorno
+- **Ts-node:** Reiniciar el server local cuando se detecta un cambio
+- **Joi:** Validaciones de datos
+- **Insomnia:** Entorno para probar request y response
+- **Bcrypt:** Hashear contraseñas
+- **JsonWebToken:** Generar y validar tokens
+- **Express-validator:** Set de middlewares para validar datos
+- **Morgan:** Middleware de registro de solicitudes HTTP para NodeJS
+- **Cors:** Mecanismo que utiliza cabeceras HTTP adicionales para permitir que un usuario obtenga permiso para acceder a recursos seleccionados desde un servidor, en un origen distinto (dominio) al que pertenece.
+
+## Instalar los node_modules 📚
 ```npm install``` para instalar ```node_modules```.
 
-# Conectar a una DB
+## Conectar a una DB 💾
 ![imagen](https://user-images.githubusercontent.com/116845688/211369820-88c1d80b-9937-4ae4-b018-1b3c8da1ef16.png)
 
-# Correr el server localmente
+## Correr el server localmente ⚙️
 
 ```npm run dev``` para correr el servidor localmente.
 
 
-# DOCUMENTACIÓN:
-# USER VECINO
+## DOCUMENTACIÓN: ️📖
+## USER VECINO 👨👩
 - POST - Para crear un user: ```localhost:3000/auth/signUp```
 ```
 {
@@ -92,7 +108,7 @@ Le pegas al endpoint pasandol como req.param el Id que queres borrar y devuelve 
 }
 ```
 
-# USER MUNICIPAL
+## USER MUNICIPAL 👨‍💼👩‍💼 
 - POST - Crear user municipal: ```localhost:3000/municipales/createMuni```
 ```
 {
@@ -174,7 +190,7 @@ Cuando le pegas al endpoint devuelve esto:
 }
 ```
 
-# CATEGORIES 
+## CATEGORIES 
 (solo puede administrarlas el admin)
 
 - POST - Crear categoría: ```localhost:3000/oficina/categories/category```

@@ -9,6 +9,7 @@ import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
 import { IPayload } from "../middlewares";
 import jwt from "jsonwebtoken";
+import { transporter } from "../config/mailer";
 import { User } from "../entities/User";
 
 // POST
@@ -71,6 +72,17 @@ export const submitProcedure = async (req: Request, res: Response) => {
                     newOption.question = newQuestion;
                     await newOption.save();
                 });
+            });
+            await transporter.sendMail({
+                from: '"Email de confirmación" <municipalidadsacanta.com>', 
+                to: user.email, 
+                subject: `Trámite ID #${procedure.id}`,
+                html: `
+                <h2>Este es un correo de confirmación.😁 ¡Su trámite fue enviado exitosamente!🙌</h2>
+                <h3>Gracias ${user.firstname} ${user.lastname} por realizar el trámite👋</h3>
+                <h4>Ingrese a la oficina virtual para ver el estado actual👀</h4>
+                <p>- Municipalidad de Campo Bravo. Siempre a tu lado -</p>
+                `,
             });
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         } catch (error) {
@@ -233,7 +245,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
             }
         });
         if (procedure.length === 0) {
-            return res.status(401).send({ message: `El trámite ID #${id} no corresponde a su área. No tiene autorización para verlo` });
+            return res.status(401).send({ message: `El trámite ID #${id} no corresponde a su área o no existe` });
         }
         if (!procedure) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });

@@ -1,20 +1,20 @@
 # OFICINA VIRTUAL 🖥️ 
 
 ## Tecnologías usadas 👨‍💻
-- MySQL: Base de datos
-- DBeaver: Administración de la base de datos
-- NodeJS: Entorno de servidor
-- Express: Entorno de trabajo en conjunto con NodeJS
-- TypeORM: ORM de TypeScript
-- Dotenv: Variables de entorno
-- Ts-node: Reiniciar el server local cuando se detecta un cambio
-- Joi: Validaciones de datos
-- Insomnia: Entorno para probar request y response
-- Bcrypt: Hashear contraseñas
-- JsonWebToken: Generar y validar tokens
-- Express-validator: Set de middlewares para validar datos
-- Morgan: Middleware de registro de solicitudes HTTP para NodeJS
-- Cors: Mecanismo que utiliza cabeceras HTTP adicionales para permitir que un usuario obtenga permiso para acceder a recursos seleccionados desde un servidor, en un origen distinto (dominio) al que pertenece.
+- **MySQL:** Base de datos
+- **DBeaver:** Administración de la base de datos
+- **NodeJS:** Entorno de servidor
+- **Express:** Entorno de trabajo en conjunto con NodeJS
+- **TypeORM:** ORM de TypeScript
+- **Dotenv:** Variables de entorno
+- **Ts-node:** Reiniciar el server local cuando se detecta un cambio
+- **Joi:** Validaciones de datos
+- **Insomnia:** Entorno para probar request y response
+- **Bcrypt:** Hashear contraseñas
+- **JsonWebToken:** Generar y validar tokens
+- **Express-validator:** Set de middlewares para validar datos
+- **Morgan:** Middleware de registro de solicitudes HTTP para NodeJS
+- **Cors:** Mecanismo que utiliza cabeceras HTTP adicionales para permitir que un usuario obtenga permiso para acceder a recursos seleccionados desde un servidor, en un origen distinto (dominio) al que pertenece.
 
 ## Instalar los node_modules 📚
 ```npm install``` para instalar ```node_modules```.

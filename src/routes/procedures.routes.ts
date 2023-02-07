@@ -9,7 +9,8 @@ import {
     getOneProcedureFromHistory,
     getHistoryOfProcedures,
     getTemplateProcedureById,
-    getProceduresByStatus
+    getProceduresByStatus,
+    updateStatusOfProcedure
 } from "../controllers/procedure.controllers";
 import {
     getMyProcedures,
@@ -37,6 +38,7 @@ router.get("/procedure/:id", isUserOrMuni, getProcedure);
 
 // PUT
 router.put("/procedure/:id", isAdminRole, updateProcedure);
+router.put("/procedure/update-status/:id", updateStatusOfProcedure);
 
 // DELETE
 router.delete("/procedure/:id", isAdminRole, deleteProcedure);

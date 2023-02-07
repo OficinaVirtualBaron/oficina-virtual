@@ -92,7 +92,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
     const token = req.header("auth-header");
     if (!token) {
-        return res.status(401).send({ message: "Error. No hay token en la petición" });
+        return res.status(401).send({ message: "Error. No hay token en la petición"});
     }
     const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
     const userMuniCategory = payload.category;
@@ -318,13 +318,54 @@ export const getProcedure = async (req: Request, res: Response) => {
     }
 }
 
+// PUT
+export const updateStatusOfProcedure = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const token = req.header("auth-header");
+        try {
+            if (!token) {
+                return res.status(401).send({message: "Error. No hay token en la petición"});
+            }
+            const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+            const userMuniCategory = payload.category;
+            const procedure = await ProcedureHistory.findOne({ 
+                where: {
+                    id: parseInt(id),
+                    category: {
+                        id: parseInt(userMuniCategory)
+                    }
+                }
+            });
+            if (!procedure) {
+                return res.status(404).send({message: `El trámite ID #${id} no existe no corresponde a su área`});
+            }
+            procedure.status = status;
+            await procedure.save();
+            return res.status(200).send({message: "Estado del trámite cambiado correctamente"});
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).send({message: error.message});
+            }
+            return res.status(400).send({message: "Hay un problema con el token"});
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({message: error.message});
+        }
+    }
+}
+
 // PUT 
 export const updateProcedure = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { title } = req.body;
-        const procedure = await Procedure.findOneBy({ id: parseInt(req.params.id) });
-        if (!procedure) return res.status(404).send({ message: "El trámite no existe" });
+        const procedure = await Procedure.findOneBy({ id: parseInt(id) });
+        if (!procedure) {
+            return res.status(404).send({ message: "El trámite no existe" });
+        }
         procedure.title = title;
         await procedure.save();
         return res.status(200).send({ message: "Datos del trámite actualizados correctamente" });

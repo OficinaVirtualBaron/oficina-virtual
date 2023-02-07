@@ -1,7 +1,8 @@
 import * as isUserRole from "./validateUser";
 import * as isMuniRole from "./validateMuni";
 import * as isAdminRole from "./validateAdmin";
-import * as isUserOrMuni from "./validateMuniAndUser"
+import * as isUserOrMuni from "./validateMuniAndUser";
+import * as validateToken from "./validateToken";
 
 export interface IPayload {
     id: string;
@@ -11,4 +12,4 @@ export interface IPayload {
     exp: number;
 }
 
-export { isUserRole, isMuniRole, isAdminRole, isUserOrMuni };
+export { isUserRole, isMuniRole, isAdminRole, isUserOrMuni, validateToken };

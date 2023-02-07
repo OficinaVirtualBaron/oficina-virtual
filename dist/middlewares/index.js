@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isUserOrMuni = exports.isAdminRole = exports.isMuniRole = exports.isUserRole = void 0;
+exports.validateToken = exports.isUserOrMuni = exports.isAdminRole = exports.isMuniRole = exports.isUserRole = void 0;
 const isUserRole = __importStar(require("./validateUser"));
 exports.isUserRole = isUserRole;
 const isMuniRole = __importStar(require("./validateMuni"));
@@ -32,3 +32,5 @@ const isAdminRole = __importStar(require("./validateAdmin"));
 exports.isAdminRole = isAdminRole;
 const isUserOrMuni = __importStar(require("./validateMuniAndUser"));
 exports.isUserOrMuni = isUserOrMuni;
+const validateToken = __importStar(require("./validateToken"));
+exports.validateToken = validateToken;

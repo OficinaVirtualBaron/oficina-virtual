@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProcedure = exports.updateProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getTemplateProcedureById = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.submitProcedure = exports.createProcedure = void 0;
+exports.deleteProcedure = exports.updateProcedure = exports.updateStatusOfProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getTemplateProcedureById = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.getProceduresByStatus = exports.submitProcedure = exports.createProcedure = void 0;
 const Procedure_1 = require("../entities/Procedure");
 const procedureSchema_1 = require("../validators/procedureSchema");
 const categorySchema_1 = require("../validators/categorySchema");
@@ -21,6 +21,7 @@ const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
 const typeorm_1 = require("typeorm");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const User_1 = require("../entities/User");
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -48,42 +49,112 @@ exports.createProcedure = createProcedure;
 // POST
 var currentNum = -1;
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.header("auth-header");
     try {
-        const { userId, categoryId, statusId } = req.body;
-        yield procedureSchema_1.submitProcedureSchema.validateAsync(req.body);
-        const procedure = new ProcedureHistory_1.ProcedureHistory();
-        let procedureCompleted;
-        for (let i = 0; i < 1; i++) {
-            currentNum = (currentNum + 1) % 4;
+        if (!token) {
+            return res.status(401).send({ message: "Error. No hay token en la petición" });
         }
-        procedure.user = userId;
-        procedure.category = categoryId;
-        procedure.status = statusId;
-        procedure.userMuni = currentNum;
-        procedureCompleted = yield procedure.save();
-        req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
-            const newQuestion = new QuestionHistory_1.QuestionHistory();
-            newQuestion.question = question.question;
-            newQuestion.procedure = procedureCompleted;
-            yield newQuestion.save();
-            question.options.forEach((option) => __awaiter(void 0, void 0, void 0, function* () {
-                const newOption = new QuestionOptionsHistory_1.QuestionOptionHistory();
-                newOption.questionOption = option.questionOption;
-                newOption.answer = option.answer;
-                newOption.question = newQuestion;
-                yield newOption.save();
+        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const user = yield User_1.User.findOneBy({ id: parseInt(payload.id) });
+        if (!user) {
+            return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
+        }
+        try {
+            const { categoryId, statusId } = req.body;
+            yield procedureSchema_1.submitProcedureSchema.validateAsync(req.body);
+            const procedure = new ProcedureHistory_1.ProcedureHistory();
+            let procedureCompleted;
+            for (let i = 0; i < 1; i++) {
+                currentNum = (currentNum + 1) % 4;
+            }
+            procedure.user = user;
+            procedure.category = categoryId;
+            procedure.status = statusId;
+            procedure.userMuni = currentNum;
+            procedureCompleted = yield procedure.save();
+            req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
+                const newQuestion = new QuestionHistory_1.QuestionHistory();
+                newQuestion.question = question.question;
+                newQuestion.procedure = procedureCompleted;
+                yield newQuestion.save();
+                question.options.forEach((option) => __awaiter(void 0, void 0, void 0, function* () {
+                    const newOption = new QuestionOptionsHistory_1.QuestionOptionHistory();
+                    newOption.questionOption = option.questionOption;
+                    newOption.answer = option.answer;
+                    newOption.question = newQuestion;
+                    yield newOption.save();
+                }));
             }));
-        }));
-        return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
+            return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).send({ message: error.message });
+            }
+            return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
+        }
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
         }
-        return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
+        return res.status(401).send({ message: "Error al validar el token o los datos de este" });
     }
 });
 exports.submitProcedure = submitProcedure;
+// GET
+const getProceduresByStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const token = req.header("auth-header");
+    if (!token) {
+        return res.status(401).send({ message: "Error. No hay token en la petición" });
+    }
+    const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+    const userMuniCategory = payload.category;
+    try {
+        const procedures = yield ProcedureHistory_1.ProcedureHistory.find({
+            relations: {
+                user: true,
+                status: true,
+                category: true,
+                questions: {
+                    question: true,
+                    question_option_history: true
+                }
+            },
+            select: {
+                user: {
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    email: true
+                },
+                category: {
+                    title: true
+                }
+            },
+            where: {
+                status: {
+                    id: parseInt(id)
+                },
+                category: {
+                    id: parseInt(userMuniCategory)
+                }
+            }
+        });
+        if (procedures.length === 0) {
+            return res.status(404).send({ message: "No hay ningún trámite en este estado" });
+        }
+        return res.status(200).send(procedures);
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.getProceduresByStatus = getProceduresByStatus;
 // GET
 const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header("auth-header");
@@ -271,14 +342,56 @@ const getProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getProcedure = getProcedure;
+// PUT
+const updateStatusOfProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const token = req.header("auth-header");
+        try {
+            if (!token) {
+                return res.status(401).send({ message: "Error. No hay token en la petición" });
+            }
+            const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+            const userMuniCategory = payload.category;
+            const procedure = yield ProcedureHistory_1.ProcedureHistory.findOne({
+                where: {
+                    id: parseInt(id),
+                    category: {
+                        id: parseInt(userMuniCategory)
+                    }
+                }
+            });
+            if (!procedure) {
+                return res.status(404).send({ message: `El trámite ID #${id} no existe no corresponde a su área` });
+            }
+            procedure.status = status;
+            yield procedure.save();
+            return res.status(200).send({ message: "Estado del trámite cambiado correctamente" });
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).send({ message: error.message });
+            }
+            return res.status(400).send({ message: "Hay un problema con el token" });
+        }
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        }
+    }
+});
+exports.updateStatusOfProcedure = updateStatusOfProcedure;
 // PUT 
 const updateProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const { title } = req.body;
-        const procedure = yield Procedure_1.Procedure.findOneBy({ id: parseInt(req.params.id) });
-        if (!procedure)
+        const procedure = yield Procedure_1.Procedure.findOneBy({ id: parseInt(id) });
+        if (!procedure) {
             return res.status(404).send({ message: "El trámite no existe" });
+        }
         procedure.title = title;
         yield procedure.save();
         return res.status(200).send({ message: "Datos del trámite actualizados correctamente" });

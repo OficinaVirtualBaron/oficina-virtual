@@ -14,13 +14,15 @@ router.post("/submit-procedure", validateAdmin_1.isAdminRole, procedure_controll
 // GET
 router.get("/history/user", validateUser_1.isUserRole, user_controller_1.getMyProcedures);
 router.get("/history/user/:id", validateMuni_1.isMuniRole, user_controller_1.getProceduresOfUser);
-router.get("/template/:id", validateMuniAndUser_1.isUserOrMuni, procedure_controllers_1.getTemplateProcedureById);
 router.get("/history", validateMuni_1.isMuniRole, procedure_controllers_1.getHistoryOfProcedures);
+router.get("/history-procedures/status/:id", procedure_controllers_1.getProceduresByStatus);
 router.get("/history/:id", validateMuni_1.isMuniRole, procedure_controllers_1.getOneProcedureFromHistory);
+router.get("/template/:id", validateMuniAndUser_1.isUserOrMuni, procedure_controllers_1.getTemplateProcedureById);
 router.get("/procedures", validateMuniAndUser_1.isUserOrMuni, procedure_controllers_1.getProcedures);
 router.get("/procedure/:id", validateMuniAndUser_1.isUserOrMuni, procedure_controllers_1.getProcedure);
 // PUT
 router.put("/procedure/:id", validateAdmin_1.isAdminRole, procedure_controllers_1.updateProcedure);
+router.put("/procedure/update-status/:id", procedure_controllers_1.updateStatusOfProcedure);
 // DELETE
 router.delete("/procedure/:id", validateAdmin_1.isAdminRole, procedure_controllers_1.deleteProcedure);
 exports.default = router;

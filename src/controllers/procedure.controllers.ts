@@ -11,6 +11,7 @@ import { IPayload } from "../middlewares";
 import jwt from "jsonwebtoken";
 import { transporter } from "../config/mailer";
 import { User } from "../entities/User";
+import { sendConfirmationEmail } from "../config/email";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -47,18 +48,33 @@ export const submitProcedure = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
         }
+        // Transformar esto en función para afectar por área a los municipales de esa área
+        for (let i = 0; i < 1; i++) {
+            currentNum = (currentNum + 1) % 4;
+        }
+        const userMuni = await UserMuni.findOne({
+            where: {
+                id: currentNum
+            },
+            relations: {
+                category: true
+            },
+            select: {
+                category: {
+                    title: true
+                }
+            }
+        });
         try {
             const { categoryId, statusId } = req.body;
             await submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory();
             let procedureCompleted: ProcedureHistory;
-            for (let i = 0; i < 1; i++) {
-                currentNum = (currentNum + 1) % 4;
-            }
             procedure.user = user;
             procedure.category = categoryId;
             procedure.status = statusId;
             procedure.userMuni = currentNum as unknown as UserMuni;
+
             procedureCompleted = await procedure.save();
             req.body.questions.forEach(async (question: any) => {
                 const newQuestion = new QuestionHistory();
@@ -73,17 +89,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
                     await newOption.save();
                 });
             });
-            await transporter.sendMail({
-                from: '"Email de confirmación" <municipalidadsacanta.com>', 
-                to: user.email, 
-                subject: `Trámite ID #${procedure.id}`,
-                html: `
-                <h2>Este es un correo de confirmación.😁 ¡Su trámite fue enviado exitosamente!🙌</h2>
-                <h3>Gracias ${user.firstname} ${user.lastname} por realizar el trámite👋</h3>
-                <h4>Ingrese a la oficina virtual para ver el estado actual👀</h4>
-                <p>- Municipalidad de Campo Bravo. Siempre a tu lado -</p>
-                `,
-            });
+            sendConfirmationEmail(procedure, user, transporter, userMuni); // envía el email de confirmación
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         } catch (error) {
             if (error instanceof Error) {

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../entities/User";
+import { User } from "../../entities/User";
 
 // cambiar any a number
 export const tokenSignUser = async (user: User) => {

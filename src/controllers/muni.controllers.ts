@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { createMuniSchema, updateMuniSchema } from "../validators/muniSchema";
 import bcrypt from "bcrypt";
 import { UserMuni } from "../entities/Muni";
-import { tokenSignMuni } from "../helpers/tokenSignMuni";
+import { tokenSignMuni } from "../helpers/token/tokenSignMuni";
 const saltround = 10;
 
 // POST

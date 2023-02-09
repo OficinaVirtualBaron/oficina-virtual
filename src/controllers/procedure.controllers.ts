@@ -11,7 +11,8 @@ import { IPayload } from "../middlewares";
 import jwt from "jsonwebtoken";
 import { transporter } from "../config/mailer";
 import { User } from "../entities/User";
-import { sendConfirmationEmail } from "../config/email";
+import { sendConfirmationEmail } from "../helpers/email/sendConfirmationEmail";
+import { statusProcedureChanged } from "../helpers/email/statusProcedureChanged";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -36,35 +37,20 @@ export const createProcedure = async (req: Request, res: Response) => {
 }
 
 // POST
-var currentNum = -1;
+let currentNum: number = -1;
 export const submitProcedure = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
-        if (!token) {
-            return res.status(401).send({message: "Error. No hay token en la petición"});
-        }
+        if (!token) return res.status(401).send({message: "Error. No hay token en la petición"});
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const user = await User.findOneBy({id: parseInt(payload.id)});
-        if (!user) {
-            return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
-        }
+        if (!user) return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
+
         // Transformar esto en función para afectar por área a los municipales de esa área
         for (let i = 0; i < 1; i++) {
             currentNum = (currentNum + 1) % 4;
         }
-        const userMuni = await UserMuni.findOne({
-            where: {
-                id: currentNum
-            },
-            relations: {
-                category: true
-            },
-            select: {
-                category: {
-                    title: true
-                }
-            }
-        });
+        const userMuni = await UserMuni.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } }});
         try {
             const { categoryId, statusId } = req.body;
             await submitProcedureSchema.validateAsync(req.body);
@@ -89,7 +75,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
                     await newOption.save();
                 });
             });
-            sendConfirmationEmail(procedure, user, transporter, userMuni); // envía el email de confirmación
+            sendConfirmationEmail(procedure, user, transporter, userMuni);
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         } catch (error) {
             if (error instanceof Error) {
@@ -349,6 +335,10 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
             const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
             const userMuniCategory = payload.category;
             const procedure = await ProcedureHistory.findOne({ 
+                relations: {
+                    user: true,
+                    userMuni: true
+                },
                 where: {
                     id: parseInt(id),
                     category: {
@@ -361,6 +351,7 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
             }
             procedure.status = status;
             await procedure.save();
+            statusProcedureChanged(procedure, transporter)
             return res.status(200).send({message: "Estado del trámite cambiado correctamente"});
         } catch (error) {
             if (error instanceof Error) {

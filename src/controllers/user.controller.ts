@@ -3,9 +3,11 @@ import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/userSchema";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { tokenSignUser } from "../helpers/tokenSignUser";
+import { tokenSignUser } from "../helpers/token/tokenSignUser";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { IPayload } from "../middlewares";
+import { forgotPasswordEmail } from "../helpers/email/forgotPasswordEmail";
+import { transporter } from "../config/mailer";
 const saltround = 10;
 
 // POST 
@@ -225,4 +227,15 @@ export const signIn = async (req: Request, res: Response) => {
             return res.status(500).json({ message: error.message });
         }
     }
+}
+
+// POST
+export const forgotPassword = async (req: Request, res: Response) => {
+    const { email } = req.body;
+    const user = await User.findOneBy({email: email});
+    if (!user) {
+        return res.status(404).send({message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente"});
+    }
+    await forgotPasswordEmail(user, transporter);
+    return res.status(200).send({message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña"});
 }

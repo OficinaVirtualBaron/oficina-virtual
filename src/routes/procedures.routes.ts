@@ -24,10 +24,10 @@ const router = Router();
 
 // POST
 router.post("/procedure", isAdminRole, createProcedure);
-router.post("/submit-procedure", isAdminRole, submitProcedure);
+router.post("/submit-procedure", submitProcedure);
 
 // GET
-router.get("/history/user", isUserRole, getMyProcedures);
+router.get("/history/user", getMyProcedures);
 router.get("/history/user/:id", isMuniRole, getProceduresOfUser);
 router.get("/history", isMuniRole, getHistoryOfProcedures);
 router.get("/history-procedures/status/:id", getProceduresByStatus);

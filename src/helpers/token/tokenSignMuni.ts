@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserMuni } from "../entities/Muni";
+import { UserMuni } from "../../entities/Muni";
 
 export const tokenSignMuni = async (userMuni: UserMuni) => {
     return jwt.sign(

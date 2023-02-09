@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { IPayload } from "../middlewares";
+import { IPayload } from "../../middlewares";
 import { Response } from "express";
 
 export const verifyToken = async (res: Response, token: string) => {

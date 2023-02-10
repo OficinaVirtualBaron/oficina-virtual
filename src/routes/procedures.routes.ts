@@ -19,7 +19,6 @@ import {
 import { isMuniRole } from "../middlewares/validateMuni";
 import { isAdminRole } from "../middlewares/validateAdmin";
 import { isUserOrMuni } from "../middlewares/validateMuniAndUser";
-import { isUserRole } from "../middlewares/validateUser";
 const router = Router();
 
 // POST

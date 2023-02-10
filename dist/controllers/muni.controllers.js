@@ -16,7 +16,7 @@ exports.signInMuni = exports.deleteMuni = exports.updateMuni = exports.getMuni =
 const muniSchema_1 = require("../validators/muniSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Muni_1 = require("../entities/Muni");
-const tokenSignMuni_1 = require("../helpers/tokenSignMuni");
+const tokenSignMuni_1 = require("../helpers/token/tokenSignMuni");
 const saltround = 10;
 // POST
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

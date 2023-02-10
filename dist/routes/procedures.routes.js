@@ -6,13 +6,12 @@ const user_controller_1 = require("../controllers/user.controller");
 const validateMuni_1 = require("../middlewares/validateMuni");
 const validateAdmin_1 = require("../middlewares/validateAdmin");
 const validateMuniAndUser_1 = require("../middlewares/validateMuniAndUser");
-const validateUser_1 = require("../middlewares/validateUser");
 const router = (0, express_1.Router)();
 // POST
 router.post("/procedure", validateAdmin_1.isAdminRole, procedure_controllers_1.createProcedure);
-router.post("/submit-procedure", validateAdmin_1.isAdminRole, procedure_controllers_1.submitProcedure);
+router.post("/submit-procedure", procedure_controllers_1.submitProcedure);
 // GET
-router.get("/history/user", validateUser_1.isUserRole, user_controller_1.getMyProcedures);
+router.get("/history/user", user_controller_1.getMyProcedures);
 router.get("/history/user/:id", validateMuni_1.isMuniRole, user_controller_1.getProceduresOfUser);
 router.get("/history", validateMuni_1.isMuniRole, procedure_controllers_1.getHistoryOfProcedures);
 router.get("/history-procedures/status/:id", procedure_controllers_1.getProceduresByStatus);

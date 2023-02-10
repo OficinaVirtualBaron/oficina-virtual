@@ -41,18 +41,24 @@ let currentNum: number = -1;
 export const submitProcedure = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
+        const { categoryId, statusId } = req.body;
         if (!token) return res.status(401).send({message: "Error. No hay token en la petición"});
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const user = await User.findOneBy({id: parseInt(payload.id)});
         if (!user) return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
 
-        // Transformar esto en función para afectar por área a los municipales de esa área
-        for (let i = 0; i < 1; i++) {
-            currentNum = (currentNum + 1) % 4;
+        const users = await UserMuni.find();
+        
+        if (users.length === 0 || null) {
+            res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
         }
+        
+        for (let i = 0; i < 1; i++) {
+            currentNum = (currentNum + 1) % users.length;
+        }
+    
         const userMuni = await UserMuni.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } }});
         try {
-            const { categoryId, statusId } = req.body;
             await submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory();
             let procedureCompleted: ProcedureHistory;
@@ -95,9 +101,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
 export const getProceduresByStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
     const token = req.header("auth-header");
-    if (!token) {
-        return res.status(401).send({ message: "Error. No hay token en la petición"});
-    }
+    if (!token) return res.status(401).send({ message: "Error. No hay token en la petición"});
     const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
     const userMuniCategory = payload.category;
     try {
@@ -132,9 +136,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
                 }
             }
         });
-        if (procedures.length === 0) {
-            return res.status(404).send({ message: "No hay ningún trámite en este estado" });
-        }
+        if (procedures.length === 0) return res.status(404).send({ message: "No hay ningún trámite en este estado" });
         return res.status(200).send(procedures);
     } catch (error) {
         if (error instanceof Error) {
@@ -147,9 +149,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
 export const getHistoryOfProcedures = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
-        if (!token) {
-            return res.status(401).send({ message: "Error. No hay token en la petición" });
-        }
+        if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
         const history = await ProcedureHistory.find({
@@ -183,9 +183,7 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
                 }
             }
         });
-        if (history.length === 0) {
-            return res.status(404).send({ message: "No hay ningún trámite en el historial" });
-        }
+        if (history.length === 0) return res.status(404).send({ message: "No hay ningún trámite en el historial" });
         return res.status(200).send({ message: "Historial de trámites presentados: ", history });
     } catch (error) {
         if (error instanceof Error) {
@@ -199,9 +197,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
     const { id } = req.params;
     const token = req.header("auth-header");
     try {
-        if (!token) {
-            return res.status(401).send({ message: "Error. No hay token en la petición" });
-        }
+        if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
         const procedure = await ProcedureHistory.find({
@@ -239,9 +235,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
         if (procedure.length === 0) {
             return res.status(401).send({ message: `El trámite ID #${id} no corresponde a su área o no existe` });
         }
-        if (!procedure) {
-            return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
-        }
+        if (!procedure) return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
         return res.status(200).send({ message: `Trámite ID #${id}: `, procedure });
     } catch (error) {
         if (error instanceof Error) {
@@ -271,9 +265,7 @@ export const getTemplateProcedureById = async (req: Request, res: Response) => {
                 }
             }
         });
-        if (!template) {
-            return res.status(404).send({ message: "404 - Procedure Not Found" });
-        }
+        if (!template) return res.status(404).send({ message: "404 - Procedure Not Found" });
         return res.status(200).send(template);
     } catch (error) {
         if (error instanceof Error) {

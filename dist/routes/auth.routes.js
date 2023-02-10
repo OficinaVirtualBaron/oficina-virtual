@@ -9,4 +9,5 @@ const router = (0, express_1.Router)();
 router.post("/signUp", validateMuni_1.isMuniRole, user_controller_1.createUser);
 router.post("/signIn", user_controller_1.signIn);
 router.post("/signinMunicipales", muni_controllers_1.signInMuni);
+router.post("/forgot-password", user_controller_1.forgotPassword);
 exports.default = router;

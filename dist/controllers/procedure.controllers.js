@@ -20,8 +20,12 @@ const ProcedureHistory_1 = require("../entities/ProcedureHistory");
 const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
 const typeorm_1 = require("typeorm");
+const Muni_1 = require("../entities/Muni");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const mailer_1 = require("../config/mailer");
 const User_1 = require("../entities/User");
+const sendConfirmationEmail_1 = require("../helpers/email/sendConfirmationEmail");
+const statusProcedureChanged_1 = require("../helpers/email/statusProcedureChanged");
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -47,26 +51,26 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.createProcedure = createProcedure;
 // POST
-var currentNum = -1;
+let currentNum = -1;
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header("auth-header");
     try {
-        if (!token) {
+        if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
-        }
         const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
         const user = yield User_1.User.findOneBy({ id: parseInt(payload.id) });
-        if (!user) {
+        if (!user)
             return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
+        // Transformar esto en función para afectar por área a los municipales de esa área
+        for (let i = 0; i < 1; i++) {
+            currentNum = (currentNum + 1) % 4;
         }
+        const userMuni = yield Muni_1.UserMuni.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } } });
         try {
             const { categoryId, statusId } = req.body;
             yield procedureSchema_1.submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory_1.ProcedureHistory();
             let procedureCompleted;
-            for (let i = 0; i < 1; i++) {
-                currentNum = (currentNum + 1) % 4;
-            }
             procedure.user = user;
             procedure.category = categoryId;
             procedure.status = statusId;
@@ -85,6 +89,7 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
                     yield newOption.save();
                 }));
             }));
+            (0, sendConfirmationEmail_1.sendConfirmationEmail)(procedure, user, mailer_1.transporter, userMuni);
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         }
         catch (error) {
@@ -250,7 +255,7 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
             }
         });
         if (procedure.length === 0) {
-            return res.status(401).send({ message: `El trámite ID #${id} no corresponde a su área. No tiene autorización para verlo` });
+            return res.status(401).send({ message: `El trámite ID #${id} no corresponde a su área o no existe` });
         }
         if (!procedure) {
             return res.status(404).send({ message: `El ID #${id} al que hace referencia no corresponde a ningún trámite` });
@@ -355,6 +360,10 @@ const updateStatusOfProcedure = (req, res) => __awaiter(void 0, void 0, void 0, 
             const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
             const userMuniCategory = payload.category;
             const procedure = yield ProcedureHistory_1.ProcedureHistory.findOne({
+                relations: {
+                    user: true,
+                    userMuni: true
+                },
                 where: {
                     id: parseInt(id),
                     category: {
@@ -367,6 +376,7 @@ const updateStatusOfProcedure = (req, res) => __awaiter(void 0, void 0, void 0, 
             }
             procedure.status = status;
             yield procedure.save();
+            (0, statusProcedureChanged_1.statusProcedureChanged)(procedure, mailer_1.transporter);
             return res.status(200).send({ message: "Estado del trámite cambiado correctamente" });
         }
         catch (error) {

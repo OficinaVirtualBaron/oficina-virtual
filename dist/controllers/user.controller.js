@@ -12,13 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
+exports.forgotPassword = exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
 const User_1 = require("../entities/User");
 const userSchema_1 = require("../validators/userSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const tokenSignUser_1 = require("../helpers/tokenSignUser");
+const tokenSignUser_1 = require("../helpers/token/tokenSignUser");
 const ProcedureHistory_1 = require("../entities/ProcedureHistory");
+const forgotPasswordEmail_1 = require("../helpers/email/forgotPasswordEmail");
+const mailer_1 = require("../config/mailer");
 const saltround = 10;
 // POST 
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -249,3 +251,14 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signIn = signIn;
+// POST
+const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    const user = yield User_1.User.findOneBy({ email: email });
+    if (!user) {
+        return res.status(404).send({ message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente" });
+    }
+    yield (0, forgotPasswordEmail_1.forgotPasswordEmail)(user, mailer_1.transporter);
+    return res.status(200).send({ message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña" });
+});
+exports.forgotPassword = forgotPassword;

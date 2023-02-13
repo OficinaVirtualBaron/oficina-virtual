@@ -1,8 +1,8 @@
 # OFICINA VIRTUAL 🖥️ 
 
 ## Tecnologías usadas 👨‍💻
-- **MySQL:** Base de datos
-- **DBeaver:** Administración de la base de datos
+- **[MySQL](https://www.mysql.com/):** Base de datos
+- **[DBeaver](https://dbeaver.io/):** Administración de la base de datos
 - **[NodeJS](https://nodejs.org/es/)** Entorno de servidor
 - **[Express](https://expressjs.com/es/)** Entorno de trabajo en conjunto con NodeJS
 - **[TypeORM](https://typeorm.io/)** ORM de TypeScript

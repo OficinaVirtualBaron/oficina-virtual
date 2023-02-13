@@ -3,19 +3,19 @@
 ## Tecnologías usadas 👨‍💻
 - **[MySQL](https://www.mysql.com/):** Base de datos
 - **[DBeaver](https://dbeaver.io/):** Administración de la base de datos
-- **[NodeJS](https://nodejs.org/es/)** Entorno de servidor
-- **[Express](https://expressjs.com/es/)** Entorno de trabajo en conjunto con NodeJS
-- **[TypeORM](https://typeorm.io/)** ORM de TypeScript
-- **[Dotenv](https://www.npmjs.com/package/dotenv)** Variables de entorno
-- **[Ts-node-dev](https://www.npmjs.com/package/ts-node-dev)** Reiniciar el server local cuando se detecta un cambio
-- **[Joi](https://joi.dev/)** Librería para validaciones de datos.
-- **[Insomnia](https://insomnia.rest/)** Entorno para probar request y response.
-- **[Bcrypt](https://www.npmjs.com/package/bcrypt)** Librería para hashear contraseñas.
-- **[JsonWebToken](https://www.npmjs.com/package/jsonwebtoken)** Generar y validar .
-- **[Express-validator](https://www.npmjs.com/package/express-validator)** Set de middlewares para validar datos.
-- **[Morgan](https://www.npmjs.com/package/morgan)** Middleware de registro de solicitudes HTTP para NodeJS.
-- **[Cors](https://www.npmjs.com/package/cors)** Mecanismo que utiliza cabeceras HTTP adicionales para permitir que un usuario obtenga permiso para acceder a recursos seleccionados desde un servidor, en un origen distinto (dominio) al que pertenece.
-- **[Nodemailer](https://nodemailer.com/about/)** Módulo de NodeJS que permite enviar correos electrónicos, maquetados con HTML y diseñados estéticamente con CSS.
+- **[NodeJS](https://nodejs.org/es/):** Entorno de servidor
+- **[Express](https://expressjs.com/es/):** Entorno de trabajo en conjunto con NodeJS
+- **[TypeORM](https://typeorm.io/):** ORM de TypeScript
+- **[Dotenv](https://www.npmjs.com/package/dotenv):** Variables de entorno
+- **[Ts-node-dev](https://www.npmjs.com/package/ts-node-dev):** Reiniciar el server local cuando se detecta un cambio
+- **[Joi](https://joi.dev/):** Librería para validaciones de datos.
+- **[Insomnia](https://insomnia.rest/):** Entorno para probar request y response.
+- **[Bcrypt](https://www.npmjs.com/package/bcrypt):** Librería para hashear contraseñas.
+- **[JsonWebToken](https://www.npmjs.com/package/jsonwebtoken):** Generar y validar .
+- **[Express-validator](https://www.npmjs.com/package/express-validator):** Set de middlewares para validar datos.
+- **[Morgan](https://www.npmjs.com/package/morgan):** Middleware de registro de solicitudes HTTP para NodeJS.
+- **[Cors](https://www.npmjs.com/package/cors):** Mecanismo que utiliza cabeceras HTTP adicionales para permitir que un usuario obtenga permiso para acceder a recursos seleccionados desde un servidor, en un origen distinto (dominio) al que pertenece.
+- **[Nodemailer](https://nodemailer.com/about/):** Módulo de NodeJS que permite enviar correos electrónicos, maquetados con HTML y diseñados estéticamente con CSS.
 
 ## Instalar los node_modules 📚
 ```npm install``` para instalar ```node_modules```.

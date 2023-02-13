@@ -12,15 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.forgotPassword = exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
+exports.userRepository = exports.forgotPassword = exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
 const User_1 = require("../entities/User");
 const userSchema_1 = require("../validators/userSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tokenSignUser_1 = require("../helpers/token/tokenSignUser");
-const ProcedureHistory_1 = require("../entities/ProcedureHistory");
 const forgotPasswordEmail_1 = require("../helpers/email/forgotPasswordEmail");
 const mailer_1 = require("../config/mailer");
+const procedure_controllers_1 = require("./procedure.controllers");
+const repository_1 = require("../helpers/controllers/repository");
+Object.defineProperty(exports, "userRepository", { enumerable: true, get: function () { return repository_1.userRepository; } });
 const saltround = 10;
 // POST 
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,7 +37,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.email = email;
         user.cuil = cuil;
         user.adress = adress;
-        yield user.save();
+        yield repository_1.userRepository.save(user);
         res.status(201).send({ message: "Usuario creado correctamente. Inicie sesión a continuación" });
     }
     catch (error) {
@@ -48,7 +50,7 @@ exports.createUser = createUser;
 // GET en un futuro hacer paginacion
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const users = yield User_1.User.find({
+        const users = yield repository_1.userRepository.find({
             select: {
                 id: true,
                 firstname: true,
@@ -80,7 +82,7 @@ const getMyProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
         const userId = parseInt(payload.id);
-        const procedures = yield ProcedureHistory_1.ProcedureHistory.find({
+        const procedures = yield procedure_controllers_1.procedureHistoryRepository.find({
             relations: {
                 category: true,
                 status: true,
@@ -115,11 +117,11 @@ const getMyProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getMyProcedures = getMyProcedures;
-// GET en un futuro hacer paginacion
+// GET (en un futuro hacer paginación)
 const getProceduresOfUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const procedures = yield ProcedureHistory_1.ProcedureHistory.find({
+        const procedures = yield procedure_controllers_1.procedureHistoryRepository.find({
             relations: {
                 user: true,
                 category: true,
@@ -165,7 +167,7 @@ exports.getProceduresOfUser = getProceduresOfUser;
 // GET 
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield User_1.User.findOne({
+        const user = yield repository_1.userRepository.findOne({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -194,7 +196,7 @@ exports.getUser = getUser;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstname, lastname, email, password } = req.body;
-        const user = yield User_1.User.findOneBy({ id: parseInt(req.params.id) });
+        const user = yield repository_1.userRepository.findOneBy({ id: parseInt(req.params.id) });
         if (!user)
             return res.status(404).send({ message: "El usuario no existe" });
         yield userSchema_1.updateUserSchema.validateAsync(req.body);
@@ -202,7 +204,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         user.lastname = lastname;
         user.email = email;
         user.password = password;
-        yield user.save();
+        yield repository_1.userRepository.save(user);
         return res.status(200).send({ message: "Datos del usuario actualizados correctamente" });
     }
     catch (error) {
@@ -215,7 +217,7 @@ exports.updateUser = updateUser;
 // DELETE 
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield User_1.User.delete({ id: parseInt(req.params.id) });
+        const result = yield repository_1.userRepository.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json({ message: "Usuario no encontrado o incorrecto. Intente nuevamente" });
         }
@@ -233,7 +235,7 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { password } = req.body;
         const salt = bcrypt_1.default.genSaltSync();
-        const user = yield User_1.User.findOne({ where: { cuil: req.body.cuil } });
+        const user = yield repository_1.userRepository.findOne({ where: { cuil: req.body.cuil } });
         if (!user) {
             return res.status(404).json("El usuario es incorrecto. Intente nuevamente");
         }
@@ -254,7 +256,7 @@ exports.signIn = signIn;
 // POST
 const forgotPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email } = req.body;
-    const user = yield User_1.User.findOneBy({ email: email });
+    const user = yield repository_1.userRepository.findOneBy({ email: email });
     if (!user) {
         return res.status(404).send({ message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente" });
     }

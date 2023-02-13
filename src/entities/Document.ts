@@ -9,7 +9,7 @@ import {
 import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({ name: "document" })
-export class Document extends BaseEntity {
+export class Document {
     @PrimaryGeneratedColumn()
     id: number;
 

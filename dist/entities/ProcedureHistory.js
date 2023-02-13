@@ -17,7 +17,7 @@ const QuestionHistory_1 = require("./QuestionHistory");
 const Status_1 = require("./Status");
 const User_1 = require("./User");
 const Muni_1 = require("./Muni");
-let ProcedureHistory = class ProcedureHistory extends typeorm_1.BaseEntity {
+let ProcedureHistory = class ProcedureHistory {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

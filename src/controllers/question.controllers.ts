@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
+import { AppDataSource } from "../db";
 import { Question } from "../entities/Question";
+import { questionRepository } from "../helpers/controllers/repository";
 
 // POST
 export const createQuestion = async (req: Request, res: Response) => {
@@ -8,7 +10,7 @@ export const createQuestion = async (req: Request, res: Response) => {
         const question = new Question();
         question.title = title;
         question.procedure = procedure;
-        const savedQuestion = await question.save();
+        const savedQuestion = await questionRepository.save(question);
         res.json(savedQuestion);
     } catch (error) {
         if (error instanceof Error) {
@@ -20,7 +22,7 @@ export const createQuestion = async (req: Request, res: Response) => {
 // GET 
 export const getQuestions = async (req: Request, res: Response) => {
     try {
-        const questions = await Question.find();
+        const questions = await questionRepository.find();
         if (questions.length === 0) return res.status(404).send({message: "No se encontraron preguntas"});
         return res.json(questions);
     } catch (error) {
@@ -34,7 +36,7 @@ export const getQuestions = async (req: Request, res: Response) => {
 export const getQuestion = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const question = await Question.findOneByOrFail({id: parseInt(req.params.id)});
+        const question = await questionRepository.findOneByOrFail({id: parseInt(req.params.id)});
         return res.json(question);
     } catch (error) {
         if (error instanceof Error) {
@@ -48,10 +50,10 @@ export const updateQuestion = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { title } = req.body;
-        const question = await Question.findOneBy({id: parseInt(req.params.id)});
+        const question = await questionRepository.findOneBy({id: parseInt(req.params.id)});
         if (!question) return res.status(404).send({message: "La pregunta no está disponible"});
         question.title = title;
-        await question.save();
+        await questionRepository.save(question);
         return res.status(200).send({message: "Título de la pregunta actualizado correctamente"});
     } catch (error) {
         if (error instanceof Error) {
@@ -64,7 +66,7 @@ export const updateQuestion = async (req: Request, res: Response) => {
 export const deleteQuestion = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const deleteQuestion = await Question.delete({id: parseInt(id)});
+        const deleteQuestion = await questionRepository.delete({id: parseInt(id)});
         if (deleteQuestion.affected === 0) {
             return res.status(404).send({message: "Pregunta no encontrada o incorrecta"});
         }

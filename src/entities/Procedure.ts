@@ -11,7 +11,7 @@ import { Question } from "./Question";
 import { Category } from "./Category";
 
 @Entity({ name: "procedure" })
-export class Procedure extends BaseEntity {
+export class Procedure {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -25,6 +25,6 @@ export class Procedure extends BaseEntity {
     question: Question[];
 
     @ManyToOne(() => Category, (category) => category.procedureTemplate)
-    @JoinColumn({ name: "category_id" })
-    category: Category;
+    @JoinColumn({ name: "categoryId" })
+    category: Category[];
 }

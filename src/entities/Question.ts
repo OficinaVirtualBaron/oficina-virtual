@@ -13,7 +13,7 @@ import { QuestionOption } from "./QuestionOption";
 import { } from "./QuestionOption";
 
 @Entity({ name: "question" })
-export class Question extends BaseEntity {
+export class Question {
     @PrimaryGeneratedColumn()
     id: number;
 

@@ -1,0 +1,20 @@
+import { AppDataSource } from "../../db";
+import { UserMuni } from "../../entities/Muni";
+import { Procedure } from "../../entities/Procedure";
+import { ProcedureHistory } from "../../entities/ProcedureHistory";
+import { Question } from "../../entities/Question";
+import { QuestionHistory } from "../../entities/QuestionHistory";
+import { QuestionOption } from "../../entities/QuestionOption";
+import { QuestionOptionHistory } from "../../entities/QuestionOptionsHistory";
+import { Status } from "../../entities/Status";
+import { User } from "../../entities/User";
+
+export const userRepository = AppDataSource.getRepository(User);
+export const procedureRepository = AppDataSource.getRepository(Procedure);
+export const procedureHistoryRepository = AppDataSource.getRepository(ProcedureHistory);
+export const questionHistoryRepository = AppDataSource.getRepository(QuestionHistory);
+export const questionOptionHistoryRepository = AppDataSource.getRepository(QuestionOptionHistory);
+export const questionRepository = AppDataSource.getRepository(Question);
+export const questionOptionRepository = AppDataSource.getRepository(QuestionOption);
+export const statusProcedure = AppDataSource.getRepository(Status);
+export const muniRepository = AppDataSource.getRepository(UserMuni);

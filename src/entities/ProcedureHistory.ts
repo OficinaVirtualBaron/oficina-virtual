@@ -17,7 +17,7 @@ import { User } from "./User";
 import { UserMuni } from "./Muni";
 
 @Entity({ name: "procedure_history" })
-export class ProcedureHistory extends BaseEntity {
+export class ProcedureHistory {
     @PrimaryGeneratedColumn()
     id: number;
 

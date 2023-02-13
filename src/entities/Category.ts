@@ -13,7 +13,7 @@ import { Procedure } from "./Procedure";
 import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({ name: "category" })
-export class Category extends BaseEntity {
+export class Category {
     @PrimaryGeneratedColumn()
     id: number;
 

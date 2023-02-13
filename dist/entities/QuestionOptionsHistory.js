@@ -13,7 +13,7 @@ exports.QuestionOptionHistory = void 0;
 const typeorm_1 = require("typeorm");
 const QuestionHistory_1 = require("./QuestionHistory");
 const QuestionOption_1 = require("./QuestionOption");
-let QuestionOptionHistory = class QuestionOptionHistory extends typeorm_1.BaseEntity {
+let QuestionOptionHistory = class QuestionOptionHistory {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

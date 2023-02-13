@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 const Muni_1 = require("./Muni");
 const Procedure_1 = require("./Procedure");
 const ProcedureHistory_1 = require("./ProcedureHistory");
-let Category = class Category extends typeorm_1.BaseEntity {
+let Category = class Category {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -49,8 +49,8 @@ __decorate([
     __metadata("design:type", Muni_1.UserMuni)
 ], Category.prototype, "munis", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => Muni_1.UserMuni, (muni) => muni.category),
-    __metadata("design:type", Muni_1.UserMuni)
+    (0, typeorm_1.OneToMany)(() => Muni_1.UserMuni, (muni) => muni.category),
+    __metadata("design:type", Array)
 ], Category.prototype, "muni", void 0);
 Category = __decorate([
     (0, typeorm_1.Entity)({ name: "category" })

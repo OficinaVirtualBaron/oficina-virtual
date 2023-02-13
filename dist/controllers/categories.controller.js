@@ -9,9 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCategory = exports.updateCategory = exports.getCategory = exports.getCategories = exports.createCategory = void 0;
+exports.deleteCategory = exports.updateCategory = exports.getCategory = exports.getCategories = exports.createCategory = exports.categoryRepository = void 0;
+const db_1 = require("../db");
 const Category_1 = require("../entities/Category");
 const categorySchema_1 = require("../validators/categorySchema");
+exports.categoryRepository = db_1.AppDataSource.getRepository(Category_1.Category);
 // POST
 const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -19,7 +21,7 @@ const createCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const category = new Category_1.Category();
         category.title = title;
         category.description = description;
-        yield category.save();
+        yield exports.categoryRepository.save(category);
         res.status(200).send({ message: "Categoría creada exitosamente" });
     }
     catch (error) {
@@ -32,7 +34,7 @@ exports.createCategory = createCategory;
 // GET
 const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const categories = yield Category_1.Category.find({
+        const categories = yield exports.categoryRepository.find({
             select: {
                 id: true,
                 title: true,
@@ -53,7 +55,7 @@ exports.getCategories = getCategories;
 // GET
 const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const category = yield Category_1.Category.findOne({
+        const category = yield exports.categoryRepository.findOne({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -76,12 +78,12 @@ exports.getCategory = getCategory;
 const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title } = req.body;
-        const category = yield Category_1.Category.findOneBy({ id: parseInt(req.params.id) });
+        const category = yield exports.categoryRepository.findOneBy({ id: parseInt(req.params.id) });
         if (!category)
             return res.status(404).send({ message: "La categoría no existe" });
         const updateValidation = yield categorySchema_1.updateCategorySchema.validateAsync(req.body);
         category.title = title;
-        yield category.save();
+        yield exports.categoryRepository.save(category);
         return res.status(200).send({ message: "Datos de la categoría actualizados correctamente" });
     }
     catch (error) {
@@ -94,7 +96,7 @@ exports.updateCategory = updateCategory;
 // DELETE
 const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield Category_1.Category.delete({ id: parseInt(req.params.id) });
+        const result = yield exports.categoryRepository.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json("Categoría no encontrada o incorrecta. Intente nuevamente");
         }

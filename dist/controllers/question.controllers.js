@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteQuestion = exports.updateQuestion = exports.getQuestion = exports.getQuestions = exports.createQuestion = void 0;
 const Question_1 = require("../entities/Question");
+const repository_1 = require("../helpers/controllers/repository");
 // POST
 const createQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -18,7 +19,7 @@ const createQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const question = new Question_1.Question();
         question.title = title;
         question.procedure = procedure;
-        const savedQuestion = yield question.save();
+        const savedQuestion = yield repository_1.questionRepository.save(question);
         res.json(savedQuestion);
     }
     catch (error) {
@@ -31,7 +32,7 @@ exports.createQuestion = createQuestion;
 // GET 
 const getQuestions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const questions = yield Question_1.Question.find();
+        const questions = yield repository_1.questionRepository.find();
         if (questions.length === 0)
             return res.status(404).send({ message: "No se encontraron preguntas" });
         return res.json(questions);
@@ -47,7 +48,7 @@ exports.getQuestions = getQuestions;
 const getQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const question = yield Question_1.Question.findOneByOrFail({ id: parseInt(req.params.id) });
+        const question = yield repository_1.questionRepository.findOneByOrFail({ id: parseInt(req.params.id) });
         return res.json(question);
     }
     catch (error) {
@@ -62,11 +63,11 @@ const updateQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function*
     try {
         const { id } = req.params;
         const { title } = req.body;
-        const question = yield Question_1.Question.findOneBy({ id: parseInt(req.params.id) });
+        const question = yield repository_1.questionRepository.findOneBy({ id: parseInt(req.params.id) });
         if (!question)
             return res.status(404).send({ message: "La pregunta no está disponible" });
         question.title = title;
-        yield question.save();
+        yield repository_1.questionRepository.save(question);
         return res.status(200).send({ message: "Título de la pregunta actualizado correctamente" });
     }
     catch (error) {
@@ -80,7 +81,7 @@ exports.updateQuestion = updateQuestion;
 const deleteQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const deleteQuestion = yield Question_1.Question.delete({ id: parseInt(id) });
+        const deleteQuestion = yield repository_1.questionRepository.delete({ id: parseInt(id) });
         if (deleteQuestion.affected === 0) {
             return res.status(404).send({ message: "Pregunta no encontrada o incorrecta" });
         }

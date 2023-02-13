@@ -12,11 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signInMuni = exports.deleteMuni = exports.updateMuni = exports.getMuni = exports.getMunis = exports.createMuni = void 0;
+exports.muniRepository = exports.signInMuni = exports.deleteMuni = exports.updateMuni = exports.getMuni = exports.getMunis = exports.createMuni = void 0;
 const muniSchema_1 = require("../validators/muniSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Muni_1 = require("../entities/Muni");
 const tokenSignMuni_1 = require("../helpers/token/tokenSignMuni");
+const repository_1 = require("../helpers/controllers/repository");
+Object.defineProperty(exports, "muniRepository", { enumerable: true, get: function () { return repository_1.muniRepository; } });
 const saltround = 10;
 // POST
 const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,7 +36,7 @@ const createMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         userMuni.required = required;
         userMuni.inprocess = inprocess;
         userMuni.finalized = finalized;
-        yield userMuni.save();
+        yield repository_1.muniRepository.save(userMuni);
         res.status(201).send({ message: `¡Usuario municipal ${firstname} ${lastname} creado exitosamente!` });
     }
     catch (error) {
@@ -47,7 +49,7 @@ exports.createMuni = createMuni;
 // GET 
 const getMunis = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const munis = yield Muni_1.UserMuni.find({
+        const munis = yield repository_1.muniRepository.find({
             relations: {
                 category: true
             },
@@ -77,7 +79,7 @@ exports.getMunis = getMunis;
 // GET
 const getMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userMuni = yield Muni_1.UserMuni.findOne({
+        const userMuni = yield repository_1.muniRepository.findOne({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -112,14 +114,14 @@ exports.getMuni = getMuni;
 const updateMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstname, lastname, email, password } = req.body;
-        const userMuni = yield Muni_1.UserMuni.findOneBy({ id: parseInt(req.params.id) });
+        const userMuni = yield repository_1.muniRepository.findOneBy({ id: parseInt(req.params.id) });
         if (!userMuni)
             return res.status(404).json({ message: "El usuario no existe" });
         yield muniSchema_1.updateMuniSchema.validateAsync(req.body);
         userMuni.firstname = firstname;
         userMuni.lastname = lastname;
         userMuni.email = email;
-        yield userMuni.save();
+        yield repository_1.muniRepository.save(userMuni);
         return res.status(200).json("Datos del usuario municipal actualizados correctamente");
     }
     catch (error) {
@@ -132,7 +134,7 @@ exports.updateMuni = updateMuni;
 // DELETE
 const deleteMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userMuni = yield Muni_1.UserMuni.delete({ id: parseInt(req.params.id) });
+        const userMuni = yield repository_1.muniRepository.delete({ id: parseInt(req.params.id) });
         if (userMuni.affected === 0) {
             return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
@@ -149,7 +151,7 @@ exports.deleteMuni = deleteMuni;
 const signInMuni = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { password, cuil } = req.body;
-        const userMuni = yield Muni_1.UserMuni.findOne({
+        const userMuni = yield repository_1.muniRepository.findOne({
             where: {
                 cuil: cuil
             },

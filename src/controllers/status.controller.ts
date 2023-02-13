@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Status } from "../entities/Status";
+import { statusProcedure } from "../helpers/controllers/repository";
 
 // POST
 export const createStatus = async (req: Request, res: Response) => {
@@ -13,7 +14,7 @@ export const createStatus = async (req: Request, res: Response) => {
         if(status === null) {
             return res.status(405).send({message: "El status no puede ser null"});
         }
-        await newStatus.save();
+        await statusProcedure.save(newStatus);
         return res.status(200).send({message: "Estado creado correctamente"});
     } catch (error) {
         if (error instanceof Error) {

@@ -13,6 +13,10 @@ import { transporter } from "../config/mailer";
 import { User } from "../entities/User";
 import { sendConfirmationEmail } from "../helpers/email/sendConfirmationEmail";
 import { statusProcedureChanged } from "../helpers/email/statusProcedureChanged";
+import { AppDataSource } from "../db";
+import { userRepository } from "./user.controller";
+import { muniRepository } from "./muni.controllers";
+import { procedureHistoryRepository, procedureRepository, questionHistoryRepository, questionOptionHistoryRepository } from "../helpers/controllers/repository";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -24,7 +28,7 @@ export const createProcedure = async (req: Request, res: Response) => {
             procedure.title = title;
             procedure.description = description;
             procedure.category = category_id;
-            const savedProcedure = await procedure.save();
+            const savedProcedure = await procedureRepository.save(procedure);
             return res.status(200).send({ message: "Trámite creado", savedProcedure });
         } catch (error) {
             return res.send({ message: "Error. Alguno de los campos es incorrecto o está vacío" });
@@ -44,44 +48,96 @@ export const submitProcedure = async (req: Request, res: Response) => {
         const { categoryId, statusId } = req.body;
         if (!token) return res.status(401).send({message: "Error. No hay token en la petición"});
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
-        const user = await User.findOneBy({id: parseInt(payload.id)});
+        const user = await userRepository.findOneBy({id: parseInt(payload.id)});
         if (!user) return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
 
-        const users = await UserMuni.find();
-        
-        if (users.length === 0 || null) {
-            res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
-        }
-        
-        for (let i = 0; i < 1; i++) {
-            currentNum = (currentNum + 1) % users.length;
-        }
-    
-        const userMuni = await UserMuni.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } }});
+        const userMuni = await muniRepository.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } }});
         try {
             await submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory();
             let procedureCompleted: ProcedureHistory;
             procedure.user = user;
             procedure.category = categoryId;
-            procedure.status = statusId;
-            procedure.userMuni = currentNum as unknown as UserMuni;
 
-            procedureCompleted = await procedure.save();
+
+            // -- función para asignar trámites a municipales automáticamente --
+            const users = await muniRepository.find();
+        
+            if (users.length === 0 || null) {
+                res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
+            }
+
+            // - filtrar usuarios municipales -
+            let filteredUsers = await muniRepository.find({
+                where: {
+                    category: {
+                        id: req.body.categoryId
+                    }
+                },
+                relations: {
+                    procedureHistory: true,
+                    
+                },
+                select: {
+                    procedureHistory: {
+                        id: true
+                    },
+                    id: true,
+                    firstname: true,
+                    lastname: true
+                }
+            });
+
+            const proceduresHistory = await procedureHistoryRepository.find({
+                where: {
+                    category: {
+                        id: req.body.categoryId
+                    }
+                },
+                relations: {
+                    userMuni: true
+                },
+                select: {
+                    userMuni: {
+                        id: true,
+                        firstname: true,
+                        lastname: true
+                    }
+                }
+            })
+            console.log("munisProceduresLength: " + filteredUsers);
+            return res.status(200).send(filteredUsers);
+        
+            if (filteredUsers.length === 0) {
+                res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
+            }
+            // - filtrar usuarios municipales -
+            // RESOLVER DESDE AQUÍ
+            for (let i = 0; i < 1; i++) {
+                currentNum = (currentNum + 1) % filteredUsers.length;
+            }
+            // -- función para asignar trámites a municipales automáticamente --
+            console.log("currentNum: " + currentNum);
+
+
+            procedure.status = statusId;
+            procedure.userMuni = [currentNum] as unknown as UserMuni;
+
+            procedureCompleted = await procedureHistoryRepository.save(procedureCompleted);
             req.body.questions.forEach(async (question: any) => {
                 const newQuestion = new QuestionHistory();
                 newQuestion.question = question.question;
                 newQuestion.procedure = procedureCompleted;
-                await newQuestion.save();
+                await questionHistoryRepository.save(newQuestion);
                 question.options.forEach(async (option: any) => {
                     const newOption = new QuestionOptionHistory();
                     newOption.questionOption = option.questionOption;
                     newOption.answer = option.answer;
                     newOption.question = newQuestion;
-                    await newOption.save();
+                    await questionOptionHistoryRepository.save(newOption);
                 });
             });
-            sendConfirmationEmail(procedure, user, transporter, userMuni);
+            //sendConfirmationEmail(procedure, user, transporter, userMuni);
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         } catch (error) {
             if (error instanceof Error) {
@@ -105,7 +161,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
     const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
     const userMuniCategory = payload.category;
     try {
-        const procedures = await ProcedureHistory.find({
+        const procedures = await procedureHistoryRepository.find({
             relations: {
                 user: true,
                 status: true,
@@ -152,7 +208,7 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
-        const history = await ProcedureHistory.find({
+        const history = await procedureHistoryRepository.find({
             relations: {
                 user: true,
                 category: true,
@@ -200,7 +256,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
-        const procedure = await ProcedureHistory.find({
+        const procedure = await procedureHistoryRepository.find({
             relations: {
                 user: true,
                 category: true,
@@ -248,7 +304,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
 export const getTemplateProcedureById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const template = await Procedure.findOne({
+        const template = await procedureRepository.findOne({
             where: {
                 id: parseInt(id)
             },
@@ -277,7 +333,7 @@ export const getTemplateProcedureById = async (req: Request, res: Response) => {
 // GET
 export const getProcedures = async (req: Request, res: Response) => {
     try {
-        const procedures = await Procedure.find();
+        const procedures = await procedureRepository.find();
         if (procedures.length === 0) return res.status(404).send({ message: "No se encontraron trámites" });
         return res.json(procedures);
     } catch (error) {
@@ -291,7 +347,7 @@ export const getProcedures = async (req: Request, res: Response) => {
 export const getProcedureByCategory = async (req: Request, res: Response) => {
     try {
         const { category_id } = req.params;
-        const procedures = await Procedure.find({ where: { category: Equal(category_id) } });
+        const procedures = await procedureRepository.find({ where: { category: Equal(category_id) } });
         if (procedures.length === 0) return res.status(404).send({ message: "No hay trámites para esta categoría por el momento" });
         return res.json(procedures);
     } catch (error) {
@@ -305,7 +361,7 @@ export const getProcedureByCategory = async (req: Request, res: Response) => {
 export const getProcedure = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const procedure = await Procedure.findOneByOrFail({ id: parseInt(req.params.id) });
+        const procedure = await procedureRepository.findOneByOrFail({ id: parseInt(req.params.id) });
         return res.status(200).json(procedure);
     } catch (error) {
         if (error instanceof Error) {
@@ -326,7 +382,7 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
             }
             const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
             const userMuniCategory = payload.category;
-            const procedure = await ProcedureHistory.findOne({ 
+            const procedure = await procedureHistoryRepository.findOne({ 
                 relations: {
                     user: true,
                     userMuni: true
@@ -342,7 +398,7 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
                 return res.status(404).send({message: `El trámite ID #${id} no existe no corresponde a su área`});
             }
             procedure.status = status;
-            await procedure.save();
+            await procedureHistoryRepository.save(procedure);
             statusProcedureChanged(procedure, transporter)
             return res.status(200).send({message: "Estado del trámite cambiado correctamente"});
         } catch (error) {
@@ -363,12 +419,12 @@ export const updateProcedure = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { title } = req.body;
-        const procedure = await Procedure.findOneBy({ id: parseInt(id) });
+        const procedure = await procedureRepository.findOneBy({ id: parseInt(id) });
         if (!procedure) {
             return res.status(404).send({ message: "El trámite no existe" });
         }
         procedure.title = title;
-        await procedure.save();
+        await procedureRepository.save(procedure);
         return res.status(200).send({ message: "Datos del trámite actualizados correctamente" });
     } catch (error) {
         if (error instanceof Error) {
@@ -381,7 +437,7 @@ export const updateProcedure = async (req: Request, res: Response) => {
 export const deleteProcedure = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const deleteProcedure = await Procedure.delete({ id: parseInt(req.params.id) });
+        const deleteProcedure = await procedureRepository.delete({ id: parseInt(req.params.id) });
         if (deleteProcedure.affected === 0) {
             return res.status(404).send({ message: "Trámite no encontrado o incorrecto. Intente nuevamente" })
         }
@@ -392,3 +448,5 @@ export const deleteProcedure = async (req: Request, res: Response) => {
         }
     }
 }
+
+export { procedureHistoryRepository };

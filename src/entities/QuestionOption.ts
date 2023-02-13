@@ -11,7 +11,7 @@ import { Question } from "./Question";
 import { QuestionOptionHistory } from "./QuestionOptionsHistory";
 
 @Entity({ name: "question_option" })
-export class QuestionOption extends BaseEntity {
+export class QuestionOption {
     @PrimaryGeneratedColumn()
     id: number;
 

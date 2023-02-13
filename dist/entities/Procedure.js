@@ -13,7 +13,7 @@ exports.Procedure = void 0;
 const typeorm_1 = require("typeorm");
 const Question_1 = require("./Question");
 const Category_1 = require("./Category");
-let Procedure = class Procedure extends typeorm_1.BaseEntity {
+let Procedure = class Procedure {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -33,8 +33,8 @@ __decorate([
 ], Procedure.prototype, "question", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.procedureTemplate),
-    (0, typeorm_1.JoinColumn)({ name: "category_id" }),
-    __metadata("design:type", Category_1.Category)
+    (0, typeorm_1.JoinColumn)({ name: "categoryId" }),
+    __metadata("design:type", Array)
 ], Procedure.prototype, "category", void 0);
 Procedure = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure" })

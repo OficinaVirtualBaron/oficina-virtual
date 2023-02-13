@@ -10,7 +10,7 @@ import { QuestionHistory } from "./QuestionHistory";
 import { QuestionOption } from "./QuestionOption";
 
 @Entity({ name: "question_option_history" })
-export class QuestionOptionHistory extends BaseEntity {
+export class QuestionOptionHistory {
     @PrimaryGeneratedColumn()
     id: number;
 

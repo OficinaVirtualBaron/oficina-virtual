@@ -8,13 +8,14 @@ import {
     ManyToMany,
     OneToOne,
     JoinColumn,
-    ManyToOne
+    ManyToOne,
+    OneToMany
 } from "typeorm"
 import { Category } from "./Category";
 import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity()
-export class UserMuni extends BaseEntity {
+export class UserMuni {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -55,6 +56,6 @@ export class UserMuni extends BaseEntity {
     @JoinColumn({ name: "categoryId" })
     category: Category;
 
-    @ManyToMany(() => ProcedureHistory, (procedureHistory) => procedureHistory.userMuni)
+    @OneToMany(() => ProcedureHistory, (procedureHistory) => procedureHistory.userMuni)
     procedureHistory: ProcedureHistory[];
 }

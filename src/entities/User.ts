@@ -19,7 +19,7 @@ export interface IUser extends Document {
 }
 
 @Entity()
-export class User extends BaseEntity {
+export class User {
     @PrimaryGeneratedColumn()
     id: number;
 

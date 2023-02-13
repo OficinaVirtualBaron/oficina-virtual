@@ -8,6 +8,8 @@ import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { IPayload } from "../middlewares";
 import { forgotPasswordEmail } from "../helpers/email/forgotPasswordEmail";
 import { transporter } from "../config/mailer";
+import { procedureHistoryRepository } from "./procedure.controllers";
+import { userRepository } from "../helpers/controllers/repository";
 const saltround = 10;
 
 // POST 
@@ -23,7 +25,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.email = email;
         user.cuil = cuil;
         user.adress = adress;
-        await user.save();
+        await userRepository.save(user);
         res.status(201).send({ message: "Usuario creado correctamente. Inicie sesión a continuación" });
     } catch (error) {
         if (error instanceof Error) {
@@ -35,7 +37,7 @@ export const createUser = async (req: Request, res: Response) => {
 // GET en un futuro hacer paginacion
 export const getUsers = async (req: Request, res: Response) => {
     try {
-        const users = await User.find({
+        const users = await userRepository.find({
             select: {
                 id: true,
                 firstname: true,
@@ -65,7 +67,7 @@ export const getMyProcedures = async (req: Request, res: Response) => {
         }
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userId = parseInt(payload.id);
-        const procedures = await ProcedureHistory.find({
+        const procedures = await procedureHistoryRepository.find({
             relations: {
                 category: true,
                 status: true,
@@ -99,11 +101,11 @@ export const getMyProcedures = async (req: Request, res: Response) => {
     }
 }
 
-// GET en un futuro hacer paginacion
+// GET (en un futuro hacer paginación)
 export const getProceduresOfUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-        const procedures = await ProcedureHistory.find({
+        const procedures = await procedureHistoryRepository.find({
             relations: {
                 user: true,
                 category: true,
@@ -148,7 +150,7 @@ export const getProceduresOfUser = async (req: Request, res: Response) => {
 // GET 
 export const getUser = async (req: Request, res: Response) => {
     try {
-        const user = await User.findOne({
+        const user = await userRepository.findOne({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -176,14 +178,14 @@ export const getUser = async (req: Request, res: Response) => {
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password } = req.body;
-        const user = await User.findOneBy({ id: parseInt(req.params.id) });
+        const user = await userRepository.findOneBy({ id: parseInt(req.params.id) });
         if (!user) return res.status(404).send({ message: "El usuario no existe" });
         await updateUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
         user.email = email;
         user.password = password;
-        await user.save();
+        await userRepository.save(user);
         return res.status(200).send({ message: "Datos del usuario actualizados correctamente" });
     } catch (error) {
         if (error instanceof Error) {
@@ -195,7 +197,7 @@ export const updateUser = async (req: Request, res: Response) => {
 // DELETE 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const result = await User.delete({ id: parseInt(req.params.id) });
+        const result = await userRepository.delete({ id: parseInt(req.params.id) });
         if (result.affected === 0) {
             return res.status(404).json({ message: "Usuario no encontrado o incorrecto. Intente nuevamente" });
         }
@@ -212,7 +214,7 @@ export const signIn = async (req: Request, res: Response) => {
     try {
         const { password } = req.body;
         const salt = bcrypt.genSaltSync();
-        const user = await User.findOne({ where: { cuil: req.body.cuil } })
+        const user = await userRepository.findOne({ where: { cuil: req.body.cuil } })
         if (!user) {
             return res.status(404).json("El usuario es incorrecto. Intente nuevamente");
         }
@@ -232,10 +234,12 @@ export const signIn = async (req: Request, res: Response) => {
 // POST
 export const forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
-    const user = await User.findOneBy({email: email});
+    const user = await userRepository.findOneBy({email: email});
     if (!user) {
         return res.status(404).send({message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente"});
     }
     await forgotPasswordEmail(user, transporter);
     return res.status(200).send({message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña"});
 }
+
+export { userRepository };

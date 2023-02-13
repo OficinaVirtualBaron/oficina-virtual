@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 const Procedure_1 = require("./Procedure");
 const QuestionHistory_1 = require("./QuestionHistory");
 const QuestionOption_1 = require("./QuestionOption");
-let Question = class Question extends typeorm_1.BaseEntity {
+let Question = class Question {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 const ProcedureHistory_1 = require("./ProcedureHistory");
-let User = class User extends typeorm_1.BaseEntity {
+let User = class User {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),

@@ -13,7 +13,7 @@ exports.UserMuni = void 0;
 const typeorm_1 = require("typeorm");
 const Category_1 = require("./Category");
 const ProcedureHistory_1 = require("./ProcedureHistory");
-let UserMuni = class UserMuni extends typeorm_1.BaseEntity {
+let UserMuni = class UserMuni {
 };
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
@@ -64,12 +64,12 @@ __decorate([
     __metadata("design:type", Date)
 ], UserMuni.prototype, "update_at", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => Category_1.Category, (category) => category.muni),
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, (category) => category.muni),
     (0, typeorm_1.JoinColumn)({ name: "categoryId" }),
     __metadata("design:type", Category_1.Category)
 ], UserMuni.prototype, "category", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedureHistory) => procedureHistory.userMuni),
+    (0, typeorm_1.OneToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedureHistory) => procedureHistory.userMuni),
     __metadata("design:type", Array)
 ], UserMuni.prototype, "procedureHistory", void 0);
 UserMuni = __decorate([

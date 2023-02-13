@@ -3,6 +3,7 @@ import { createMuniSchema, updateMuniSchema } from "../validators/muniSchema";
 import bcrypt from "bcrypt";
 import { UserMuni } from "../entities/Muni";
 import { tokenSignMuni } from "../helpers/token/tokenSignMuni";
+import { muniRepository } from "../helpers/controllers/repository";
 const saltround = 10;
 
 // POST
@@ -21,7 +22,7 @@ export const createMuni = async (req: Request, res: Response) => {
         userMuni.required = required;
         userMuni.inprocess = inprocess;
         userMuni.finalized = finalized;
-        await userMuni.save();
+        await muniRepository.save(userMuni);
         res.status(201).send({ message: `¡Usuario municipal ${firstname} ${lastname} creado exitosamente!` });
     } catch (error) {
         if (error instanceof Error) {
@@ -33,7 +34,7 @@ export const createMuni = async (req: Request, res: Response) => {
 // GET 
 export const getMunis = async (req: Request, res: Response) => {
     try {
-        const munis = await UserMuni.find({
+        const munis = await muniRepository.find({
             relations: {
                 category: true
             },
@@ -62,7 +63,7 @@ export const getMunis = async (req: Request, res: Response) => {
 // GET
 export const getMuni = async (req: Request, res: Response) => {
     try {
-        const userMuni = await UserMuni.findOne({
+        const userMuni = await muniRepository.findOne({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -98,13 +99,13 @@ export const getMuni = async (req: Request, res: Response) => {
 export const updateMuni = async (req: Request, res: Response) => {
     try {
         const { firstname, lastname, email, password } = req.body;
-        const userMuni = await UserMuni.findOneBy({ id: parseInt(req.params.id) });
+        const userMuni = await muniRepository.findOneBy({ id: parseInt(req.params.id) });
         if (!userMuni) return res.status(404).json({ message: "El usuario no existe" });
         await updateMuniSchema.validateAsync(req.body);
         userMuni.firstname = firstname;
         userMuni.lastname = lastname;
         userMuni.email = email;
-        await userMuni.save();
+        await muniRepository.save(userMuni);
         return res.status(200).json("Datos del usuario municipal actualizados correctamente");
     } catch (error) {
         if (error instanceof Error) {
@@ -116,7 +117,7 @@ export const updateMuni = async (req: Request, res: Response) => {
 // DELETE
 export const deleteMuni = async (req: Request, res: Response) => {
     try {
-        const userMuni = await UserMuni.delete({ id: parseInt(req.params.id) });
+        const userMuni = await muniRepository.delete({ id: parseInt(req.params.id) });
         if (userMuni.affected === 0) {
             return res.status(404).json("Usuario municipal no encontrado o incorrecto. Intente nuevamente");
         }
@@ -132,7 +133,7 @@ export const deleteMuni = async (req: Request, res: Response) => {
 export const signInMuni = async (req: Request, res: Response) => {
     try {
         const { password, cuil } = req.body;
-        const userMuni = await UserMuni.findOne({
+        const userMuni = await muniRepository.findOne({
             where: {
                 cuil: cuil
             },
@@ -161,3 +162,5 @@ export const signInMuni = async (req: Request, res: Response) => {
         }
     }
 }
+
+export { muniRepository };

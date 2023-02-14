@@ -13,7 +13,7 @@ import { userRepository } from "../config/repository/repository";
 import { signUpUserConfirmationEmail } from "../helpers/email/signUpEmail";
 const saltround = 10;
 
-// POST 
+// POST
 export const createUser = async (req: Request, res: Response) => {
     const salt = bcrypt.genSaltSync();
     try {
@@ -236,12 +236,12 @@ export const signIn = async (req: Request, res: Response) => {
 // POST
 export const forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
-    const user = await userRepository.findOneBy({email: email});
+    const user = await userRepository.findOneBy({ email: email });
     if (!user) {
-        return res.status(404).send({message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente"});
+        return res.status(404).send({ message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente" });
     }
     await forgotPasswordEmail(user, transporter);
-    return res.status(200).send({message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña"});
+    return res.status(200).send({ message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña" });
 }
 
 export { userRepository };

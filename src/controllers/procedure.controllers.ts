@@ -44,10 +44,10 @@ export const submitProcedure = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
         const { categoryId, statusId } = req.body;
-        if (!token) return res.status(401).send({message: "Error. No hay token en la petición"});
+        if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
-        const user = await userRepository.findOneBy({id: parseInt(payload.id)});
-        if (!user) return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
+        const user = await userRepository.findOneBy({ id: parseInt(payload.id) });
+        if (!user) return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
 
         try {
             await submitProcedureSchema.validateAsync(req.body);
@@ -57,15 +57,15 @@ export const submitProcedure = async (req: Request, res: Response) => {
             procedure.category = categoryId;
             const users = await muniRepository.find();
             if (users.length === 0 || null) {
-                res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
+                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
             }
-            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: true }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true} });
+            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: true }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
             if (filteredUsers.length === 0) {
-                res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
+                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
             }
 
             // en un futuro cambiar este .sort() por lo mismo pero referido a la columna "required" de los userMuni
-            const filteredUsersArr = filteredUsers.sort((x: any, y: any) =>  x.procedureHistory.length - y.procedureHistory.length);
+            const filteredUsersArr = filteredUsers.sort((x: any, y: any) => x.procedureHistory.length - y.procedureHistory.length);
             procedure.status = statusId;
             procedure.userMuni = filteredUsersArr[0].id as unknown as UserMuni;
 
@@ -87,15 +87,15 @@ export const submitProcedure = async (req: Request, res: Response) => {
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         } catch (error) {
             if (error instanceof Error) {
-                return res.status(500).send({message: error.message})
+                return res.status(500).send({ message: error.message })
             }
-            return res.status(400).send({message: "Datos mal cargados. Intente nuevamente"});
+            return res.status(400).send({ message: "Datos mal cargados. Intente nuevamente" });
         }
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).send({message: error.message});
+            return res.status(500).send({ message: error.message });
         }
-        return res.status(401).send({message: "Error al validar el token o los datos de este"});
+        return res.status(401).send({ message: "Error al validar el token o los datos de este" });
     }
 }
 
@@ -103,7 +103,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
 export const getProceduresByStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
     const token = req.header("auth-header");
-    if (!token) return res.status(401).send({ message: "Error. No hay token en la petición"});
+    if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
     const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
     const userMuniCategory = payload.category;
     try {
@@ -324,11 +324,11 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
         const token = req.header("auth-header");
         try {
             if (!token) {
-                return res.status(401).send({message: "Error. No hay token en la petición"});
+                return res.status(401).send({ message: "Error. No hay token en la petición" });
             }
             const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
             const userMuniCategory = payload.category;
-            const procedure = await procedureHistoryRepository.findOne({ 
+            const procedure = await procedureHistoryRepository.findOne({
                 relations: {
                     user: true,
                     userMuni: true
@@ -341,21 +341,21 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
                 }
             });
             if (!procedure) {
-                return res.status(404).send({message: `El trámite ID #${id} no existe no corresponde a su área`});
+                return res.status(404).send({ message: `El trámite ID #${id} no existe no corresponde a su área` });
             }
             procedure.status = status;
             await procedureHistoryRepository.save(procedure);
             statusProcedureChanged(procedure, transporter)
-            return res.status(200).send({message: "Estado del trámite cambiado correctamente"});
+            return res.status(200).send({ message: "Estado del trámite cambiado correctamente" });
         } catch (error) {
             if (error instanceof Error) {
-                return res.status(500).send({message: error.message});
+                return res.status(500).send({ message: error.message });
             }
-            return res.status(400).send({message: "Hay un problema con el token"});
+            return res.status(400).send({ message: "Hay un problema con el token" });
         }
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).send({message: error.message});
+            return res.status(500).send({ message: error.message });
         }
     }
 }

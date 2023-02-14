@@ -1,9 +1,9 @@
 export async function sendConfirmationEmail(procedure: any, user: any, transporter: any) {
-    await transporter.sendMail({
-        from: '"Email de confirmación" <municipalidadsacanta.com>',
-        to: user.email,
-        subject: `Trámite ID #${procedure.id}`,
-        html: `
+	await transporter.sendMail({
+		from: '"Email de confirmación" <municipalidadsacanta.com>',
+		to: user.email,
+		subject: `Trámite ID #${procedure.id}`,
+		html: `
         <!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
 
@@ -326,5 +326,5 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 
 </html>
         `
-    });
+	});
 }

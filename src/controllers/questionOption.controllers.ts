@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { QuestionOption } from "../entities/QuestionOption";
-import { questionOptionRepository } from "../helpers/controllers/repository";
+import { questionOptionRepository } from "../config/repository/repository";
 
 // POST
 export const createQuestionOption = async (req: Request, res: Response) => {

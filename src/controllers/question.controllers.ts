@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AppDataSource } from "../db";
 import { Question } from "../entities/Question";
-import { questionRepository } from "../helpers/controllers/repository";
+import { questionRepository } from "../config/repository/repository";
 
 // POST
 export const createQuestion = async (req: Request, res: Response) => {

@@ -9,14 +9,13 @@ import { Equal } from "typeorm";
 import { UserMuni } from "../entities/Muni";
 import { IPayload } from "../middlewares";
 import jwt from "jsonwebtoken";
-import { transporter } from "../config/mailer";
+import { transporter } from "../config/mailer/mailer";
 import { User } from "../entities/User";
 import { sendConfirmationEmail } from "../helpers/email/sendConfirmationEmail";
 import { statusProcedureChanged } from "../helpers/email/statusProcedureChanged";
-import { AppDataSource } from "../db";
 import { userRepository } from "./user.controller";
 import { muniRepository } from "./muni.controllers";
-import { procedureHistoryRepository, procedureRepository, questionHistoryRepository, questionOptionHistoryRepository } from "../helpers/controllers/repository";
+import { procedureHistoryRepository, procedureRepository, questionHistoryRepository, questionOptionHistoryRepository } from "../config/repository/repository";
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -41,7 +40,6 @@ export const createProcedure = async (req: Request, res: Response) => {
 }
 
 // POST
-let currentNum: number = -1;
 export const submitProcedure = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
@@ -51,79 +49,25 @@ export const submitProcedure = async (req: Request, res: Response) => {
         const user = await userRepository.findOneBy({id: parseInt(payload.id)});
         if (!user) return res.status(404).send({message: `Usuario ID #${payload.id} no encontrado`});
 
-        const userMuni = await muniRepository.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } }});
         try {
             await submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory();
             let procedureCompleted: ProcedureHistory;
             procedure.user = user;
             procedure.category = categoryId;
-
-
-            // -- función para asignar trámites a municipales automáticamente --
             const users = await muniRepository.find();
-        
             if (users.length === 0 || null) {
                 res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
             }
-
-            // - filtrar usuarios municipales -
-            let filteredUsers = await muniRepository.find({
-                where: {
-                    category: {
-                        id: req.body.categoryId
-                    }
-                },
-                relations: {
-                    procedureHistory: true,
-                    
-                },
-                select: {
-                    procedureHistory: {
-                        id: true
-                    },
-                    id: true,
-                    firstname: true,
-                    lastname: true
-                }
-            });
-
-            const proceduresHistory = await procedureHistoryRepository.find({
-                where: {
-                    category: {
-                        id: req.body.categoryId
-                    }
-                },
-                relations: {
-                    userMuni: true
-                },
-                select: {
-                    userMuni: {
-                        id: true,
-                        firstname: true,
-                        lastname: true
-                    }
-                }
-            })
-            console.log("munisProceduresLength: " + filteredUsers);
-            return res.status(200).send(filteredUsers);
-        
+            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: true }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true} });
             if (filteredUsers.length === 0) {
                 res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
             }
-            // - filtrar usuarios municipales -
-            // RESOLVER DESDE AQUÍ
-            for (let i = 0; i < 1; i++) {
-                currentNum = (currentNum + 1) % filteredUsers.length;
-            }
-            // -- función para asignar trámites a municipales automáticamente --
-            console.log("currentNum: " + currentNum);
-
-
+            // en un futuro cambiar este .sort() por lo mismo pero referido a la columna "required" de los userMuni
+            const filteredUsersArr = filteredUsers.sort((x: any, y: any) =>  x.procedureHistory.length - y.procedureHistory.length);
             procedure.status = statusId;
-            procedure.userMuni = [currentNum] as unknown as UserMuni;
-
-            procedureCompleted = await procedureHistoryRepository.save(procedureCompleted);
+            procedure.userMuni = filteredUsersArr[0].id as unknown as UserMuni;
+            procedureCompleted = await procedureHistoryRepository.save(procedure);
             req.body.questions.forEach(async (question: any) => {
                 const newQuestion = new QuestionHistory();
                 newQuestion.question = question.question;

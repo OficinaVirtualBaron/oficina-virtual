@@ -7,9 +7,9 @@ import { tokenSignUser } from "../helpers/token/tokenSignUser";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { IPayload } from "../middlewares";
 import { forgotPasswordEmail } from "../helpers/email/forgotPasswordEmail";
-import { transporter } from "../config/mailer";
+import { transporter } from "../config/mailer/mailer";
 import { procedureHistoryRepository } from "./procedure.controllers";
-import { userRepository } from "../helpers/controllers/repository";
+import { userRepository } from "../config/repository/repository";
 const saltround = 10;
 
 // POST 

@@ -3,7 +3,7 @@ import { createMuniSchema, updateMuniSchema } from "../validators/muniSchema";
 import bcrypt from "bcrypt";
 import { UserMuni } from "../entities/Muni";
 import { tokenSignMuni } from "../helpers/token/tokenSignMuni";
-import { muniRepository } from "../helpers/controllers/repository";
+import { muniRepository } from "../config/repository/repository";
 const saltround = 10;
 
 // POST

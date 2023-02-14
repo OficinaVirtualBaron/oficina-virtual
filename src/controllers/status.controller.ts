@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Status } from "../entities/Status";
-import { statusProcedure } from "../helpers/controllers/repository";
+import { statusProcedure } from "../config/repository/repository";
 
 // POST
 export const createStatus = async (req: Request, res: Response) => {

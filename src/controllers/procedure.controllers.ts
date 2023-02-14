@@ -63,10 +63,12 @@ export const submitProcedure = async (req: Request, res: Response) => {
             if (filteredUsers.length === 0) {
                 res.status(404).send({message: "No hay personal municipal disponible para responder a este trámite"});
             }
+
             // en un futuro cambiar este .sort() por lo mismo pero referido a la columna "required" de los userMuni
             const filteredUsersArr = filteredUsers.sort((x: any, y: any) =>  x.procedureHistory.length - y.procedureHistory.length);
             procedure.status = statusId;
             procedure.userMuni = filteredUsersArr[0].id as unknown as UserMuni;
+
             procedureCompleted = await procedureHistoryRepository.save(procedure);
             req.body.questions.forEach(async (question: any) => {
                 const newQuestion = new QuestionHistory();
@@ -81,7 +83,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
                     await questionOptionHistoryRepository.save(newOption);
                 });
             });
-            //sendConfirmationEmail(procedure, user, transporter, userMuni);
+            sendConfirmationEmail(procedure, user, transporter);
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         } catch (error) {
             if (error instanceof Error) {

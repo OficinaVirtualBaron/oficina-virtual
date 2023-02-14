@@ -17,7 +17,7 @@ const muniSchema_1 = require("../validators/muniSchema");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Muni_1 = require("../entities/Muni");
 const tokenSignMuni_1 = require("../helpers/token/tokenSignMuni");
-const repository_1 = require("../helpers/controllers/repository");
+const repository_1 = require("../config/repository/repository");
 Object.defineProperty(exports, "muniRepository", { enumerable: true, get: function () { return repository_1.muniRepository; } });
 const saltround = 10;
 // POST

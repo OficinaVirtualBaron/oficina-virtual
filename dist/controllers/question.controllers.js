@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteQuestion = exports.updateQuestion = exports.getQuestion = exports.getQuestions = exports.createQuestion = void 0;
 const Question_1 = require("../entities/Question");
-const repository_1 = require("../helpers/controllers/repository");
+const repository_1 = require("../config/repository/repository");
 // POST
 const createQuestion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

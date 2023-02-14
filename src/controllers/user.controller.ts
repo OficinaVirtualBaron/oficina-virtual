@@ -10,6 +10,7 @@ import { forgotPasswordEmail } from "../helpers/email/forgotPasswordEmail";
 import { transporter } from "../config/mailer/mailer";
 import { procedureHistoryRepository } from "./procedure.controllers";
 import { userRepository } from "../config/repository/repository";
+import { signUpUserConfirmationEmail } from "../helpers/email/signUpEmail";
 const saltround = 10;
 
 // POST 
@@ -27,6 +28,7 @@ export const createUser = async (req: Request, res: Response) => {
         user.adress = adress;
         await userRepository.save(user);
         res.status(201).send({ message: "Usuario creado correctamente. Inicie sesión a continuación" });
+        signUpUserConfirmationEmail(user, transporter);
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).json({ message: error.message });

@@ -19,9 +19,9 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tokenSignUser_1 = require("../helpers/token/tokenSignUser");
 const forgotPasswordEmail_1 = require("../helpers/email/forgotPasswordEmail");
-const mailer_1 = require("../config/mailer");
+const mailer_1 = require("../config/mailer/mailer");
 const procedure_controllers_1 = require("./procedure.controllers");
-const repository_1 = require("../helpers/controllers/repository");
+const repository_1 = require("../config/repository/repository");
 Object.defineProperty(exports, "userRepository", { enumerable: true, get: function () { return repository_1.userRepository; } });
 const saltround = 10;
 // POST 

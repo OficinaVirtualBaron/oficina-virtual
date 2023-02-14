@@ -21,11 +21,11 @@ const QuestionHistory_1 = require("../entities/QuestionHistory");
 const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
 const typeorm_1 = require("typeorm");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const mailer_1 = require("../config/mailer");
+const mailer_1 = require("../config/mailer/mailer");
 const statusProcedureChanged_1 = require("../helpers/email/statusProcedureChanged");
 const user_controller_1 = require("./user.controller");
 const muni_controllers_1 = require("./muni.controllers");
-const repository_1 = require("../helpers/controllers/repository");
+const repository_1 = require("../config/repository/repository");
 Object.defineProperty(exports, "procedureHistoryRepository", { enumerable: true, get: function () { return repository_1.procedureHistoryRepository; } });
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -52,7 +52,6 @@ const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.createProcedure = createProcedure;
 // POST
-let currentNum = -1;
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header("auth-header");
     try {
@@ -63,69 +62,25 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
         const user = yield user_controller_1.userRepository.findOneBy({ id: parseInt(payload.id) });
         if (!user)
             return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
-        const userMuni = yield muni_controllers_1.muniRepository.findOne({ where: { id: currentNum }, relations: { category: true }, select: { category: { title: true } } });
         try {
             yield procedureSchema_1.submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory_1.ProcedureHistory();
             let procedureCompleted;
             procedure.user = user;
             procedure.category = categoryId;
-            // -- función para asignar trámites a municipales automáticamente --
             const users = yield muni_controllers_1.muniRepository.find();
             if (users.length === 0 || null) {
                 res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
             }
-            // - filtrar usuarios municipales -
-            let filteredUsers = yield muni_controllers_1.muniRepository.find({
-                where: {
-                    category: {
-                        id: req.body.categoryId
-                    }
-                },
-                relations: {
-                    procedureHistory: true,
-                },
-                select: {
-                    procedureHistory: {
-                        id: true
-                    },
-                    id: true,
-                    firstname: true,
-                    lastname: true
-                }
-            });
-            const proceduresHistory = yield repository_1.procedureHistoryRepository.find({
-                where: {
-                    category: {
-                        id: req.body.categoryId
-                    }
-                },
-                relations: {
-                    userMuni: true
-                },
-                select: {
-                    userMuni: {
-                        id: true,
-                        firstname: true,
-                        lastname: true
-                    }
-                }
-            });
-            console.log("munisProceduresLength: " + filteredUsers);
-            return res.status(200).send(filteredUsers);
+            let filteredUsers = yield muni_controllers_1.muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: true }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
             if (filteredUsers.length === 0) {
                 res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
             }
-            // - filtrar usuarios municipales -
-            // RESOLVER DESDE AQUÍ
-            for (let i = 0; i < 1; i++) {
-                currentNum = (currentNum + 1) % filteredUsers.length;
-            }
-            // -- función para asignar trámites a municipales automáticamente --
-            console.log("currentNum: " + currentNum);
+            // en un futuro cambiar este .sort() por lo mismo pero referido a la columna "required" de los userMuni
+            const filteredUsersArr = filteredUsers.sort((x, y) => x.procedureHistory.length - y.procedureHistory.length);
             procedure.status = statusId;
-            procedure.userMuni = [currentNum];
-            procedureCompleted = yield repository_1.procedureHistoryRepository.save(procedureCompleted);
+            procedure.userMuni = filteredUsersArr[0].id;
+            procedureCompleted = yield repository_1.procedureHistoryRepository.save(procedure);
             req.body.questions.forEach((question) => __awaiter(void 0, void 0, void 0, function* () {
                 const newQuestion = new QuestionHistory_1.QuestionHistory();
                 newQuestion.question = question.question;

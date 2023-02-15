@@ -53,15 +53,9 @@ export const submitProcedure = async (req: Request, res: Response) => {
             let procedureCompleted: ProcedureHistory;
             procedure.user = user;
             procedure.category = categoryId;
-
-
-            // -- En esta función hacer que en vez de compararse un array de todos los trámites, que se compare un array de los trámites con statusId=13
             let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: { status: true} }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
             if (filteredUsers.length === 0 || null) res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite. Por favor, intente en otro momento" });
-            const filteredUsersArr = filteredUsers.sort((x: any, y: any) => x.procedureHistory.length - y.procedureHistory.length);
-            // -- En esta función hacer que en vez de compararse un array de todos los trámites, que se compare un array de los trámites con statusId=13
-            
-            
+            const filteredUsersArr = filteredUsers.sort((a: any,b: any) => a.procedureHistory.filter((x: { status: { id: number; }; }) => x?.status?.id === 13).length - b.procedureHistory.filter((x: { status: { id: number; }; }) => x?.status?.id === 13).length);
             procedure.status = statusId;
             procedure.userMuni = filteredUsersArr[0].id as unknown as UserMuni;
             procedureCompleted = await procedureHistoryRepository.save(procedure);

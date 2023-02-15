@@ -4,7 +4,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 		to: user.email,
 		subject: `Trámite ID #${procedure.id}`,
 		html: `
-        <!DOCTYPE html>
+		<!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
 
 <head>
@@ -60,7 +60,6 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 				margin: 0 auto;
 			}
 
-			.fullMobileWidth,
 			.row-content {
 				width: 100% !important;
 			}
@@ -87,13 +86,6 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 				display: table !important;
 				max-height: none !important;
 			}
-
-			.row-1 .column-2 .block-2.button_block a span,
-			.row-1 .column-2 .block-2.button_block div,
-			.row-1 .column-2 .block-2.button_block div span {
-				font-size: 7px !important;
-				line-height: 2 !important;
-			}
 		}
 	</style>
 </head>
@@ -103,42 +95,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 		<tbody>
 			<tr>
 				<td>
-					<table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-						<tbody>
-							<tr>
-								<td>
-									<table class="row-content" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #333; width: 650px;" width="650">
-										<tbody>
-											<tr>
-												<td class="column column-1" width="66.66666666666667%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-													<table class="image_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-														<tr>
-															<td class="pad" style="padding-top:10px;width:100%;padding-right:0px;padding-left:0px;padding-bottom:5px;">
-																<div class="alignment" align="left" style="line-height:10px"><img class="fullMobileWidth" src="https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/BeeProAgency/946191_930667/logosacanta.png" style="display: block; height: auto; border: 0; width: 152px; max-width: 100%;" width="152" alt="Image" title="Image"></div>
-															</td>
-														</tr>
-													</table>
-												</td>
-												<td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-													<table class="button_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-														<tr>
-															<td class="pad" style="padding-bottom:15px;padding-left:10px;padding-right:10px;padding-top:15px;text-align:center;">
-																<div class="alignment" align="center">
-																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.sacanta.gob.ar/" style="height:36px;width:185px;v-text-anchor:middle;" arcsize="12%" stroke="false" fillcolor="#3aaee0"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Tahoma, Verdana, sans-serif; font-size:13px"><![endif]--><a href="https://www.sacanta.gob.ar/" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#3aaee0;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;font-size:13px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:13px;display:inline-block;letter-spacing:normal;"><span dir="ltr" style="word-break: break-word; line-height: 26px;"><em>Municipalidad de Sacanta</em></span></span></a>
-																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
-																</div>
-															</td>
-														</tr>
-													</table>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<table class="row row-2" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
+					<table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
 						<tbody>
 							<tr>
 								<td>
@@ -164,7 +121,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 															<td class="pad" style="padding-bottom:15px;padding-left:10px;">
 																<div style="font-family: Tahoma, Verdana, sans-serif">
 																	<div class style="font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #3AAEE0; line-height: 1.2;">
-																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"><span style="font-size:46px;"><strong><span style="font-size:46px;"><span style="font-size:38px;">Trámite ID #${procedure.id}</span><br></span></strong></span></p>
+																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"><span style="font-size:46px;"><strong><span style="font-size:46px;"><span style="font-size:38px;color:#ffffff;">Trámite ID #${procedure.id}</span><br></span></strong></span></p>
 																	</div>
 																</div>
 															</td>
@@ -199,7 +156,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 							</tr>
 						</tbody>
 					</table>
-					<table class="row row-3" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
+					<table class="row row-2" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
 						<tbody>
 							<tr>
 								<td>
@@ -216,7 +173,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 							</tr>
 						</tbody>
 					</table>
-					<table class="row row-4" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
+					<table class="row row-3" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
 						<tbody>
 							<tr>
 								<td>
@@ -264,7 +221,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 							</tr>
 						</tbody>
 					</table>
-					<table class="row row-5" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
+					<table class="row row-4" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
 						<tbody>
 							<tr>
 								<td>
@@ -273,6 +230,29 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 											<tr>
 												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 0px; padding-bottom: 0px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
 													<div class="spacer_block" style="height:35px;line-height:35px;font-size:1px;">&#8202;</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="row row-5" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2;">
+						<tbody>
+							<tr>
+								<td>
+									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2; color: #000000; border-radius: 0; width: 650px;" width="650">
+										<tbody>
+											<tr>
+												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+													<table class="heading_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+														<tr>
+															<td class="pad">
+																<h3 style="margin: 0; color: #494949; font-size: 11px; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; line-height: 120%; text-align: center; direction: ltr; font-weight: 400; letter-spacing: normal; margin-top: 0; margin-bottom: 0;"><em><span class="tinyMce-placeholder">Por dudas o problemas con la gestión de su trámite, comunicarse a: <strong>03533-492222/250&nbsp;</strong></span></em></h3>
+															</td>
+														</tr>
+													</table>
 												</td>
 											</tr>
 										</tbody>

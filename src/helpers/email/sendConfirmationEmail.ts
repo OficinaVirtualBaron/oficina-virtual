@@ -120,8 +120,8 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 														<tr>
 															<td class="pad" style="padding-bottom:15px;padding-left:10px;">
 																<div style="font-family: Tahoma, Verdana, sans-serif">
-																	<div class style="font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #3AAEE0; line-height: 1.2;">
-																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"><span style="font-size:46px;"><strong><span style="font-size:46px;"><span style="font-size:38px;color:#ffffff;">Trámite ID #${procedure.id}</span><br></span></strong></span></p>
+																	<div class style="font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 14.399999999999999px; color: #082b3a; line-height: 1.2;">
+																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px; padding: 5px;"><span style="font-size:46px;"><strong><span style="font-size:46px;"><span style="font-size:38px;color:#0068a5;">Trámite ID #${procedure.id}</span><br></span></strong></span></p>
 																	</div>
 																</div>
 															</td>
@@ -242,14 +242,14 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 						<tbody>
 							<tr>
 								<td>
-									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2; color: #000000; border-radius: 0; width: 650px;" width="650">
+									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #a9e4f2; border-radius: 0; color: #000000; width: 650px;" width="650">
 										<tbody>
 											<tr>
 												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
 													<table class="heading_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad">
-																<h3 style="margin: 0; color: #494949; font-size: 11px; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; line-height: 120%; text-align: center; direction: ltr; font-weight: 400; letter-spacing: normal; margin-top: 0; margin-bottom: 0;"><em><span class="tinyMce-placeholder">Por dudas o problemas con la gestión de su trámite, comunicarse a: <strong>03533-492222/250&nbsp;</strong></span></em></h3>
+																<h3 style="margin: 0; color: #494949; direction: ltr; font-family: Lato, Tahoma, Verdana, Segoe, sans-serif; font-size: 11px; font-weight: 400; letter-spacing: normal; line-height: 120%; text-align: center; margin-top: 0; margin-bottom: 0;"><em><span class="tinyMce-placeholder">Por dudas o problemas con la gestión de su trámite, comunicarse a: <strong>03533-492222/250&nbsp;</strong></span></em></h3>
 															</td>
 														</tr>
 													</table>

@@ -240,7 +240,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     if (!user) {
         return res.status(404).send({ message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente" });
     }
-    await forgotPasswordEmail(user, transporter);
+    forgotPasswordEmail(user, transporter);
     return res.status(200).send({ message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña" });
 }
 

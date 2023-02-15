@@ -10,7 +10,6 @@ import { UserMuni } from "../entities/Muni";
 import { IPayload } from "../middlewares";
 import jwt from "jsonwebtoken";
 import { transporter } from "../config/mailer/mailer";
-import { User } from "../entities/User";
 import { sendConfirmationEmail } from "../helpers/email/sendConfirmationEmail";
 import { statusProcedureChanged } from "../helpers/email/statusProcedureChanged";
 import { userRepository } from "./user.controller";
@@ -48,27 +47,23 @@ export const submitProcedure = async (req: Request, res: Response) => {
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const user = await userRepository.findOneBy({ id: parseInt(payload.id) });
         if (!user) return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
-
         try {
             await submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory();
             let procedureCompleted: ProcedureHistory;
             procedure.user = user;
             procedure.category = categoryId;
-            const users = await muniRepository.find();
-            if (users.length === 0 || null) {
-                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
-            }
-            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: true }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
-            if (filteredUsers.length === 0) {
-                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
-            }
 
-            // en un futuro cambiar este .sort() por lo mismo pero referido a la columna "required" de los userMuni
+
+            // -- En esta función hacer que en vez de compararse un array de todos los trámites, que se compare un array de los trámites con statusId=13
+            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: { status: true} }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
+            if (filteredUsers.length === 0 || null) res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite. Por favor, intente en otro momento" });
             const filteredUsersArr = filteredUsers.sort((x: any, y: any) => x.procedureHistory.length - y.procedureHistory.length);
+            // -- En esta función hacer que en vez de compararse un array de todos los trámites, que se compare un array de los trámites con statusId=13
+            
+            
             procedure.status = statusId;
             procedure.userMuni = filteredUsersArr[0].id as unknown as UserMuni;
-
             procedureCompleted = await procedureHistoryRepository.save(procedure);
             req.body.questions.forEach(async (question: any) => {
                 const newQuestion = new QuestionHistory();
@@ -105,6 +100,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
     const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+    const userMuniId = payload.id;
     const userMuniCategory = payload.category;
     try {
         const procedures = await procedureHistoryRepository.find({
@@ -135,6 +131,9 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
                 },
                 category: {
                     id: parseInt(userMuniCategory)
+                },
+                userMuni: {
+                    id: parseInt(userMuniId)
                 }
             }
         });
@@ -142,7 +141,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
         return res.status(200).send(procedures);
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).send({ message: error.message });
+            res.status(500).send({ message: error.message });
         }
     }
 }

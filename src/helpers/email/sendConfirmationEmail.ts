@@ -124,7 +124,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 														<tr>
 															<td class="pad" style="padding-bottom:15px;padding-left:10px;padding-right:10px;padding-top:15px;text-align:center;">
 																<div class="alignment" align="center">
-																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.sacanta.gob.ar/" style="height:36px;width:187px;v-text-anchor:middle;" arcsize="12%" stroke="false" fillcolor="#8a3c90"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Tahoma, Verdana, sans-serif; font-size:13px"><![endif]--><a href="https://www.sacanta.gob.ar/" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#8a3c90;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;font-size:13px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:13px;display:inline-block;letter-spacing:normal;"><span dir="ltr" style="word-break: break-word; line-height: 26px;">Municipalidad de&nbsp; Sacanta</span></span></a>
+																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.sacanta.gob.ar/" style="height:36px;width:185px;v-text-anchor:middle;" arcsize="12%" stroke="false" fillcolor="#3aaee0"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Tahoma, Verdana, sans-serif; font-size:13px"><![endif]--><a href="https://www.sacanta.gob.ar/" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#3aaee0;border-radius:4px;width:auto;border-top:0px solid transparent;font-weight:400;border-right:0px solid transparent;border-bottom:0px solid transparent;border-left:0px solid transparent;padding-top:5px;padding-bottom:5px;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;font-size:13px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:13px;display:inline-block;letter-spacing:normal;"><span dir="ltr" style="word-break: break-word; line-height: 26px;"><em>Municipalidad de Sacanta</em></span></span></a>
 																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 																</div>
 															</td>
@@ -152,8 +152,8 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 														<tr>
 															<td class="pad" style="padding-bottom:10px;padding-left:15px;padding-right:10px;padding-top:10px;">
 																<div style="font-family: Tahoma, Verdana, sans-serif">
-																	<div class style="font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 18px; color: #040404; line-height: 1.5;">
-																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 21px;"><strong>EMAIL DE CONFIRMACIÓN </strong></p>
+																	<div class style="font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 18px; color: #0068a5; line-height: 1.5;">
+																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 19.5px;"><span style="font-size:13px;"><strong>CONFIRMACIÓN DE TRÁMITE PRESENTADO </strong></span></p>
 																	</div>
 																</div>
 															</td>
@@ -174,7 +174,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 														<tr>
 															<td class="pad">
 																<div class="alignment" align="center">
-																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://oficinavirtualbaron.github.io/oficina-vue/#/login" style="height:50px;width:162px;v-text-anchor:middle;" arcsize="8%" strokeweight="1.5pt" strokecolor="#3AAEE0" fillcolor="#3AAEE0"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#FFFFFF; font-family:Tahoma, Verdana, sans-serif; font-size:18px"><![endif]--><a href="https://oficinavirtualbaron.github.io/oficina-vue/#/login" target="_blank" style="text-decoration:none;display:inline-block;color:#FFFFFF;background-color:#3AAEE0;border-radius:4px;width:auto;border-top:2px solid #3AAEE0;font-weight:undefined;border-right:2px solid #3AAEE0;border-bottom:2px solid #3AAEE0;border-left:2px solid #3AAEE0;padding-top:5px;padding-bottom:5px;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;font-size:18px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:18px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 36px;" dir="ltr">Oficina Virtual</span></span></a>
+																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://oficinavirtualbaron.github.io/oficina-vue/#/login" style="height:50px;width:159px;v-text-anchor:middle;" arcsize="8%" strokeweight="1.5pt" strokecolor="#3AAEE0" fillcolor="#3AAEE0"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#FFFFFF; font-family:Tahoma, Verdana, sans-serif; font-size:18px"><![endif]--><a href="https://oficinavirtualbaron.github.io/oficina-vue/#/login" target="_blank" style="text-decoration:none;display:inline-block;color:#FFFFFF;background-color:#3AAEE0;border-radius:4px;width:auto;border-top:2px solid #3AAEE0;font-weight:undefined;border-right:2px solid #3AAEE0;border-bottom:2px solid #3AAEE0;border-left:2px solid #3AAEE0;padding-top:5px;padding-bottom:5px;font-family:Lato, Tahoma, Verdana, Segoe, sans-serif;font-size:18px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:18px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 36px;" dir="ltr">Oficina Virtual</span></span></a>
 																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 																</div>
 															</td>
@@ -220,7 +220,7 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 						<tbody>
 							<tr>
 								<td>
-									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #3AAEE0; color: #000000; width: 650px;" width="650">
+									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #3aaee0; color: #000000; width: 650px;" width="650">
 										<tbody>
 											<tr>
 												<td class="column column-1" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
@@ -249,8 +249,8 @@ export async function sendConfirmationEmail(procedure: any, user: any, transport
 															<td class="pad" style="padding-left:20px;padding-right:10px;padding-bottom:10px;">
 																<div style="font-family: Tahoma, Verdana, sans-serif">
 																	<div class style="font-size: 12px; font-family: 'Lato', Tahoma, Verdana, Segoe, sans-serif; mso-line-height-alt: 18px; color: #ffffff; line-height: 1.5;">
-																		<p style="margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: 24px;"><span style="font-size:16px;">Le informamos mediante ese mail que su trámite fue presentado correctamente en la Oficina Virtual.<br></span></p>
-																		<p style="margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: 24px;"><span style="font-size:16px;">Si tiene alguna duda o pregunta respecto a su trámite, comuniquese con un municipal e indiquele su ID de trámite para que pueda brindarle asistencia</span></p>
+																		<p style="margin: 0; font-size: 15px; text-align: center; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Le informamos mediante ese email que su trámite fue presentado correctamente en la Oficina Virtual.<br></span></p>
+																		<p style="margin: 0; font-size: 15px; text-align: center; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Si tiene alguna duda o pregunta respecto a su trámite, comuníquese con un municipal e indíquele su ID de trámite para que pueda brindarle asistencia.</span></p>
 																	</div>
 																</div>
 															</td>

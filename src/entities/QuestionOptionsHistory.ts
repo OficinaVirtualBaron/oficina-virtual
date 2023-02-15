@@ -14,7 +14,7 @@ export class QuestionOptionHistory {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false })
     answer: string;
 
     @ManyToOne(() => QuestionHistory, (question) => question.question_option_history)

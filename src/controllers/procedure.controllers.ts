@@ -100,6 +100,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
     try {
         const procedures = await procedureHistoryRepository.find({
             relations: {
+                procedure: true,
                 user: true,
                 status: true,
                 category: true,
@@ -109,6 +110,9 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
                 }
             },
             select: {
+                procedure: {
+                    title: true
+                },
                 user: {
                     firstname: true,
                     lastname: true,
@@ -207,6 +211,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
         const userMuniCategory = payload.category;
         const procedure = await procedureHistoryRepository.find({
             relations: {
+                procedure: true,
                 user: true,
                 category: true,
                 status: true,
@@ -216,6 +221,9 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
                 }
             },
             select: {
+                procedure: {
+                    title: true
+                },
                 user: {
                     firstname: true,
                     lastname: true,

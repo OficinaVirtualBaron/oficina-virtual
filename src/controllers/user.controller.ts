@@ -289,38 +289,34 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
     if (!email) return res.status(400).send({ message: "El email es requerido. Por favor, ingréselo." });
     const message = "Un email se envió a su casilla de correos para restablecer su contraseña";
-
-
-    let verificationLink;
     let emailStatus = "ok";
-
     try {
         const user = await userRepository.findOneBy({ email: email });
         if (!user) return res.status(404).send("El correo electrónico es incorrecto. Por favor, intente nuevamente");
         const token = await tokenSignForgotPassword(user);
-        verificationLink = process.env.URL_RESET_PASSWORD;
-        //user.resetToken = token;
+        const verificationLink = `http://localhost:3000/auth/reset-password/${token}`;
+        user.resetToken = token;
         await userRepository.save(user);
-        await forgotPasswordEmail(user, transporter);
+        forgotPasswordEmail(user, transporter, verificationLink);
+        return res.status(200).json({ message: message });
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).send({ message: message });
         }
     }
-
     return res.status(200).send({ message, info: emailStatus });
 }
 
 export const resetPassword = async (req: Request, res: Response) => {
     const { newPassword } = req.body;
     const resetToken = req.headers.reset as string;
-
     try {
         if (!(resetToken && newPassword)) {
             res.status(400).send({ message: "Todos los campos son requeridos." });
         }
-        const payload = jwt.verify(resetToken, process.env.RESET_PASSWORD_KEY || "tokentest") as IPayload;
-        const user = await userRepository.findOneBy({});
+        const payload = jwt.verify(resetToken, process.env.RESET_PASSWORD_KEY || "token_reset_password") as IPayload;
+        const userId = payload.id;
+        const user = await userRepository.findOneBy({ id: parseInt(userId) });
         if (!user) return res.status(404).send({ message: "El usuario no fue encontrado" });
         try {
             user.password = hashSync(newPassword, saltround);

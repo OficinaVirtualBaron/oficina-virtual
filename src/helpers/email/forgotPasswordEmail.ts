@@ -1,9 +1,9 @@
-export async function forgotPasswordEmail(user: any, transporter: any) {
-    await transporter.sendMail({
-        from: '"Email de recuperación" <municipalidadsacanta.com>',
-        to: user.email,
-        subject: `Recuperación de contraseña`,
-        html: `
+export async function forgotPasswordEmail(user: any, transporter: any, verificationLink: any) {
+	await transporter.sendMail({
+		from: '"Email de recuperación" <municipalidadsacanta.com>',
+		to: user.email,
+		subject: `Recuperación de contraseña`,
+		html: `
         <!DOCTYPE html>
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
 
@@ -227,7 +227,7 @@ export async function forgotPasswordEmail(user: any, transporter: any) {
 														<tr>
 															<td class="pad" style="padding-bottom:10px;padding-left:20px;padding-right:10px;padding-top:15px;">
 																<div style="font-family: sans-serif">
-																	<div class style="font-size: 12px; mso-line-height-alt: 21.6px; color: #848484; line-height: 1.8; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;">
+																	<div class style="font-size: 12px; font-family: Arial, Helvetica Neue, Helvetica, sans-serif; mso-line-height-alt: 21.6px; color: #848484; line-height: 1.8;">
 																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 25.2px;"><strong><span style="font-size:14px;">¡Hola ${user.firstname} ${user.lastname}!</span></strong></p>
 																		<p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 25.2px;"><span style="font-size:14px;">Este es un correo electrónico para recuperar su contraseña. Si usted solicitó restablecer su contraseña, ingrese al link a continuación. Si no fue usted, ignore este correo y cierre sus sesiones abiertas de la Oficina Virtual. </span></p>
 																	</div>
@@ -239,7 +239,7 @@ export async function forgotPasswordEmail(user: any, transporter: any) {
 														<tr>
 															<td class="pad" style="padding-bottom:35px;padding-left:10px;padding-right:10px;padding-top:20px;text-align:center;">
 																<div class="alignment" align="center">
-																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="www.example.com" style="height:44px;width:216px;v-text-anchor:middle;" arcsize="10%" strokeweight="0.75pt" strokecolor="#101" fillcolor="#101"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="www.example.com" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#101;border-radius:4px;width:auto;border-top:1px solid #101;font-weight:undefined;border-right:1px solid #101;border-bottom:1px solid #101;border-left:1px solid #101;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;" dir="ltr">Restablecer Contraseña</span></span></a>
+																	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${verificationLink}" style="height:44px;width:216px;v-text-anchor:middle;" arcsize="10%" strokeweight="0.75pt" strokecolor="#101" fillcolor="#101"><w:anchorlock/><v:textbox inset="0px,0px,0px,0px"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:16px"><![endif]--><a href="${verificationLink}" target="_blank" style="text-decoration:none;display:inline-block;color:#ffffff;background-color:#101;border-radius:4px;width:auto;border-top:1px solid #101;font-weight:undefined;border-right:1px solid #101;border-bottom:1px solid #101;border-left:1px solid #101;padding-top:5px;padding-bottom:5px;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;text-align:center;mso-border-alt:none;word-break:keep-all;"><span style="padding-left:20px;padding-right:20px;font-size:16px;display:inline-block;letter-spacing:normal;"><span style="word-break: break-word; line-height: 32px;" dir="ltr">Restablecer Contraseña</span></span></a>
 																	<!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
 																</div>
 															</td>
@@ -321,7 +321,7 @@ export async function forgotPasswordEmail(user: any, transporter: any) {
 												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top; padding-top: 5px; padding-bottom: 5px; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
 													<table class="icons_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
-															<td class="pad" style="vertical-align: middle; padding-bottom: 5px; padding-top: 5px; color: #9d9d9d; font-family: inherit; font-size: 15px; text-align: center;">
+															<td class="pad" style="vertical-align: middle; color: #9d9d9d; font-family: inherit; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
 																<table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 																	<tr>
 																		<td class="alignment" style="vertical-align: middle; text-align: center;">
@@ -356,5 +356,5 @@ export async function forgotPasswordEmail(user: any, transporter: any) {
 
 </html>
         `
-    })
+	})
 }

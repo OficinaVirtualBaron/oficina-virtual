@@ -7,6 +7,7 @@ import {
     UpdateDateColumn,
     OneToMany
 } from "typeorm";
+import { IsNotEmpty, IsOptional } from "class-validator"
 import { ProcedureHistory } from "./ProcedureHistory";
 
 export interface IUser extends Document {
@@ -44,8 +45,10 @@ export class User {
     @Column({ default: "USER_ROLE" })
     role: string;
 
-    @Column({ nullable: true })
-    resetPassword: string;
+    @Column()
+    @IsOptional()
+    @IsNotEmpty()
+    resetToken: string;
 
     @CreateDateColumn()
     created_at: Date;

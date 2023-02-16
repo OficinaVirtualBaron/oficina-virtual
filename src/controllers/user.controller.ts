@@ -309,7 +309,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
 export const resetPassword = async (req: Request, res: Response) => {
     const { newPassword } = req.body;
-    const resetToken = req.headers.reset as string;
+    const resetToken = req.header("reset-token");
+    if (!resetToken) return res.status(400).send({ message: "Error en el token" });
     try {
         if (!(resetToken && newPassword)) {
             res.status(400).send({ message: "Todos los campos son requeridos." });

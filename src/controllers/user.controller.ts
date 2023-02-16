@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../entities/User";
 import { createUserSchema, updateUserSchema } from "../validators/userSchema";
-import bcrypt from "bcrypt";
+import bcrypt, { hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { tokenSignUser } from "../helpers/token/tokenSignUser";
 import { ProcedureHistory } from "../entities/ProcedureHistory";
@@ -11,6 +11,7 @@ import { transporter } from "../config/mailer/mailer";
 import { procedureHistoryRepository } from "./procedure.controllers";
 import { userRepository } from "../config/repository/repository";
 import { signUpUserConfirmationEmail } from "../helpers/email/signUpEmail";
+import { tokenSignForgotPassword } from "../helpers/token/tokenSignForgotPassword";
 const saltround = 10;
 
 // POST
@@ -286,12 +287,59 @@ export const signIn = async (req: Request, res: Response) => {
 // POST
 export const forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
-    const user = await userRepository.findOneBy({ email: email });
-    if (!user) {
-        return res.status(404).send({ message: "No existe ningún usuario con ese correo electrónico. Intente nuevamente" });
+    if (!email) return res.status(400).send({ message: "El email es requerido. Por favor, ingréselo." });
+    const message = "Un email se envió a su casilla de correos para restablecer su contraseña";
+
+
+    let verificationLink;
+    let emailStatus = "ok";
+
+    try {
+        const user = await userRepository.findOneBy({ email: email });
+        if (!user) return res.status(404).send("El correo electrónico es incorrecto. Por favor, intente nuevamente");
+        const token = await tokenSignForgotPassword(user);
+        verificationLink = process.env.URL_RESET_PASSWORD;
+        //user.resetToken = token;
+        await userRepository.save(user);
+        await forgotPasswordEmail(user, transporter);
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: message });
+        }
     }
-    forgotPasswordEmail(user, transporter);
-    return res.status(200).send({ message: "Se envió un link de recuperación a su correo electrónico. Ingrese a su casilla para cambiar su contraseña" });
+
+    return res.status(200).send({ message, info: emailStatus });
+}
+
+export const resetPassword = async (req: Request, res: Response) => {
+    const { newPassword } = req.body;
+    const resetToken = req.headers.reset as string;
+
+    try {
+        if (!(resetToken && newPassword)) {
+            res.status(400).send({ message: "Todos los campos son requeridos." });
+        }
+        const payload = jwt.verify(resetToken, process.env.RESET_PASSWORD_KEY || "tokentest") as IPayload;
+        const user = await userRepository.findOneBy({});
+        if (!user) return res.status(404).send({ message: "El usuario no fue encontrado" });
+        try {
+            user.password = hashSync(newPassword, saltround);
+            await userRepository.save(user);
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).send({ message: error.message });
+            } else {
+                return res.status(400).send({ message: "Algo fue mal" });
+            }
+        }
+        return res.status(200).send({ message: "La contraseña fue cambiada correctamente" });
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message })
+        } else {
+            return res.status(401).send({ message: "Algo fue mal" });
+        }
+    }
 }
 
 export { userRepository };

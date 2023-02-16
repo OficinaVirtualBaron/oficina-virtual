@@ -15,6 +15,7 @@ import { QuestionHistory } from "./QuestionHistory";
 import { Status } from "./Status";
 import { User } from "./User";
 import { UserMuni } from "./Muni";
+import { Procedure } from "./Procedure";
 
 @Entity({ name: "procedure_history" })
 export class ProcedureHistory {
@@ -48,4 +49,8 @@ export class ProcedureHistory {
     @ManyToOne(() => UserMuni, (userMuni) => userMuni.procedureHistory)
     @JoinColumn({ name: "userMuniId" })
     userMuni: UserMuni;
+
+    @ManyToOne(() => Procedure, (procedure) => procedure.procedureHistory)
+    @JoinColumn({ name: "procedureId" })
+    procedure: Procedure
 }

@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { Question } from "./Question";
 import { Category } from "./Category";
+import { ProcedureHistory } from "./ProcedureHistory";
 
 @Entity({ name: "procedure" })
 export class Procedure {
@@ -27,4 +28,7 @@ export class Procedure {
     @ManyToOne(() => Category, (category) => category.procedureTemplate)
     @JoinColumn({ name: "categoryId" })
     category: Category[];
+
+    @OneToMany(() => ProcedureHistory, (procedureHistory) => procedureHistory.procedure)
+    procedureHistory: ProcedureHistory[]
 }

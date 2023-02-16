@@ -42,7 +42,7 @@ export const createProcedure = async (req: Request, res: Response) => {
 export const submitProcedure = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
-        const { categoryId, statusId } = req.body;
+        const { categoryId, statusId, procedureId } = req.body;
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const user = await userRepository.findOneBy({ id: parseInt(payload.id) });
@@ -51,11 +51,12 @@ export const submitProcedure = async (req: Request, res: Response) => {
             await submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory();
             let procedureCompleted: ProcedureHistory;
+            procedure.procedure = procedureId;
             procedure.user = user;
             procedure.category = categoryId;
-            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: { status: true} }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
+            let filteredUsers = await muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: { status: true } }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
             if (filteredUsers.length === 0 || null) res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite. Por favor, intente en otro momento" });
-            const filteredUsersArr = filteredUsers.sort((a: any,b: any) => a.procedureHistory.filter((x: { status: { id: number; }; }) => x?.status?.id === 13).length - b.procedureHistory.filter((x: { status: { id: number; }; }) => x?.status?.id === 13).length);
+            const filteredUsersArr = filteredUsers.sort((a: any, b: any) => a.procedureHistory.filter((x: { status: { id: number; }; }) => x?.status?.id === 13).length - b.procedureHistory.filter((x: { status: { id: number; }; }) => x?.status?.id === 13).length);
             procedure.status = statusId;
             procedure.userMuni = filteredUsersArr[0].id as unknown as UserMuni;
             procedureCompleted = await procedureHistoryRepository.save(procedure);
@@ -147,8 +148,10 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
+        const userMuniId = payload.id;
         const history = await procedureHistoryRepository.find({
             relations: {
+                procedure: true,
                 user: true,
                 category: true,
                 status: true,
@@ -158,6 +161,9 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
                 }
             },
             select: {
+                procedure: {
+                    title: true
+                },
                 user: {
                     firstname: true,
                     lastname: true,
@@ -175,11 +181,15 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
             where: {
                 category: {
                     id: parseInt(userMuniCategory)
+                },
+                userMuni: {
+                    id: parseInt(userMuniId)
                 }
             }
         });
         if (history.length === 0) return res.status(404).send({ message: "No hay ningún trámite en el historial" });
-        return res.status(200).send({ message: "Historial de trámites presentados: ", history });
+        const historyArray = history.sort((a: any, b: any) => b.id - a.id);
+        return res.status(200).send({ message: "Historial de trámites presentados: ", historyArray });
     } catch (error) {
         if (error instanceof Error) {
             return res.status(500).send({ message: error.message });

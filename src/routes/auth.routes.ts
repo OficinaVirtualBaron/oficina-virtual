@@ -9,5 +9,6 @@ router.post("/signUp", isMuniRole, createUser);
 router.post("/signIn", signIn);
 router.post("/signinMunicipales", signInMuni);
 router.post("/forgot-password", forgotPassword);
+router.put("/reset-password");
 
 export default router;

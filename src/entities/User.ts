@@ -44,6 +44,9 @@ export class User {
     @Column({ default: "USER_ROLE" })
     role: string;
 
+    @Column({ nullable: true })
+    resetPassword: string;
+
     @CreateDateColumn()
     created_at: Date;
 

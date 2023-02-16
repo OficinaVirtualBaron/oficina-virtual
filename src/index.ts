@@ -19,7 +19,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // ROUTES
-app.use("/auth", authRoutes);
+app.use("/#/auth", authRoutes);
 app.use("/api/status", statusRoutes); // solo admin
 app.use("/oficina", userRoutes);
 app.use("/municipales", muniRoutes);

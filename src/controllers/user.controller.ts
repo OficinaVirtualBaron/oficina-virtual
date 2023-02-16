@@ -22,7 +22,7 @@ export const createUser = async (req: Request, res: Response) => {
         await createUserSchema.validateAsync(req.body);
         user.firstname = firstname;
         user.lastname = lastname;
-        user.password = bcrypt.hashSync(password, salt);
+        user.password = bcrypt.hashSync(password, saltround);
         user.email = email;
         user.cuil = cuil;
         user.adress = adress;
@@ -103,7 +103,7 @@ export const getMyProcedures = async (req: Request, res: Response) => {
     }
 }
 
-// GET (en un futuro hacer paginación)
+// GET en un futuro hacer paginación
 export const getProceduresOfUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
@@ -149,6 +149,44 @@ export const getProceduresOfUser = async (req: Request, res: Response) => {
     }
 }
 
+// GET
+export const getProfile = async (req: Request, res: Response) => {
+    try {
+        const token = req.header("auth-header");
+        if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
+        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const userId = payload.id;
+        try {
+            const user = await userRepository.findOne({
+                where: {
+                    id: parseInt(userId)
+                },
+                select: {
+                    id: true,
+                    firstname: true,
+                    lastname: true,
+                    cuil: true,
+                    adress: true,
+                    created_at: true
+                }
+            });
+            return res.status(200).json({ "Perfil vecinal ": user });
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).send({ message: error.message });
+            } else {
+                return res.status(500).send({ message: "Error. Ocurrió un error en la petición" });
+            }
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).send({ message: error.message });
+        } else {
+            return res.status(401).send({ message: "Error. Ocurrió algún problema con el token" });
+        }
+    }
+}
+
 // GET 
 export const getUser = async (req: Request, res: Response) => {
     try {
@@ -176,27 +214,39 @@ export const getUser = async (req: Request, res: Response) => {
     }
 }
 
-// PUT 
+// PUT
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const { firstname, lastname, email, password } = req.body;
-        const user = await userRepository.findOneBy({ id: parseInt(req.params.id) });
-        if (!user) return res.status(404).send({ message: "El usuario no existe" });
-        await updateUserSchema.validateAsync(req.body);
-        user.firstname = firstname;
-        user.lastname = lastname;
-        user.email = email;
-        user.password = password;
-        await userRepository.save(user);
-        return res.status(200).send({ message: "Datos del usuario actualizados correctamente" });
+        const token = req.header("auth-header");
+        if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
+        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const userId = payload.id;
+        try {
+            const { firstname, lastname, email, password } = req.body;
+            const user = await userRepository.findOne({ where: { id: parseInt(userId) } });
+            if (!user) return res.status(404).send({ message: "El usuario no existe" });
+            await updateUserSchema.validateAsync(req.body);
+            user.firstname = firstname;
+            user.lastname = lastname;
+            user.email = email;
+            user.password = bcrypt.hashSync(password, saltround);
+            await userRepository.save(user);
+            return res.status(200).send({ message: "Datos del usuario actualizados correctamente" });
+        } catch (error) {
+            if (error instanceof Error) {
+                return res.status(500).json({ message: error.message });
+            }
+        }
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            return res.status(500).send({ message: error.message });
+        } else {
+            return res.status(500).send({ message: "Error. Ocurrió algún problema con el token" });
         }
     }
 }
 
-// DELETE 
+// DELETE -- no habilitada por ahora --
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const result = await userRepository.delete({ id: parseInt(req.params.id) });

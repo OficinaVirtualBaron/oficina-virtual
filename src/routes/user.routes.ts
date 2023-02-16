@@ -3,7 +3,8 @@ import {
     getUser,
     getUsers,
     updateUser,
-    deleteUser
+    deleteUser,
+    getProfile
 } from "../controllers/user.controller";
 import { isUserRole } from "../middlewares/validateUser";
 import { isMuniRole } from "../middlewares/validateMuni";
@@ -14,9 +15,10 @@ const router = Router();
 // GET
 router.get("/users", isMuniRole, getUsers);
 router.get("/users/:id", isMuniRole, getUser);
+router.get("/user/profile", isUserRole, getProfile);
 
 // PUT
-router.put("/user/:id", isUserRole, validateId, updateUser);
+router.put("/user", isUserRole, updateUser);
 
 // DELETE
 router.delete("/user/:id", isAdminRole, deleteUser);

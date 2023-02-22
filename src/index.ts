@@ -12,6 +12,7 @@ import questionsRoutes from "./routes/question.routes";
 import optionsRoutes from "./routes/questionOption.routes";
 import statusRoutes from "./routes/status.routes";
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // MIDDLEWARES
 app.use(cors());
@@ -36,8 +37,8 @@ async function main() {
     try {
         await AppDataSource.initialize();
         console.log("Database connected - MySQL");
-        app.listen(3000);
-        console.log("Server on port", 3000);
+        app.listen(PORT);
+        console.log("Server on port", PORT);
     } catch (error) {
         console.log("Error. Connection to database lost");
         console.log(error);

@@ -17,6 +17,7 @@ const QuestionHistory_1 = require("./QuestionHistory");
 const Status_1 = require("./Status");
 const User_1 = require("./User");
 const Muni_1 = require("./Muni");
+const Procedure_1 = require("./Procedure");
 let ProcedureHistory = class ProcedureHistory {
 };
 __decorate([
@@ -59,6 +60,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: "userMuniId" }),
     __metadata("design:type", Muni_1.UserMuni)
 ], ProcedureHistory.prototype, "userMuni", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Procedure_1.Procedure, (procedure) => procedure.procedureHistory),
+    (0, typeorm_1.JoinColumn)({ name: "procedureId" }),
+    __metadata("design:type", Procedure_1.Procedure)
+], ProcedureHistory.prototype, "procedure", void 0);
 ProcedureHistory = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure_history" })
 ], ProcedureHistory);

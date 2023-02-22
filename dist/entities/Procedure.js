@@ -13,6 +13,7 @@ exports.Procedure = void 0;
 const typeorm_1 = require("typeorm");
 const Question_1 = require("./Question");
 const Category_1 = require("./Category");
+const ProcedureHistory_1 = require("./ProcedureHistory");
 let Procedure = class Procedure {
 };
 __decorate([
@@ -36,6 +37,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: "categoryId" }),
     __metadata("design:type", Array)
 ], Procedure.prototype, "category", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => ProcedureHistory_1.ProcedureHistory, (procedureHistory) => procedureHistory.procedure),
+    __metadata("design:type", Array)
+], Procedure.prototype, "procedureHistory", void 0);
 Procedure = __decorate([
     (0, typeorm_1.Entity)({ name: "procedure" })
 ], Procedure);

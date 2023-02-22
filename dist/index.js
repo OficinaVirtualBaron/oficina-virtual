@@ -40,7 +40,7 @@ app.use("/oficina/procedures", procedures_routes_1.default);
 app.use("/oficina/questions", question_routes_1.default);
 app.use("/oficina/questions/options", questionOption_routes_1.default);
 app.use("/", (req, res) => {
-    res.send("404 - Page Not found");
+    res.status(404).send("404 - Page Not found");
 });
 // SERVER
 function main() {

@@ -22,6 +22,7 @@ const QuestionOptionsHistory_1 = require("../entities/QuestionOptionsHistory");
 const typeorm_1 = require("typeorm");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mailer_1 = require("../config/mailer/mailer");
+const sendConfirmationEmail_1 = require("../helpers/email/sendConfirmationEmail");
 const statusProcedureChanged_1 = require("../helpers/email/statusProcedureChanged");
 const user_controller_1 = require("./user.controller");
 const muni_controllers_1 = require("./muni.controllers");
@@ -55,7 +56,7 @@ exports.createProcedure = createProcedure;
 const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.header("auth-header");
     try {
-        const { categoryId, statusId } = req.body;
+        const { categoryId, statusId, procedureId } = req.body;
         if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
@@ -66,18 +67,13 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
             yield procedureSchema_1.submitProcedureSchema.validateAsync(req.body);
             const procedure = new ProcedureHistory_1.ProcedureHistory();
             let procedureCompleted;
+            procedure.procedure = procedureId;
             procedure.user = user;
             procedure.category = categoryId;
-            const users = yield muni_controllers_1.muniRepository.find();
-            if (users.length === 0 || null) {
-                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
-            }
-            let filteredUsers = yield muni_controllers_1.muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: true }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
-            if (filteredUsers.length === 0) {
-                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite" });
-            }
-            // en un futuro cambiar este .sort() por lo mismo pero referido a la columna "required" de los userMuni
-            const filteredUsersArr = filteredUsers.sort((x, y) => x.procedureHistory.length - y.procedureHistory.length);
+            let filteredUsers = yield muni_controllers_1.muniRepository.find({ where: { category: { id: req.body.categoryId } }, relations: { procedureHistory: { status: true } }, select: { procedureHistory: { id: true }, id: true, firstname: true, lastname: true } });
+            if (filteredUsers.length === 0 || null)
+                res.status(404).send({ message: "No hay personal municipal disponible para responder a este trámite. Por favor, intente en otro momento" });
+            const filteredUsersArr = filteredUsers.sort((a, b) => a.procedureHistory.filter((x) => { var _a; return ((_a = x === null || x === void 0 ? void 0 : x.status) === null || _a === void 0 ? void 0 : _a.id) === 13; }).length - b.procedureHistory.filter((x) => { var _a; return ((_a = x === null || x === void 0 ? void 0 : x.status) === null || _a === void 0 ? void 0 : _a.id) === 13; }).length);
             procedure.status = statusId;
             procedure.userMuni = filteredUsersArr[0].id;
             procedureCompleted = yield repository_1.procedureHistoryRepository.save(procedure);
@@ -94,7 +90,7 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
                     yield repository_1.questionOptionHistoryRepository.save(newOption);
                 }));
             }));
-            //sendConfirmationEmail(procedure, user, transporter, userMuni);
+            (0, sendConfirmationEmail_1.sendConfirmationEmail)(procedure, user, mailer_1.transporter);
             return res.status(201).send("Trámite enviado correctamente. ¡Gracias vecino!");
         }
         catch (error) {
@@ -119,10 +115,12 @@ const getProceduresByStatus = (req, res) => __awaiter(void 0, void 0, void 0, fu
     if (!token)
         return res.status(401).send({ message: "Error. No hay token en la petición" });
     const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+    const userMuniId = payload.id;
     const userMuniCategory = payload.category;
     try {
         const procedures = yield repository_1.procedureHistoryRepository.find({
             relations: {
+                procedure: true,
                 user: true,
                 status: true,
                 category: true,
@@ -132,6 +130,9 @@ const getProceduresByStatus = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 }
             },
             select: {
+                procedure: {
+                    title: true
+                },
                 user: {
                     firstname: true,
                     lastname: true,
@@ -149,6 +150,9 @@ const getProceduresByStatus = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 },
                 category: {
                     id: parseInt(userMuniCategory)
+                },
+                userMuni: {
+                    id: parseInt(userMuniId)
                 }
             }
         });
@@ -158,7 +162,7 @@ const getProceduresByStatus = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).send({ message: error.message });
+            res.status(500).send({ message: error.message });
         }
     }
 });
@@ -171,8 +175,10 @@ const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, f
             return res.status(401).send({ message: "Error. No hay token en la petición" });
         const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
         const userMuniCategory = payload.category;
+        const userMuniId = payload.id;
         const history = yield repository_1.procedureHistoryRepository.find({
             relations: {
+                procedure: true,
                 user: true,
                 category: true,
                 status: true,
@@ -182,6 +188,9 @@ const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, f
                 }
             },
             select: {
+                procedure: {
+                    title: true
+                },
                 user: {
                     firstname: true,
                     lastname: true,
@@ -199,12 +208,16 @@ const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, f
             where: {
                 category: {
                     id: parseInt(userMuniCategory)
+                },
+                userMuni: {
+                    id: parseInt(userMuniId)
                 }
             }
         });
         if (history.length === 0)
             return res.status(404).send({ message: "No hay ningún trámite en el historial" });
-        return res.status(200).send({ message: "Historial de trámites presentados: ", history });
+        const historyArray = history.sort((a, b) => b.id - a.id);
+        return res.status(200).send({ message: "Historial de trámites presentados: ", historyArray });
     }
     catch (error) {
         if (error instanceof Error) {
@@ -224,6 +237,7 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
         const userMuniCategory = payload.category;
         const procedure = yield repository_1.procedureHistoryRepository.find({
             relations: {
+                procedure: true,
                 user: true,
                 category: true,
                 status: true,
@@ -233,6 +247,9 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
                 }
             },
             select: {
+                procedure: {
+                    title: true
+                },
                 user: {
                     firstname: true,
                     lastname: true,

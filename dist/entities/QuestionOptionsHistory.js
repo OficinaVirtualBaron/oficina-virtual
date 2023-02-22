@@ -20,7 +20,7 @@ __decorate([
     __metadata("design:type", Number)
 ], QuestionOptionHistory.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
+    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
 ], QuestionOptionHistory.prototype, "answer", void 0);
 __decorate([

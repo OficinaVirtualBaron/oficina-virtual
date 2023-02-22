@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
+const class_validator_1 = require("class-validator");
 const ProcedureHistory_1 = require("./ProcedureHistory");
 let User = class User {
 };
@@ -46,6 +47,12 @@ __decorate([
     (0, typeorm_1.Column)({ default: "USER_ROLE" }),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], User.prototype, "resetToken", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)

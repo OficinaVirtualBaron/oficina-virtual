@@ -28,7 +28,7 @@ app.use("/oficina/procedures", proceduresRoutes);
 app.use("/oficina/questions", questionsRoutes);
 app.use("/oficina/questions/options", optionsRoutes);
 app.use("/", (req, res) => {
-    res.send("404 - Page Not found");
+    res.status(404).send("404 - Page Not found");
 });
 
 // SERVER

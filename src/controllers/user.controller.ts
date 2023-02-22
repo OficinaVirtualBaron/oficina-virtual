@@ -4,7 +4,6 @@ import { createUserSchema, updateUserSchema } from "../validators/userSchema";
 import bcrypt, { hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { tokenSignUser } from "../helpers/token/tokenSignUser";
-import { ProcedureHistory } from "../entities/ProcedureHistory";
 import { IPayload } from "../middlewares";
 import { forgotPasswordEmail } from "../helpers/email/forgotPasswordEmail";
 import { transporter } from "../config/mailer/mailer";
@@ -289,10 +288,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
     if (!email) return res.status(400).send({ message: "El email es requerido. Por favor, ingréselo." });
     const message = "Un email se envió a su casilla de correos para restablecer su contraseña";
-    let emailStatus = "ok";
     try {
         const user = await userRepository.findOneBy({ email: email });
-        if (!user) return res.status(404).send("El correo electrónico es incorrecto. Por favor, intente nuevamente");
+        if (!user) return res.status(404).send({ message: "El correo electrónico es incorrecto. Por favor, intente nuevamente" });
         const token = await tokenSignForgotPassword(user);
         const verificationLink = `http://localhost:3000/auth/reset-password/${token}`;
         user.resetToken = token;
@@ -304,13 +302,13 @@ export const forgotPassword = async (req: Request, res: Response) => {
             return res.status(500).send({ message: message });
         }
     }
-    return res.status(200).send({ message, info: emailStatus });
+    return res.status(200).send({ message });
 }
 
 export const resetPassword = async (req: Request, res: Response) => {
     const { newPassword } = req.body;
     const resetToken = req.header("reset-token");
-    if (!resetToken) return res.status(400).send({ message: "Error en el token" });
+    if (!resetToken) return res.status(400).send({ message: "Error. No hay token en la petición" });
     try {
         if (!(resetToken && newPassword)) {
             res.status(400).send({ message: "Todos los campos son requeridos." });
@@ -326,7 +324,7 @@ export const resetPassword = async (req: Request, res: Response) => {
             if (error instanceof Error) {
                 return res.status(500).send({ message: error.message });
             } else {
-                return res.status(400).send({ message: "Algo fue mal" });
+                return res.status(400).send({ message: "Error. Algo fue mal" });
             }
         }
         return res.status(200).send({ message: "La contraseña fue cambiada correctamente" });

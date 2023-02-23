@@ -26,6 +26,7 @@ const question_routes_1 = __importDefault(require("./routes/question.routes"));
 const questionOption_routes_1 = __importDefault(require("./routes/questionOption.routes"));
 const status_routes_1 = __importDefault(require("./routes/status.routes"));
 const app = (0, express_1.default)();
+const PORT = process.env.PORT || 3000;
 // MIDDLEWARES
 app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)("dev"));
@@ -39,8 +40,8 @@ app.use("/oficina/categories", categories_routes_1.default);
 app.use("/oficina/procedures", procedures_routes_1.default);
 app.use("/oficina/questions", question_routes_1.default);
 app.use("/oficina/questions/options", questionOption_routes_1.default);
-app.use("/", (req, res) => {
-    res.status(404).send("404 - Page Not found");
+app.get("/", (req, res) => {
+    res.status(200).send("Home page - Bienvenido vecino a su oficina virtual");
 });
 // SERVER
 function main() {
@@ -48,8 +49,8 @@ function main() {
         try {
             yield db_1.AppDataSource.initialize();
             console.log("Database connected - MySQL");
-            app.listen(3000);
-            console.log("Server on port", 3000);
+            app.listen(PORT);
+            console.log("Server on port", PORT);
         }
         catch (error) {
             console.log("Error. Connection to database lost");

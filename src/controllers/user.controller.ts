@@ -7,11 +7,12 @@ import { tokenSignUser } from "../helpers/token/tokenSignUser";
 import { IPayload } from "../middlewares";
 import { forgotPasswordEmail } from "../helpers/email/forgotPasswordEmail";
 import { transporter } from "../config/mailer/mailer";
-import { procedureHistoryRepository } from "./procedure.controllers";
+import { procedureHistoryRepository, SECRET_TOKEN_KEY } from "./procedure.controllers";
 import { userRepository } from "../config/repository/repository";
 import { signUpUserConfirmationEmail } from "../helpers/email/signUpEmail";
 import { tokenSignForgotPassword } from "../helpers/token/tokenSignForgotPassword";
 const saltround = 10;
+export const RESET_PASSWORD_KEY = process.env.RESET_PASSWORD_KEY;
 
 // POST
 export const createUser = async (req: Request, res: Response) => {
@@ -67,7 +68,7 @@ export const getMyProcedures = async (req: Request, res: Response) => {
         if (!token) {
             return res.status(401).send({ message: "Error. No hay token en la petición" });
         }
-        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userId = parseInt(payload.id);
         const procedures = await procedureHistoryRepository.find({
             relations: {
@@ -154,7 +155,7 @@ export const getProfile = async (req: Request, res: Response) => {
     try {
         const token = req.header("auth-header");
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userId = payload.id;
         try {
             const user = await userRepository.findOne({
@@ -219,7 +220,7 @@ export const updateUser = async (req: Request, res: Response) => {
     try {
         const token = req.header("auth-header");
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userId = payload.id;
         try {
             const { firstname, lastname, email, password } = req.body;
@@ -313,7 +314,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         if (!(resetToken && newPassword)) {
             res.status(400).send({ message: "Todos los campos son requeridos." });
         }
-        const payload = jwt.verify(resetToken, process.env.RESET_PASSWORD_KEY || "token_reset_password") as IPayload;
+        const payload = jwt.verify(resetToken, RESET_PASSWORD_KEY || "token_reset_password") as IPayload;
         const userId = payload.id;
         const user = await userRepository.findOneBy({ id: parseInt(userId) });
         if (!user) return res.status(404).send({ message: "El usuario no fue encontrado" });

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { SECRET_TOKEN_KEY } from "../../controllers/procedure.controllers";
 import { UserMuni } from "../../entities/Muni";
 
 export const tokenSignMuni = async (userMuni: UserMuni) => {
@@ -7,7 +8,7 @@ export const tokenSignMuni = async (userMuni: UserMuni) => {
             id: userMuni.id,
             role: userMuni.role,
             category: userMuni.category.id
-        }, process.env.SECRET_TOKEN_KEY || "tokentest",
+        }, SECRET_TOKEN_KEY || "tokentest",
         {
             expiresIn: "24h"
         }

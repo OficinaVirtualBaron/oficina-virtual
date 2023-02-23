@@ -15,6 +15,7 @@ import { statusProcedureChanged } from "../helpers/email/statusProcedureChanged"
 import { userRepository } from "./user.controller";
 import { muniRepository } from "./muni.controllers";
 import { procedureHistoryRepository, procedureRepository, questionHistoryRepository, questionOptionHistoryRepository } from "../config/repository/repository";
+export const SECRET_TOKEN_KEY = process.env.SECRET_TOKEN_KEY;
 
 // POST
 export const createProcedure = async (req: Request, res: Response) => {
@@ -44,7 +45,7 @@ export const submitProcedure = async (req: Request, res: Response) => {
     try {
         const { categoryId, statusId, procedureId } = req.body;
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const user = await userRepository.findOneBy({ id: parseInt(payload.id) });
         if (!user) return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
         try {
@@ -94,7 +95,7 @@ export const getProceduresByStatus = async (req: Request, res: Response) => {
     const { id } = req.params;
     const token = req.header("auth-header");
     if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
-    const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+    const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
     const userMuniId = payload.id;
     const userMuniCategory = payload.category;
     try {
@@ -150,7 +151,7 @@ export const getHistoryOfProcedures = async (req: Request, res: Response) => {
     const token = req.header("auth-header");
     try {
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
         const userMuniId = payload.id;
         const history = await procedureHistoryRepository.find({
@@ -207,7 +208,7 @@ export const getOneProcedureFromHistory = async (req: Request, res: Response) =>
     const token = req.header("auth-header");
     try {
         if (!token) return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+        const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
         const userMuniCategory = payload.category;
         const procedure = await procedureHistoryRepository.find({
             relations: {
@@ -337,7 +338,7 @@ export const updateStatusOfProcedure = async (req: Request, res: Response) => {
             if (!token) {
                 return res.status(401).send({ message: "Error. No hay token en la petición" });
             }
-            const payload = jwt.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest") as IPayload;
+            const payload = jwt.verify(token, SECRET_TOKEN_KEY || "tokentest") as IPayload;
             const userMuniCategory = payload.category;
             const procedure = await procedureHistoryRepository.findOne({
                 relations: {

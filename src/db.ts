@@ -12,15 +12,19 @@ import { ProcedureHistory } from "./entities/ProcedureHistory";
 import { QuestionHistory } from "./entities/QuestionHistory";
 import { QuestionOptionHistory } from "./entities/QuestionOptionsHistory";
 dotenv.config();
+export const DB_HOST = process.env.DB_HOST;
+export const DB_USER = process.env.DB_USER;
+export const MYSQL_PASSW = process.env.MYSQL_PASSW;
+export const DB_NAME = process.env.DB_NAME;
 
 // DATABASE
 export const AppDataSource = new DataSource({
     type: "mysql",
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.MYSQL_PASSW,
+    host: DB_HOST,
+    username: DB_USER,
+    password: MYSQL_PASSW,
     port: 3306,
-    database: process.env.DB_NAME,
+    database: DB_NAME,
     entities: [
         User,
         UserMuni,

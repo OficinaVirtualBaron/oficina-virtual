@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userRepository = exports.resetPassword = exports.forgotPassword = exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProfile = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = void 0;
+exports.userRepository = exports.resetPassword = exports.forgotPassword = exports.signIn = exports.deleteUser = exports.updateUser = exports.getUser = exports.getProfile = exports.getProceduresOfUser = exports.getMyProcedures = exports.getUsers = exports.createUser = exports.RESET_PASSWORD_KEY = void 0;
 const User_1 = require("../entities/User");
 const userSchema_1 = require("../validators/userSchema");
 const bcrypt_1 = __importStar(require("bcrypt"));
@@ -49,6 +49,7 @@ Object.defineProperty(exports, "userRepository", { enumerable: true, get: functi
 const signUpEmail_1 = require("../helpers/email/signUpEmail");
 const tokenSignForgotPassword_1 = require("../helpers/token/tokenSignForgotPassword");
 const saltround = 10;
+exports.RESET_PASSWORD_KEY = process.env.RESET_PASSWORD_KEY;
 // POST
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const salt = bcrypt_1.default.genSaltSync();
@@ -106,7 +107,7 @@ const getMyProcedures = (req, res) => __awaiter(void 0, void 0, void 0, function
         if (!token) {
             return res.status(401).send({ message: "Error. No hay token en la petición" });
         }
-        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const payload = jsonwebtoken_1.default.verify(token, procedure_controllers_1.SECRET_TOKEN_KEY || "tokentest");
         const userId = parseInt(payload.id);
         const procedures = yield procedure_controllers_1.procedureHistoryRepository.find({
             relations: {
@@ -196,7 +197,7 @@ const getProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const token = req.header("auth-header");
         if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const payload = jsonwebtoken_1.default.verify(token, procedure_controllers_1.SECRET_TOKEN_KEY || "tokentest");
         const userId = payload.id;
         try {
             const user = yield repository_1.userRepository.findOne({
@@ -267,7 +268,7 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const token = req.header("auth-header");
         if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const payload = jsonwebtoken_1.default.verify(token, procedure_controllers_1.SECRET_TOKEN_KEY || "tokentest");
         const userId = payload.id;
         try {
             const { firstname, lastname, email, password } = req.body;
@@ -371,7 +372,7 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!(resetToken && newPassword)) {
             res.status(400).send({ message: "Todos los campos son requeridos." });
         }
-        const payload = jsonwebtoken_1.default.verify(resetToken, process.env.RESET_PASSWORD_KEY || "token_reset_password");
+        const payload = jsonwebtoken_1.default.verify(resetToken, exports.RESET_PASSWORD_KEY || "token_reset_password");
         const userId = payload.id;
         const user = yield repository_1.userRepository.findOneBy({ id: parseInt(userId) });
         if (!user)

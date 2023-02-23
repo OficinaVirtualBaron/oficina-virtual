@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.procedureHistoryRepository = exports.deleteProcedure = exports.updateProcedure = exports.updateStatusOfProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getTemplateProcedureById = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.getProceduresByStatus = exports.submitProcedure = exports.createProcedure = void 0;
+exports.procedureHistoryRepository = exports.deleteProcedure = exports.updateProcedure = exports.updateStatusOfProcedure = exports.getProcedure = exports.getProcedureByCategory = exports.getProcedures = exports.getTemplateProcedureById = exports.getOneProcedureFromHistory = exports.getHistoryOfProcedures = exports.getProceduresByStatus = exports.submitProcedure = exports.createProcedure = exports.SECRET_TOKEN_KEY = void 0;
 const Procedure_1 = require("../entities/Procedure");
 const procedureSchema_1 = require("../validators/procedureSchema");
 const categorySchema_1 = require("../validators/categorySchema");
@@ -28,6 +28,7 @@ const user_controller_1 = require("./user.controller");
 const muni_controllers_1 = require("./muni.controllers");
 const repository_1 = require("../config/repository/repository");
 Object.defineProperty(exports, "procedureHistoryRepository", { enumerable: true, get: function () { return repository_1.procedureHistoryRepository; } });
+exports.SECRET_TOKEN_KEY = process.env.SECRET_TOKEN_KEY;
 // POST
 const createProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -59,7 +60,7 @@ const submitProcedure = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { categoryId, statusId, procedureId } = req.body;
         if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const payload = jsonwebtoken_1.default.verify(token, exports.SECRET_TOKEN_KEY || "tokentest");
         const user = yield user_controller_1.userRepository.findOneBy({ id: parseInt(payload.id) });
         if (!user)
             return res.status(404).send({ message: `Usuario ID #${payload.id} no encontrado` });
@@ -114,7 +115,7 @@ const getProceduresByStatus = (req, res) => __awaiter(void 0, void 0, void 0, fu
     const token = req.header("auth-header");
     if (!token)
         return res.status(401).send({ message: "Error. No hay token en la petición" });
-    const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+    const payload = jsonwebtoken_1.default.verify(token, exports.SECRET_TOKEN_KEY || "tokentest");
     const userMuniId = payload.id;
     const userMuniCategory = payload.category;
     try {
@@ -173,7 +174,7 @@ const getHistoryOfProcedures = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const payload = jsonwebtoken_1.default.verify(token, exports.SECRET_TOKEN_KEY || "tokentest");
         const userMuniCategory = payload.category;
         const userMuniId = payload.id;
         const history = yield repository_1.procedureHistoryRepository.find({
@@ -233,7 +234,7 @@ const getOneProcedureFromHistory = (req, res) => __awaiter(void 0, void 0, void 
     try {
         if (!token)
             return res.status(401).send({ message: "Error. No hay token en la petición" });
-        const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+        const payload = jsonwebtoken_1.default.verify(token, exports.SECRET_TOKEN_KEY || "tokentest");
         const userMuniCategory = payload.category;
         const procedure = yield repository_1.procedureHistoryRepository.find({
             relations: {
@@ -372,7 +373,7 @@ const updateStatusOfProcedure = (req, res) => __awaiter(void 0, void 0, void 0, 
             if (!token) {
                 return res.status(401).send({ message: "Error. No hay token en la petición" });
             }
-            const payload = jsonwebtoken_1.default.verify(token, process.env.SECRET_TOKEN_KEY || "tokentest");
+            const payload = jsonwebtoken_1.default.verify(token, exports.SECRET_TOKEN_KEY || "tokentest");
             const userMuniCategory = payload.category;
             const procedure = yield repository_1.procedureHistoryRepository.findOne({
                 relations: {

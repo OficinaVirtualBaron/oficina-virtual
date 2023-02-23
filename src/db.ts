@@ -16,6 +16,7 @@ export const DB_HOST = process.env.DB_HOST;
 export const DB_USER = process.env.DB_USER;
 export const MYSQL_PASSW = process.env.MYSQL_PASSW;
 export const DB_NAME = process.env.DB_NAME;
+export const PORT = Number(process.env.PORT);
 
 // DATABASE
 export const AppDataSource = new DataSource({
@@ -23,7 +24,7 @@ export const AppDataSource = new DataSource({
     host: DB_HOST,
     username: DB_USER,
     password: MYSQL_PASSW,
-    port: 3306,
+    port: PORT,
     database: DB_NAME,
     entities: [
         User,

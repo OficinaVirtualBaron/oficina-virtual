@@ -29,7 +29,7 @@ app.use("/oficina/procedures", proceduresRoutes);
 app.use("/oficina/questions", questionsRoutes);
 app.use("/oficina/questions/options", optionsRoutes);
 app.get("/", (req, res) => {
-    res.status(200).send("Home page - Bienvenido vecino a su oficina virtual");
+    res.status(200).send("Home page -  - Bienvenido vecino a su oficina virtual");
 });
 
 // SERVER
